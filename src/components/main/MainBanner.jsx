@@ -25,7 +25,15 @@ const StMainBanner = styled.div`
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        left: 20px;
+        left: 200px;
+        h3 {
+            font-size: 40px;
+        }
+        p {
+            margin-top: 20px;
+            font-size: 24px;
+            width: 260px;
+        }
     }
 `
 
