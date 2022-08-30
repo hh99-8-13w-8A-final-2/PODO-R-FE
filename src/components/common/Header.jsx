@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from './Layout';
 import styled from 'styled-components';
+import logo from '../../assets/img/logo.svg'
 
 const Header = () => {
     return (
@@ -8,7 +9,7 @@ const Header = () => {
             <Layout>
                 <StHeaderCont>
                     <div>돌아가기 버튼</div>
-                    <div>로고</div>
+                    <img src={logo} alt="" />
                     <div>로그인 아이콘</div>
                 </StHeaderCont>
             </Layout>
