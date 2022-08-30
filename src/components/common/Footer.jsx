@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
+import logo_footer from '../../assets/img/logo_footer.svg'
 
 const Footer = () => {
     return (
         <StFooter>
             <Layout>
                 <StFooterCont>
-                    <div>푸터 로고</div>
+                    <img src={logo_footer} alt="" />
                     <StFooterUl>
                         <li>About</li>
                         <li>개인정보처리방침</li>
