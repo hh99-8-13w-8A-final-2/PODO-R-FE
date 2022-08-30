@@ -1,15 +1,51 @@
 import React from 'react';
 import styled from 'styled-components';
 import bnr from '../../assets/img/bnr.png'
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+
+// import required modules
+import SwiperCore, { Pagination, Navigation, Autoplay  } from "swiper";
+SwiperCore.use([Navigation, Pagination, Autoplay])	
 
 const MainBanner = () => {
     return (
-        <StMainBanner bnr={bnr}>
-            <div>
-                <h3>포도알 서비스 런칭</h3>
-                <p>당신이 원하는 바로 그 자리 포도알에 전부 다 있습니다.</p>
-            </div>
-        </StMainBanner>
+        <>
+           <Swiper
+              className="banner"
+              spaceBetween={50}
+              slidesPerView={1}
+              navigation
+              pagination={{ clickable: true }}
+              autoplay={{ delay: 3000 }}
+            /* className="mySwiper" */
+        >
+            <SwiperSlide>
+                <StMainBanner bnr={bnr}>
+                    <div>
+                        <h3>포도알 서비스 런칭</h3>
+                        <p>당신이 원하는 바로 그 자리 포도알에 전부 다 있습니다.</p>
+                    </div>
+                </StMainBanner>
+            </SwiperSlide>
+            <SwiperSlide>
+                <StMainBanner bnr={bnr}>
+                    <div>
+                        <h3>포도알 서비스 런칭</h3>
+                        <p>당신이 원하는 바로 그 자리 포도알에 전부 다 있습니다.</p>
+                    </div>
+                </StMainBanner>
+            </SwiperSlide>
+        </Swiper>
+        
+        
+        
+        </>
     );
 };
 
