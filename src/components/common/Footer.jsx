@@ -8,7 +8,9 @@ const Footer = () => {
         <StFooter>
             <Layout>
                 <StFooterCont>
-                    <img src={logo_footer} alt="" />
+                    <div>
+                        <img src={logo_footer} alt="" />
+                    </div>
                     <StFooterUl>
                         <li>About</li>
                         <li>개인정보처리방침</li>
