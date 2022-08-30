@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Router from './router/Router';
 import GlobalStyle from './assets/style/GlobalStyle'
