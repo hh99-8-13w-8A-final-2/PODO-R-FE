@@ -37,6 +37,9 @@ const GlobalStyle = createGlobalStyle`
         height: 100%;
         background-color: var(--gray-3);
     }
+    .icon {
+        width: 30px;
+    }
 `
 
 export default GlobalStyle;
