@@ -5,6 +5,7 @@ import Footer from '../components/common/Footer';
 import MainBanner from '../components/main/MainBanner';
 import TicketOpenList from '../components/main/TicketOpenList';
 import LiveReview from '../components/main/LiveReview';
+import NoticeList from '../components/main/NoticeList';
 
 const MainPage = () => {
     return (
@@ -14,6 +15,7 @@ const MainPage = () => {
                 <MainBanner/>
                 <TicketOpenList/>
                 <LiveReview/>
+                <NoticeList/>
             </Layout>
             <Footer/>
         </>
