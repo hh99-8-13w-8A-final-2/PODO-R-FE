@@ -16,7 +16,6 @@ const TicketOpenList = () => {
         }
         fetchTicket();
     }, [])
-    console.log(tickets)
 
     return (
         <div>
