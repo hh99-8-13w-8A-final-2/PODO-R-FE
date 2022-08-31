@@ -9,6 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^1.8.5",
+    "@stomp/stompjs": "^6.1.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -22,9 +23,12 @@
     "react-toastify": "^9.0.8",
     "redux": "^4.2.0",
     "sass": "^1.54.6",
+    "sockjs-client": "^1.6.1",
     "styled-components": "^5.3.5",
     "swiper": "^8.3.2",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "websocket": "^1.0.34",
+    "webstomp-client": "^1.2.6"
   },
   "scripts": {
     "start": "react-scripts start",
