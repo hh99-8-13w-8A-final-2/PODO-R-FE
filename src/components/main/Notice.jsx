@@ -9,7 +9,7 @@ const Notice = ({loading, notice}) => {
     return (
         <ul>
             {notice.map(notice => (
-                <StLi ><StCont>{notice.contents}</StCont><StDate>{notice.date}</StDate></StLi>
+                <StLi key={notice.id}><StCont>{notice.contents}</StCont><StDate>{notice.date}</StDate></StLi>
             ))}
         </ul>
     );
