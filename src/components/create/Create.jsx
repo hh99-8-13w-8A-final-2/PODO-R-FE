@@ -18,6 +18,7 @@ const Create = () => {
 
 
     return (
+
         <form id='myForm' onSubmit={onSubmitHandler}>
             <select name="seatGrade">
                 <option value="A">A</option>
@@ -54,6 +55,7 @@ const Create = () => {
             <input name='tags'/>
             <button>제출</button>
         </form>
+
     );
 };
 
