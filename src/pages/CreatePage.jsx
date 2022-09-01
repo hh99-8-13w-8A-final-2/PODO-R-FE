@@ -10,7 +10,6 @@ const CreatePage = () => {
     return (
         <>
             <Header/>
-
             <HeaderBottom/>
             <Layout>
                 <Create/>

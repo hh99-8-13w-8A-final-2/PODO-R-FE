@@ -51,6 +51,6 @@ div{
 }
 
     img{
-        width: 30px;
+        width: 24px;
     }
 `
