@@ -49,7 +49,7 @@ const MainBanner = () => {
     );
 };
 
-const StMainBanner = styled.div`
+const StMainBanner = styled.div< {bnr : string} >`
     height: 300px;
     width: 1400px;
     background-image: ${props => `url(${props.bnr})`};

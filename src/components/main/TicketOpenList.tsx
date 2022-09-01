@@ -3,14 +3,25 @@ import styled from 'styled-components';
 import Ticket from './Ticket';
 import axios from 'axios';
 
+export interface Iword {
+    musicalId: number,
+    musicalName: string,
+    musicalRegion: string,
+    musicalTheater: string,
+    musicalPoster: string,
+    openDate: string,
+    closeDate: string
+}
+
 const TicketOpenList = () => {
-    const [tickets, setTickets] = useState([]);
+    const [tickets, setTickets] = useState<Iword[]>([]);
     const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         const fetchTicket = async () => {
             setLoading(true)
-            const res = await axios.get("http://localhost:3001/open")
+            const res = await axios.get<Iword[]>("http://localhost:3001/open")
             setTickets(res.data)
             setLoading(false)
         }
