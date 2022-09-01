@@ -1,7 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { INotice } from './NoticeList';
 
-const Notice = ({loading, notice}) => {
+interface INoticeWithBool {
+    loading: boolean
+    notice: INotice[]
+}
+
+const Notice = ({loading, notice}:INoticeWithBool) => {
     if(loading) {
         return <h2>Loading ...</h2>
     }
