@@ -12,24 +12,26 @@ const LiveReviewList = () => {
     let stompClient = useRef(null)
 
     useEffect(() => {
-        let sockJs = new SockJS("연결할 uri")
+        let sockJs = new SockJS("http://3.39.240.159/live")
         let subscription;
         stompClient.current = webstomp.over(sockJs)
         stompClient.current.connect({}, function() {
             setLoading(true);
             const liveReview = async() => {
-                const res = await axios.get("연결할 uri")
+                const res = await axios.get("uri")
                 SetReviewList(res.data)
             }
             liveReview();
             setLoading(false);
             subscription = stompClient.current.subscribe(
-                "연결할 uri",
+                "/sub/reviews",
                 function (fram) {
-                    
+                    SetReviewList([...reviewList, JSON.parse(fram.body)])
+                    console.log(fram.body)
                 }
             )
-        })
+        }, 
+        );
     },[])
 
     // stomp_client.connect({}, function() {

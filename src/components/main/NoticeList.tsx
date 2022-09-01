@@ -4,14 +4,20 @@ import Event from './Event';
 import styled from 'styled-components';
 import axios from 'axios';
 
+export interface INotice {
+    id: number;
+    contents: string;
+    date: string;
+  }
+
 const NoticeList = () => {
     const [loading, setLoading] = useState(false)
-    const [notice, setNotice] = useState([])
+    const [notice, setNotice] = useState<INotice[]>([])
 
     useEffect(() => {
         const fetchNotice = async () => {
             setLoading(true)
-            const res = await axios.get("http://localhost:3001/notice")
+            const res = await axios.get<INotice[]>("http://localhost:3001/notice")
             setNotice(res.data)
             setLoading(false)
         }
