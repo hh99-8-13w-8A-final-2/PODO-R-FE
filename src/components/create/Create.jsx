@@ -3,20 +3,81 @@ import axios from 'axios';
 import Select from 'react-select'
 import { useForm, Controller  } from "react-hook-form";
 import styled from 'styled-components';
-
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faImages } from '@fortawesome/free-regular-svg-icons';
+ 
 
 const Create = () => {
+    const [tagList, setTagList] =useState([]);
+    //const [imgList, setImgList] =useState([]);
+    const [showImages, setShowImages] = useState([]);
+
+
+    const handleAddImages = (event) => {
+        const imageLists = event.target.files;
+        let imageUrlLists = [...showImages];
+    
+        for (let i = 0; i < imageLists.length; i++) {
+          const currentImageUrl = URL.createObjectURL(imageLists[i]);
+          imageUrlLists.push(currentImageUrl);
+        }
+    
+        if (imageUrlLists.length > 4) {
+          imageUrlLists = imageUrlLists.slice(0, 4);
+        }
+    
+        setShowImages(imageUrlLists);
+        console.log(imageUrlLists)
+      };
+      const handleDeleteImage = (id) => {
+        setShowImages(showImages.filter((_, index) => index !== id));
+      };
+
+    /* const addImage = (e) =>{
+        const SelectImageList = e.target.files;
+        const ImgUrlList = [...imgList];
+        for(let i = 0 ; i < SelectImageList.length; i++){
+            const ImgUrl = URL.createObjectURLI(SelectImageList[i]);
+            ImgUrlList.push(ImgUrl);
+        }
+        if (ImgUrlList.length > 4) {
+            ImgUrlList = ImgUrlList.slice(0, 4);
+          }
+        setImgList(ImgUrlList)
+        console.log("a")
+    } */
+
+    const handelKeyDown = (e) =>{
+        if(e.keyCode !== 32) return
+        const value = e.target.value
+        if(!value.trim())return
+        setTagList([...tagList, value])
+        e.target.value = ''
+    }
+
+    const removeTag = (index)=>{
+        setTagList(tagList.filter((el, i) => i !== index))
+    }
     const onSubmit = async () => {
         const form = document.getElementById('myForm');
-        const formdata = new FormData(form)
+        const formdata = new FormData(form);
+        formdata.append('imgUrl','https://file2.nocutnews.co.kr/newsroom/image/2022/06/23/202206230913355962_0.jpg')
+        for (let value of formdata.values()) {
+            console.log(value);
+          }
+
+        //formdata.append('tag',tagList)
         
-       console.log([...formdata])
-       /* try {
-            const res = await axios.post("http://localhost:3001/reviews",formdata,{})
+       try {
+            const header ={
+                "Content-Type": `application/json`
+            }
+            const res = await axios.post("http://3.39.240.159/api/musicals/1/reviews",JSON.stringify(formdata),{headers:header})
             console.log(res)
         } catch (err) {
             console.log(err)
-        } */
+        }
     }
 
     const {register, handleSubmit, formState:{errors}, watch, control} = useForm();
@@ -32,7 +93,7 @@ const Create = () => {
         { value: '3F', label: '3F' }
       ]
     const sectionOptions = [
-        { value: '-1', label: '구역 없음' },
+        { value: null, label: '구역 없음' },
         { value: 'A', label: 'A' },
         { value: 'B', label: 'B' },
         { value: 'C', label: 'C' }
@@ -143,16 +204,42 @@ const Create = () => {
                 <h4>추가선택</h4>
                 <input type="checkbox" id='block' name='block' />
                 <label htmlFor="block">#시야방해있음</label>
-                <input type="checkbox" id='operaGrass' name='operaGrass' />
+                <input type="checkbox" id='operaGrass' name='operaGrass'/>
                 <label htmlFor="operaGrass">#오페라글라스필수</label>
             </StCheckbox>
             <div>
                 <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.'></textarea>
             </div>
+            <h4>사진 추가</h4>
+            {/* <div className='image'>
+                <label htmlFor="input-file" className='imageAdd'  onChange={handleAddImages}>
+                    <input type="file" id="input-file" name='imgUrls' multiple style={{display:'none'}}/>
+                    <span><FontAwesomeIcon icon={faImages}></FontAwesomeIcon></span>
+                </label>
+                {showImages.map((image, id) => (
+                    <div key={id} className='imageList' style={{background:`url(${image}) center center / cover no-repeat`}}>
+                    <span onClick={() => handleDeleteImage(id)}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
+                    </div>
+                ))}
+            </div> */}
             <div>
-                <input type="text" placeholder='태그를 입력하세요.'/>
+            <h4>태그 입력</h4>
+            <StTagDiv>
+                <input onKeyDown={handelKeyDown} type="text"  placeholder='스페이스바를 눌러 태그를 입력하세요.'/>
+            </StTagDiv>
+            <StTagDiv>
+            {tagList.map((tag, index) => (
+                    <div key={tag} className='tagObject'>
+                        <span key={tag}>{tag}</span>
+                        <span  onClick={()=>removeTag(index)}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
+                    </div>
+                ))}
+            </StTagDiv>
             </div>
-            <button>제출</button>
+            <div className='button'>
+                
+                <button onClick={onSubmit}>등록</button>
+            </div>
         </StForm>
     );
 };
@@ -174,6 +261,69 @@ margin: 0 auto;
     }
     input {
         font-size: 16px;
+    }
+    .file {
+        margin-top: 10px;
+        input{
+            width: 100%;
+        }
+    }
+    .image{
+        display: flex;
+    }
+    .imageAdd{
+        width: 100px;
+        height: 100px;
+        background-color: var(--gray-3);
+        border-radius: 8px;
+        span{
+            color: var(--gray-2);
+            display: block;
+            width: 100%;
+            text-align: center;
+            line-height: 100px;
+            font-size: 18px;            
+        }
+    }
+    .imageList{
+        width: 100px;
+        height: 100px;
+        background-color: var(--gray-3);
+        border-radius: 8px;
+        margin-left: 10px;
+        position: relative;
+        span:last-of-type{
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 12px;
+            color: var(--gray-2);
+            background-color: var(--black);
+            padding: 1px 4px;
+            border-radius: 10px;
+            transition: all .3s;
+            &:hover{
+                background-color: var(--gray-3);
+            }
+        }
+    }
+    .button{
+        text-align: center;
+        button{
+            padding: 10px 40px;
+            border-radius: 8px;
+            margin: 40px 10px 0 ;
+            color:var(--gray-2);
+            background-color: var(--black);
+            border: 1px solid var(--gray-2);
+            cursor: pointer;
+            transition: all .3s;
+            &:hover{
+                background-color: var(--maincolor-1);
+                color:var(--white);
+                border-color:var(--maincolor-1);
+            }
+        }
     }
 `
 
@@ -287,5 +437,47 @@ label {
         color: var(--white);
         background-color: var(--maincolor-1);
         border: 1px solid var(--maincolor-1);
+    }
+`
+
+const StTagDiv = styled.div`
+    margin-top: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap:2px;
+    .tagObject{
+        background-color: var(--black);
+        border: 1px solid var(--gray-2);
+        color: var(--gray-2);
+        display: inline-block;
+        padding: 8px 15px;
+        border-radius: 20px;
+        margin-left: 5px;
+        margin-top: 5px;
+        >span:first-of-type{
+         line-height: 20px;
+        }
+        >span:first-of-type::before{
+            content: '#';
+        }
+        >span:last-of-type{
+            color: var(--white);
+            margin-left: 8px;
+            background-color: var(--gray-3);
+            padding: .04em .4em;
+            border-radius:20px ;
+            font-size: 14px;
+            transition: all .3s;
+            cursor: pointer;
+            &:hover{
+                background-color:var(--gray-2);
+            }
+        }
+    }
+    input {
+        flex-grow: 1;
+        outline: none;
+        background-color: var(--gray-3);
     }
 `
