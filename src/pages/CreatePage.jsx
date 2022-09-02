@@ -5,6 +5,7 @@ import Footer from '../components/common/Footer';
 import HeaderBottom from '../components/common/HeaderBottom'
 import Create from '../components/create/Create';
 
+
 const CreatePage = () => {
     return (
         <>
