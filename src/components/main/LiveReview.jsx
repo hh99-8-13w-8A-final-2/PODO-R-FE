@@ -5,8 +5,10 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 
+
 const LiveReview = ({ loading, reviewList }) => {
     if (loading) { return <h2>Loading...</h2> }
+
 
     return (
         <Swiper
@@ -14,10 +16,9 @@ const LiveReview = ({ loading, reviewList }) => {
             slidesPerView={6}
             modules={[Pagination, Navigation, Autoplay]}
             loop={true}
-            autoplay={true}
         >
             <StFlowBox>
-                {reviewList.map(review => (
+                {reviewList?.data.map(review => (
                     <SwiperSlide key={review.reviewId}>
                         <StFlowInner>
                                 <StReviewBox>
@@ -46,13 +47,13 @@ const textLoop = keyframes`
       transform: translate3d(0, 0, 0);
     }
     100% {
-      -webkit-transform: translate3d(-1000%, 0, 0);
-      transform: translate3d(-1000%, 0, 0);
+      -webkit-transform: translate3d(-500%, 0, 0);
+      transform: translate3d(-500%, 0, 0);
     }
 `
 
 const StFlowInner = styled.div`
-    /* animation: ${textLoop} 10s linear infinite; */
+    animation: ${textLoop} 30s linear infinite;
 `
 
 const StReviewBox = styled.div`

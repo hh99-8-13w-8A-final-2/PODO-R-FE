@@ -1,43 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React  from 'react';
 import styled from 'styled-components';
 import LiveReview from './LiveReview';
-import webstomp from 'webstomp-client';
-import SockJS from 'sockjs-client';
 import axios from 'axios';
+import { useQuery } from "react-query"
+
+
+const fetchLiveReviews = () => {
+    return axios.get('http://3.39.240.159/api/reviews/live')
+  }
+
 
 const LiveReviewList = () => {
-    const [loading, setLoading] = useState(false);
-    const [reviewList, SetReviewList] = useState([])
-    let stompClient = useRef(null)
-
-    useEffect(() => {
-        let sockJs = new SockJS("http://3.39.240.159/live")
-        let subscription;
-        stompClient.current = webstomp.over(sockJs)
-        stompClient.current.connect({}, function() {
-            setLoading(true);
-            const liveReview = async() => {
-                const res = await axios.get("http://3.39.240.159/api/reviews/live")
-                SetReviewList(res.data)
-                console.log(res.data)
-            }
-            liveReview();
-            setLoading(false);
-            subscription = stompClient.current.subscribe(
-                "/sub/reviews",
-                function (fram) {
-                    SetReviewList(reviewList => [...reviewList, JSON.parse(fram.body)].slice(1))
-                    console.log(fram.body)
-                }
-            )
-        }, 
-        );
-    },[])
+    const { isLoading, data } = useQuery(
+        '/', 
+        fetchLiveReviews,
+        {
+          refetchInterval: 60000,
+        }
+    )
 
     return (
         <StReviewBox>
             <StH3>LivePodo</StH3>
-            <LiveReview loading={loading} reviewList={reviewList}/>
+            <LiveReview loading={isLoading} reviewList={data}/>
         </StReviewBox>
     );
 };

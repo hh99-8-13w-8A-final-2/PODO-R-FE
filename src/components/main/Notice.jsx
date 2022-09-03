@@ -1,20 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { INotice } from './NoticeList';
 
-interface INoticeWithBool {
-    loading: boolean
-    notice: INotice[]
-}
 
-const Notice = ({loading, notice}:INoticeWithBool) => {
-    if(loading) {
+const Notice = ({isloading, isError, error, data, setPageNumber}) => {
+    if(isloading) {
         return <h2>Loading ...</h2>
     }
+    if (isError) {
+        return <h2>{error.message}</h2>
+      }
 
     return (
         <ul>
-            {notice.map(notice => (
+            {data?.data.map(notice => (
                 <StLi key={notice.id}><StCont>{notice.contents}</StCont><StDate>{notice.date}</StDate></StLi>
             ))}
         </ul>
