@@ -5,9 +5,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Tag = () => {
-    const [tagList, setTagList] =useState([]);
-
+const Tag = ({setTagList, tagList}) => {
     const handelKeyDown = (e) =>{
         if(e.keyCode !== 32) return
         const value = e.target.value
@@ -15,36 +13,35 @@ const Tag = () => {
         setTagList([...tagList, value])
         e.target.value = ''
     }
-
     const removeTag = (index)=>{
         setTagList(tagList.filter((el, i) => i !== index))
     }
-
     return (
-        <StTagDiv>
-            {/* <div className='tagObject'>
-                <span>hello</span>
-                <span><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
-            </div> */}
+        <div>
+            <h4>태그 입력</h4>
+            <StTagDiv>
+                <input onKeyDown={handelKeyDown} type="text"  placeholder='스페이스바를 눌러 태그를 입력하세요.'/>
+            </StTagDiv>
+            <StTagDiv>
             {tagList.map((tag, index) => (
-                <div className='tagObject'>
-                    <span key={index}>{tag}</span>
-                    <span onClick={()=>removeTag(index)}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
-                </div>
-            ))}
-            <input onKeyDown={handelKeyDown} type="text" name='tag' placeholder='스페이스바를 눌러 태그를 입력하세요.'/>
-        </StTagDiv>
-    );
+                    <div key={tag} className='tagObject'>
+                        <span key={tag}>{tag}</span>
+                        <span  onClick={()=>removeTag(index)}><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></span>
+                    </div>
+                ))}
+            </StTagDiv>
+        </div>
+    )       
 };
 
 export default Tag;
 
 const StTagDiv = styled.div`
-    margin-top: 20px;
-    background-color: var(--gray-3);
+    margin-top: 10px;
     border-radius: 8px;
     display: flex;
     flex-wrap: wrap;
+    gap:2px;
     
     .tagObject{
         background-color: var(--black);
@@ -54,8 +51,10 @@ const StTagDiv = styled.div`
         padding: 8px 15px;
         border-radius: 20px;
         margin-left: 5px;
+        margin-top: 5px;
         >span:first-of-type{
          line-height: 20px;
+         cursor: pointer;
         }
         >span:first-of-type::before{
             content: '#';
@@ -77,5 +76,6 @@ const StTagDiv = styled.div`
     input {
         flex-grow: 1;
         outline: none;
+        background-color: var(--gray-3);
     }
 `
