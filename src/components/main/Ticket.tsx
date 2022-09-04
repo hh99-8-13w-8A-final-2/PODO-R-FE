@@ -1,7 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Iword } from './TicketOpenList';
 
-const Ticket = ({loading, tickets }) => {
+interface Iprops {
+    loading: boolean
+    tickets: Iword[];
+}
+
+
+const Ticket = ({loading, tickets } :Iprops) => {
     if(loading) { return <h2>Loading...</h2> }
 
     return (
@@ -21,7 +28,7 @@ const StWrapDiv = styled.div`
     flex-wrap: wrap;
 `
 
-const StDiv = styled.div`
+const StDiv = styled.div< {imgUrl : string} >`
     width: 200px;
     height: 300px;
     background:linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};

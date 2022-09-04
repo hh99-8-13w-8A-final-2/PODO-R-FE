@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+// <<<<<<< HEAD
 const Modal = ({ onClose, children }) => {
   return (
     <Background>
@@ -10,10 +11,12 @@ const Modal = ({ onClose, children }) => {
       </Content>
     </Background>
   );
+  // =======
+
+  // >>>>>>> upstream/dev
 };
 
 export default Modal;
-
 
 const Background = styled.div`
   height: 100%;
@@ -26,7 +29,7 @@ const Background = styled.div`
   top: 0;
   text-align: center;
   background: rgba(0, 0, 0, 0.9);
-  /* z-Index: auto; */
+  z-Index: 1000;
 `;
 
 const Content = styled.div`
@@ -35,6 +38,12 @@ const Content = styled.div`
   position: relative;
   /* overflow: scroll; */
   background: pink;
-
-  /* z-Index: 1001; */
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  z-index: auto;
 `;
+
+
