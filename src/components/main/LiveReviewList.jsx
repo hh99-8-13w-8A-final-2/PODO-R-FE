@@ -11,18 +11,19 @@ const fetchLiveReviews = () => {
 
 
 const LiveReviewList = () => {
-    const { isLoading, data } = useQuery(
-        '/', 
+    const { status, data, error } = useQuery(
+        '/LiveReviewList', 
         fetchLiveReviews,
         {
           refetchInterval: 60000,
         }
     )
+    console.log(data)
 
     return (
         <StReviewBox>
             <StH3>LivePodo</StH3>
-            <LiveReview loading={isLoading} reviewList={data}/>
+            <LiveReview status={status} reviewList={data} error={error}/>
         </StReviewBox>
     );
 };

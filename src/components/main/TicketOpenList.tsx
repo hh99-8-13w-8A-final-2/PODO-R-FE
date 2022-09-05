@@ -21,7 +21,7 @@ const TicketOpenList = () => {
     useEffect(() => {
         const fetchTicket = async () => {
             setLoading(true)
-            const res = await axios.get<Iword[]>("http://localhost:3001/open")
+            const res = await axios.get<Iword[]>("http://3.39.240.159/api/musicals/open")
             setTickets(res.data)
             setLoading(false)
         }
