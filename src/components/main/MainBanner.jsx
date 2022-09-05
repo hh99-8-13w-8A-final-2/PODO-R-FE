@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import bnr from '../../assets/img/bnr.png'
 // Import Swiper React components
@@ -11,19 +11,27 @@ import "swiper/css/pagination";
 
 // import required modules
 import SwiperCore, { Pagination, Navigation, Autoplay  } from "swiper";
-SwiperCore.use([Navigation, Pagination, Autoplay])	
+SwiperCore.use([Navigation, Pagination, Autoplay])
+
 
 const MainBanner = () => {
+    const swiperRef = useRef(null)
+
     return (
-        <>
+        <div
+        onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
+        onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
+        >
            <Swiper
-              className="banner"
-              spaceBetween={50}
-              slidesPerView={1}
-              navigation
-              pagination={{ clickable: true }}
-              autoplay={{ delay: 3000 }}
-            /* className="mySwiper" */
+                ref={swiperRef}
+                slidesPerView={1}
+                navigation
+                modules={[Navigation, Pagination, Autoplay]}
+                pagination={{ clickable: true }}
+                autoplay={{
+                delay: 12000, 
+                }}
+                loop={true}
         >
             <SwiperSlide>
                 <StMainBanner bnr={bnr}>
@@ -42,14 +50,11 @@ const MainBanner = () => {
                 </StMainBanner>
             </SwiperSlide>
         </Swiper>
-        
-        
-        
-        </>
+        </div>
     );
 };
 
-const StMainBanner = styled.div< {bnr : string} >`
+const StMainBanner = styled.div`
     height: 300px;
     width: 1400px;
     background-image: ${props => `url(${props.bnr})`};

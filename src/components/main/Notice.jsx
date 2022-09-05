@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 
-const Notice = ({isloading, isError, error, data, setPageNumber}) => {
+const Notice = ({isloading, isError, error, data }) => {
     if(isloading) {
         return <h2>Loading ...</h2>
     }
@@ -25,6 +25,7 @@ const StLi = styled.li`
     display: flex;
     justify-content: space-between;
     width: 690px;
+    cursor: pointer;
 `
 
 const StCont = styled.span`

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Iword } from './TicketOpenList';
+import { Link } from 'react-router-dom'
 
 interface Iprops {
     loading: boolean
@@ -10,22 +11,29 @@ interface Iprops {
 
 const Ticket = ({loading, tickets } :Iprops) => {
     if(loading) { return <h2>Loading...</h2> }
-
+    console.log(tickets)
     return (
         <StWrapDiv>
             {tickets.map(ticket => (
-                <StDiv imgUrl={ticket.musicalPoster} key={ticket.musicalId}>
-                    <StH4>{ticket.musicalName}</StH4>
-                    <StDiv1>{ticket.musicalTheater}</StDiv1>
-                    <StDiv2>{ticket.openDate} + {ticket.closeDate}</StDiv2>
-                </StDiv>
+                <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
+                    <StDiv imgUrl={ticket.musicalPoster}>
+                        <StH4>{ticket.musicalName}</StH4>
+                        <StDiv1>{ticket.musicalTheater}</StDiv1>
+                        <StDiv2>{ticket.openDate} ~ {ticket.closeDate}</StDiv2>
+                    </StDiv>
+                </Link>
             ))}
         </StWrapDiv>
     );
 };
+
 const StWrapDiv = styled.div`
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    a {
+        text-decoration: none;
+    }
 `
 
 const StDiv = styled.div< {imgUrl : string} >`
@@ -40,6 +48,7 @@ const StDiv = styled.div< {imgUrl : string} >`
     position: relative;
     padding: 10px;
     line-height: 20px;
+    cursor: pointer;
 `
 const StH4 = styled.h4`
     font-size: 20px;
