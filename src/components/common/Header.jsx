@@ -4,17 +4,15 @@ import styled from "styled-components";
 import logo from "../../assets/img/logo.svg";
 import { useNavigate } from "react-router-dom";
 import user from "../../assets/img/user.svg";
-import Modal from "../../assets/modal/Modal";
-import ModalPortal from "../../assets/modal/Portal";
+import KaKaoLogOut from "../kakao/KaKaoLogOut";
+import KakaoLogin from "../kakao/KakaoLogIn";
+
+
 
 const Header = () => {
   const navigate = useNavigate();
-  const [signupModalOn, setSignupModalOn] = useState(false);
   const onClickHandler = () => {
     navigate("/");
-  };
-  const handleModal = () => {
-    setSignupModalOn(!signupModalOn);
   };
 
   return (
@@ -23,15 +21,8 @@ const Header = () => {
         <StHeaderCont>
           <div>돌아가기 버튼</div>
           <img src={logo} alt="" onClick={onClickHandler} />
-          {/* <div>로그인 아이콘</div> */}
-          <button onClick={handleModal}>로그인 버튼</button>
-          <ModalPortal>
-            {signupModalOn && (
-              <Modal onClose={handleModal}>
-                {/* <OAuth /> */}
-              </Modal>
-            )}
-          </ModalPortal>
+          <KakaoLogin/>
+          {/* <LogOut/> */}
         </StHeaderCont>
       </Layout>
     </StHeader>

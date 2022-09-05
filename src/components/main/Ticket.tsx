@@ -45,9 +45,17 @@ const StH4 = styled.h4`
     font-size: 20px;
     color: var(--white);
     width: 180px;
+    line-height: 1.2;
+    height: 2.4em;
+    display: inline-block;
+    white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    text-align: left;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 `
 
 const StDiv1 = styled.div`
