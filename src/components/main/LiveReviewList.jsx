@@ -9,15 +9,18 @@ const fetchLiveReviews = () => {
     return axios.get('http://3.39.240.159/api/reviews/live')
   }
 
-
 const LiveReviewList = () => {
+
     const { status, data, error } = useQuery(
         '/LiveReviewList', 
         fetchLiveReviews,
         {
+          // 1분마다 서버에서 새로운 데이터를 refetch 해온다.
           refetchInterval: 60000,
+          refetchOnWindowFocus: false
         }
     )
+
     console.log(data)
 
     return (

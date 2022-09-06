@@ -8,6 +8,8 @@ import gap from '../../assets/img/gap.svg'
 import view from '../../assets/img/view.svg'
 import sound from '../../assets/img/sound.svg'
 import light from '../../assets/img/light.svg'
+import perfect from '../../assets/img/icon_perfect.svg'
+import notgood from '../../assets/img/icon_notgood.svg'
 
 
 const LiveReview = ({ status, reviewList, error }) => {
@@ -18,6 +20,7 @@ const LiveReview = ({ status, reviewList, error }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
+    // LiveReview에 hover 했을 때 boolean 값 설정
     const handleMouseEnter = (idx) => {
         const newArr = Array(reviewList.data.length).fill(false)
         newArr[idx] = true;
@@ -48,19 +51,27 @@ const LiveReview = ({ status, reviewList, error }) => {
                             onMouseLeave={() => setIshover(false)}
                             >
                                 {ishover[index] ?
-                                <>
-                                    <div><img src={gap} alt="단차"/></div>
-                                    <div><img src={view} alt="시야"/></div> 
-                                    <div><img src={sound} alt="음향"/></div>
-                                    <div><img src={light} alt="조명"/></div>
-                                </>  
+                                <StHoverDiv>
+                                    {review.reviewScore === 10 && <StPerfectDiv><img src={perfect} alt="단차"/>모든것이완벽</StPerfectDiv>}
+                                    {review.evaluation.gap === 3 && review.reviewScore < 10 ? <div><img src={gap} alt="단차"/>단차좋음</div> : null}
+                                    {review.evaluation.sight === 3 && review.reviewScore < 10 ? <div><img src={view} alt="시야"/>시야좋음</div> : null}
+                                    {review.evaluation.sound === 3 && review.reviewScore < 10 ? <div><img src={sound} alt="음향"/>음향좋음</div> : null}
+                                    {review.evaluation.light === 3 && review.reviewScore < 10 ? <div><img src={light} alt="조명"/>조명좋음</div> : null}
+                                    {
+                                    review.evaluation.gap < 3 && 
+                                    review.evaluation.sight < 3 &&
+                                    review.evaluation.sound < 3 &&
+                                    review.evaluation.light < 3 &&
+                                        <StNotGoodDiv><img src={notgood} alt="단차"/>정말별루닷</StNotGoodDiv>
+                                    }
+                                </StHoverDiv>  
                             :
                                 <>
                                     <StH3>{review.musicalName}</StH3>
                                     <StP>{review.reviewContent}</StP>
+                                    <StDiv>{review.reviewScore}</StDiv>
                                 </>
                             }
-                            <StDiv>{review.reviewScore}</StDiv>
                         </StReviewBox>
                     </SwiperSlide>
                 ))}
@@ -128,6 +139,43 @@ const StDiv = styled.div`
     font-size: 40px;
     left: 50%;
     transform: translateX(-50%);
+`
+
+const StHoverDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    div {
+        width: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+`
+
+const StPerfectDiv = styled.div`
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    img {
+        margin-bottom: 10px;
+    }
+`
+
+const StNotGoodDiv = styled.div`
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    img {
+        margin-bottom: 10px;
+    }
 `
 
 export default LiveReview;

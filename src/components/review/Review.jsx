@@ -1,34 +1,51 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
 import { Fragment } from 'react';
+import { useLocation } from 'react-router-dom';
 
-const fetchReviews = async (pageParam) => {
-    const res = await axios.get(`http://3.39.240.159/api/musicals/1/reviews?size=24&page=${pageParam}`);
-    const data = res.data.content
-    console.log(data)
+const fetchReviews = async (pageParam, musicalId) => {
+    const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=24&page=${pageParam}`);
+    const data = res.data.content;
+    // 서버에서 가져올 데이터 페이지의 전체 길이
+    const pageData = res.data.totalPages;
     return {
         data,
         nextPage: pageParam + 1,
+        pageData
     }
 }
 
-
 const Review = () => {
+    // 현재 페이지 url에서 musicalId값을 받아온다. 
+    let location = useLocation();
+    let musicalId = location.pathname.split('/').splice(3,1).toString()
 
-    const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
-            ["reviews"],
-            async ({ pageParam = 1 }) => {
-                return await fetchReviews(pageParam);
+            ["reviews",musicalId],
+            ({ pageParam = 1 }) => {
+                return fetchReviews(pageParam, musicalId);
             },
             {
-                getNextPageParam: (lastPage) => {
-                    return lastPage.nextPage
+                refetchOnWindowFocus: false,
+                // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
+                getNextPageParam: (_lastPage, pages) => {
+                    if (pages.length < pages[0].pageData) {
+                        return pages.length + 1
+                    } else {
+                        return undefined
+                    }
                 }
             }
         )
+
+        console.log(data)
+        
+    
+    if (status === 'loading') { return <h2>Loading...</h2> }
+    if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
 
     return (
@@ -45,7 +62,7 @@ const Review = () => {
                                     </div>
                                     <div className='bottom'>
                                         <ul>
-                                            <li>VIP석</li>
+                                            <li>{data.grade}석</li>
                                             <li>{data.floor} {data.section}</li>
                                             <li>{data.row}열 {data.seat}</li>
                                         </ul>

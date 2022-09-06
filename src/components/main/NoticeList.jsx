@@ -8,16 +8,19 @@ import pageRigth from '../../assets/img/pageRight.svg'
 import pageLeft from '../../assets/img/pageLeft.svg'
 
 const fetchNotice = pageNumber => {
-    return axios.get(`http://localhost:3001/notice?_limit=3&_page=${pageNumber}`)
+    return axios.get(`http://3.39.240.159/api/notices?size=4&page=${pageNumber}`)
 }
 
 const NoticeList = () => {
     const [pageNumber, setPageNumber] = useState(1)
     const { isLoading, isError, error, data } = useQuery(
+        // Array Keys with variables
+        // 각각의 pageNumber마다 다른 데이터를 가져와야 함
         ['notice', pageNumber],
         () => fetchNotice(pageNumber),
         {
-            keepPreviousData: true
+            keepPreviousData: true,
+            refetchOnWindowFocus: false
         }
     )
 
@@ -34,10 +37,10 @@ const NoticeList = () => {
                             pageLeft={pageLeft}
                         ><span>Prev Page</span>
                         </StButtonLeft>
-                        <StNumDiv>{pageNumber}/3</StNumDiv>
+                        <StNumDiv>{pageNumber}/{data?.data.totalPages}</StNumDiv>
                         <StButtonRight
                             onClick={() => setPageNumber(page => page + 1)}
-                            disabled={pageNumber === 3}
+                            disabled={pageNumber === data?.data.totalPages}
                             pageRigth={pageRigth}
                         ><span>Next Page</span>
                         </StButtonRight>
