@@ -5,11 +5,18 @@ import axios from 'axios'
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 
+<<<<<<< Updated upstream
 const fetchReviews = async (pageParam, musicalId) => {
     const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=24&page=${pageParam}`);
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
+=======
+const fetchReviews = async (pageParam) => {
+    const res = await axios.get(`http://3.39.240.159/api/musicals/1/reviews?size=24&page=${pageParam}`);
+    const data = res.data.content
+    //console.log(data)
+>>>>>>> Stashed changes
     return {
         data,
         nextPage: pageParam + 1,
@@ -93,6 +100,7 @@ export default Review;
 const StWrap = styled.div`
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between
 `
 
 
@@ -123,7 +131,7 @@ width: 200px;
                 border-bottom: none;
                 height: 110px;
                 border-radius: 10px 10px 0 0;
-                background-color: var(--gray-3);
+                
             }
         }
     }
