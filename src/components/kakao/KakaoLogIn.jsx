@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
   const isLogin = useSelector((state) => state.user.isLogin);
+  console.log(isLogin)
 
   const handleModal = () => {
     setSignupModalOn(!signupModalOn);

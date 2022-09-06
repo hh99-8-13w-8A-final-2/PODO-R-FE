@@ -29,7 +29,7 @@ const Kakao = () => {
       const encodeBody = accessToken.split(".")[1];
       const decodeBody = Buffer.from(encodeBody, "base64").toString("utf8");
       const jsonBody = JSON.parse(decodeBody);
-      // console.log(jsonBody);
+      console.log(jsonBody);
       localStorage.setItem("id", jsonBody.sub);
       localStorage.setItem("nickname", jsonBody.aud);
       
