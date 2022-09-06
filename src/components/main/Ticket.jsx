@@ -1,20 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Iword } from './TicketOpenList';
 import { Link } from 'react-router-dom'
 
-interface Iprops {
-    loading: boolean
-    tickets: Iword[];
-}
 
 
-const Ticket = ({loading, tickets } :Iprops) => {
-    if(loading) { return <h2>Loading...</h2> }
-    console.log(tickets)
+const Ticket = ({status, data, error }) => {
+
+    if (status === 'loading') { return <h2>Loading...</h2> }
+    if (status === 'error') { return <h2>Error: {error.message}</h2> }
+
     return (
         <StWrapDiv>
-            {tickets.map(ticket => (
+            {data?.data.map(ticket => (
                 <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
                     <StDiv imgUrl={ticket.musicalPoster}>
                         <StH4>{ticket.musicalName}</StH4>
@@ -36,7 +33,7 @@ const StWrapDiv = styled.div`
     }
 `
 
-const StDiv = styled.div< {imgUrl : string} >`
+const StDiv = styled.div`
     width: 200px;
     height: 300px;
     background:linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};

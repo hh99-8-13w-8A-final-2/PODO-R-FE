@@ -29,7 +29,7 @@ const StDiv = styled.div`
     }
 `
 
-const StEventBanner = styled.div<{event :string}>`
+const StEventBanner = styled.div`
     width: 670px;
     height: 100px;
     background: ${props => `url(${props.event})`};
