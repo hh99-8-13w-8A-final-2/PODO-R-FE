@@ -17,6 +17,7 @@ const OAuth = () => {
   const TWIT_AUTH_URL = `https://twitter.com/oauth/request_token?client_id=${TWIT_CLIENT_ID}&${CONSUMER_SECRET}&redirect_uri=${TWIT_REDIRECT_URI}&response_type=code`;
   const URL = `https://api.twitter.com/oauth/request_token?oauth_callback=http://127.0.0.1:3000/oauth/twitter`;
 
+  console.log(KAKAO_AUTH_URL)
   return (
     <div>
       <StKakao>

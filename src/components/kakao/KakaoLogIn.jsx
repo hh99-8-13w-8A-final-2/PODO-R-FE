@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
 import OAuth from "./Oauth";
+import { useSelector } from "react-redux";
 
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
+  const isLogin = useSelector((state) => state.user.isLogin);
 
   const handleModal = () => {
     setSignupModalOn(!signupModalOn);
@@ -14,7 +16,14 @@ const KakaoLogin = () => {
 
   return (
     <StContentbox>
-      <button onClick={handleModal}>로그인</button>
+      {isLogin ? (
+        <div></div>
+      ) : (
+        <div>
+          <button onClick={handleModal}>로그인</button>
+        </div>
+      )}
+
       <ModalPortal>
         {signupModalOn && (
           <Modal onClose={handleModal}>
@@ -30,7 +39,7 @@ export default KakaoLogin;
 
 const StContentbox = styled.div`
   display: flex;
-  width: 100px;
+  width: 63px;
   button {
     padding: 10px;
     border-radius: 8px;

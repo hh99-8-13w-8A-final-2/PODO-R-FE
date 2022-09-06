@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import user from "../../assets/img/user.svg";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import KakaoLogin from "../kakao/KakaoLogIn";
+import { useSelector } from "react-redux";
 
 
 
@@ -15,14 +16,21 @@ const Header = () => {
     navigate("/");
   };
 
+  const isLogin = useSelector((state) => state.user.isLogin)
+
   return (
     <StHeader>
       <Layout>
         <StHeaderCont>
           <div>돌아가기 버튼</div>
           <img src={logo} alt="" onClick={onClickHandler} />
-          <KakaoLogin/>
-          {/* <LogOut/> */}
+          {isLogin ? (<KaKaoLogOut/>) : (<KakaoLogin/>)}
+
+
+
+
+          {/* <KakaoLogin/>
+          <KaKaoLogOut/> */}
         </StHeaderCont>
       </Layout>
     </StHeader>
