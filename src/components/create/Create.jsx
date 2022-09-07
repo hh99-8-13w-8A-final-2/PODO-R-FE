@@ -8,11 +8,13 @@ import SelectSeat from './SelectSeat';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
 import customAxios from '../../shared/customAxios'
-
+import { useLocation } from "react-router-dom";
 const Create = () => {
+    let location = useLocation();
+    let musicalId = location.pathname.split('/').splice(3,1).toString()
+
     const [tagList, setTagList] =useState([]);
     const [imgUrls, setImgUrls] = useState([]);
-
 
     const onSubmit = async () => {
         //이미지 업로드 
@@ -24,7 +26,7 @@ const Create = () => {
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags',tagList)
-       
+        
        try {
             const jsonType ={"Content-Type": "application/json"}
             const multipartType ={"Content-Type": "multipart/form-data"}
@@ -38,16 +40,14 @@ const Create = () => {
             obj.imgUrls = res1.data.imageUrl
 
             const json = JSON.stringify(obj)
-            
-            const res2 = await axios.post('http://3.39.240.159/api/musicals/1/reviews',json, {headers:jsonType});
-            //const res2 = await customAxios.post('api/musicals/1/reviews', json);
-            console.log(res2)
+            console.log(json)
+            const res2 = await axios.post(`http://3.39.240.159/api/musicals/${musicalId}/reviews`,json, {headers:jsonType});
         } catch (err) {
             console.log(err)
         }
     }
 
-    const {handleSubmit,  watch} = useForm();
+    const {handleSubmit, formState:{errors}, watch} = useForm();
     
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
@@ -61,7 +61,7 @@ const Create = () => {
             <ImageAdd setImgUrls={setImgUrls} imgUrls={imgUrls}/>
             <Tag setTagList={setTagList} tagList={tagList}/>
             <div className='button'>
-                <button >등록</button>
+                <button type='submit' >등록</button>
             </div>
         </StForm>
     );
