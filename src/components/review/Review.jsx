@@ -78,16 +78,18 @@ const Review = ({handleModal}) => {
                                     >
                                     <div className='top'>
                                         {ishover[index] ? 
-                                        <StThumbHover>
+                                        <StThumbHover className='front'>
+                                            <div>
                                                 <div><img src={view} alt="시야"/>시야좋음</div>
                                                 <div><img src={gap} alt="단차"/>단차좋음</div>
                                                 <div><img src={sound} alt="음향"/>음향좋음</div>
                                                 <div><img src={light} alt="조명"/>조명좋음</div>
+                                            </div>
                                         </StThumbHover> 
                                         : 
-                                        <StThumb imgUrl={data.imgUrl} alt="극장 이미지"></StThumb>
+                                        <StThumb className='front' imgUrl={data.imgUrl} alt="극장 이미지"></StThumb>
                                         }
-                                        <div></div>
+                                        <div className='back'></div>
                                     </div>
                                     <div className='bottom'>
                                         <ul>
@@ -132,7 +134,7 @@ cursor: pointer;
 margin-bottom: 60px;
 width: 220px;
 color: var(--gray-2);
-:hover {
+&:hover {
     div {
         &:last-child {
             background-color: #bb63ff;
@@ -146,8 +148,7 @@ color: var(--gray-2);
     }
     .top{
         position: relative;
-        div{
-            &:first-of-type{
+        .front{
                 border: 2px solid var(--gray-2);
                 border-radius: 10px 10px 0 0;
                 border-bottom: none;
@@ -159,14 +160,13 @@ color: var(--gray-2);
                 right: 50%;
                 transform: translate(50%);
             }
-            &:last-of-type{
+        .back{
                 border: 2px solid var(--gray-2);
                 border-bottom: none;
                 height: 130px;
                 border-radius: 10px 10px 0 0;
                 
             }
-        }
     }
     .bottom{
         border: 2px solid var(--gray-2);
