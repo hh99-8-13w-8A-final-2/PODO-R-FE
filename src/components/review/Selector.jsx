@@ -3,7 +3,7 @@ import Select from 'react-select'
 import serach from '../../assets/img/serach.svg'
 import styled from 'styled-components';
 import Review from '../../components/review/Review';
-import { useNavigate, useSearchParams, createSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
 import gap from '../../assets/img/gap.svg'
 import view from '../../assets/img/view.svg'
 import sound from '../../assets/img/sound.svg'
@@ -13,6 +13,9 @@ import axios from 'axios';
 
 
 const Selector = () => {
+    let location = useLocation();
+    let musicalId = location.pathname.split('/').splice(3,1).toString()
+
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
@@ -23,12 +26,13 @@ const Selector = () => {
     const floorOptions =[]; //층 정보 
     const sectionOptions =[]; //층 정보 
     const rowOptions =[]; //row 정보 
-    const [selectFloor, setSelectFloor] = useState({value : '0'}); //선책한 층
-    const [selectSection, setSelectSection] = useState({value : '0'}); //선책한 섹션
+    const [selectFloor, setSelectFloor] = useState({value : '0'}); //선택한 층
+    const [selectSection, setSelectSection] = useState({value : '0'}); //선택한 섹션
+    const [selectRow, setSelectRow] = useState({value : '0'}); //선택한 섹션
     //const [sectionOptions, setSectionOptions] = useState([]); // 섹션 정보
 
     const getSeat = async() => {
-            const res = await axios.get('http://3.39.240.159/api/theaters/1/seats')
+            const res = await axios.get(`http://3.39.240.159/api/theaters/${musicalId}/seats`)
             const data = res.data // 전체 좌석정보
             const data1 = res.data[0].sections[0]
             const data2 = res.data[1].sections[0]
@@ -40,26 +44,38 @@ const Selector = () => {
     }; 
     useEffect(()=>{
         getSeat();
-        console.log('http://3.39.240.159/api/musicals/1/reviews',query)
+        //console.log('http://3.39.240.159/api/musicals/1/reviews',query)
      },[]);
 
     for (var floor in Data){
         const data1 = Data[floor]
+        //console.log(data1.floor)
         //floors.push(Object.values(data)[0])
         floorOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
     }
-console.log(selectSection)
-
-
+    console.log(Data1)
     if (selectFloor.value === "1F"){
         for (var secton in Data1.section){
             const data1 = Data1.section[secton]
             if(data1 === "0"){
-                sectionOptions.splice(0);
-                sectionOptions.push({"value" : 0 , "label":"좌석없음"})
+                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
             }else{
-                sectionOptions.splice(0);
                 sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            }
+            
+            if(selectSection.value === Data1.section){
+                for(var rows in Data1.rows){
+                    const data1 = Data1.rows[rows]
+                    if(data1 === "0"){
+                        rowOptions.push({"value" : "0" , "label":"열 없음"})
+                    }else{
+                        if(Object.values(data1).length === 1){
+                            rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+                        }else{
+                            rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                        }
+                    } 
+                }
             }
         }
     }else if(selectFloor.value === "2F"){
@@ -67,41 +83,55 @@ console.log(selectSection)
             const data1 = Data2.section[secton]
             if(data1 === "0"){
                 sectionOptions.splice(0);
-                sectionOptions.push({"value" : 0 , "label":"좌석없음"})   
+                sectionOptions.push({"value" : "0" , "label":"구역 없음"})   
             }else{
                 sectionOptions.splice(0);
                 sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            }
+            if(selectSection.value === Data2.section){
+                for(var rows in Data2.rows){
+                    const data1 = Data2.rows[rows]
+                    if(data1 === "0"){
+                        rowOptions.push({"value" : "0" , "label":"열 없음"})
+                    }else{
+                        if(Object.values(data1).length === 1){
+                            rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+                        }else{
+                            rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                        }
+                    } 
+                }
             }
         }
     }else if (selectFloor.value === "3F"){
         for (var secton in Data3.section){
             const data1 = Data3.section[secton]
-            if(data1 === "0"){
+            if(data1 === "0"){ 
                 sectionOptions.splice(0);
-                sectionOptions.push({"value" : 0 , "label":"좌석없음"})   
+                sectionOptions.push({"value" : "0" , "label":"구역 없음"})   
             }else{
                 sectionOptions.splice(0);
                 sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            }
+            if(selectSection.value === Data3.section){
+                for(var rows in Data3.rows){
+                    const data1 = Data3.rows[rows]
+                    if(data1 === "0"){
+                        rowOptions.push({"value" : "0" , "label":"열 없음"})
+                    }else{
+                        if(Object.values(data1).length === 1){
+                            rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+                        }else{
+                            rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                        }
+                    } 
+                }
             }
         }
     }else{}
 
     
-    for(let i = 0; i < selectSection.value ; i++){
-        if( `${i}` === selectSection.value){
-            for(var rows in Data1.rows){
-                const data1 = Data1.rows[rows]
-                if(data1 === "0"){
-                    rowOptions.splice(0);
-                    rowOptions.push({"value" : 0 , "label":"열 없음"})
-                }else{
-                    rowOptions.splice(0);
-                    rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
-                }   
-            }
-        }
-    }
-      
+
  
     const handleCheck  = (e) =>{
         const {name, checked} = e.target;
@@ -142,8 +172,8 @@ console.log(selectSection)
                     <StCheckbox>
                         <input type="checkbox" id='block' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
                         <label htmlFor="block">#시야방해있음</label>
-                        <input type="checkbox" id='operaGrass' name='operaGrass' defaultChecked={params.get("operaGrass"==="1")} onChange={handleCheck}/>
-                        <label htmlFor="operaGrass">#오페라글라스필수</label>
+                        <input type="checkbox" id='operaGlass' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
+                        <label htmlFor="operaGlass">#오페라글라스필수</label>
                     </StCheckbox>
                 </div>
             </StFilterTopDiv>
@@ -156,7 +186,7 @@ console.log(selectSection)
                     <Select placeholder='구역' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} options={sectionOptions} onChange={setSelectSection}/>
                     <Select placeholder='열' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} options={rowOptions} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} options={rowOptions} onChange={setSelectRow} />
                     <input type="number" id='seat' name='seat' placeholder='좌석번호'  />  
                 </div>
                 <div className='right'>
