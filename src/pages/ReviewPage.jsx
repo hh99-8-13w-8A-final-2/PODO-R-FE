@@ -8,6 +8,7 @@ import CreateBtn from '../components/common/CreateBtn'
 import ModalPortals from '../assets/modal/Portal'
 import Modal from '../assets/modal/Modal'
 
+
 const ReviewPage = () => {
     const [modalOn, setModalOn] = useState(false);
 
@@ -22,11 +23,8 @@ const ReviewPage = () => {
             <Layout>
                 <Selector handleModal={handleModal}/>
             </Layout>
-            <Footer />
-            <CreateBtn />
-            <ModalPortals>
-                {modalOn && <Modal onClose={handleModal} />}
-            </ModalPortals>
+            <Footer/>
+            <CreateBtn/>
         </>
     );
 };
