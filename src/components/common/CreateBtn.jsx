@@ -3,11 +3,13 @@ import pencil from '../../assets/img/pencil.svg'
 import up from '../../assets/img/up.svg'
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
+import { useLocation } from 'react-router-dom';
 
 const CreateBtn = () => {
+    let location = useLocation();
     const navigate = useNavigate();
     const onClickHandler =()=>{
-        navigate("/create")
+        navigate(`${location.pathname}/create`)
     }
     const goToTop =() =>{
         window.scrollTo({
