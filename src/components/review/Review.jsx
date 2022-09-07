@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
+import ModalPortals from "../../assets/modal/Portal";
+import Modal from "../../assets/modal/Modal";
 
 const fetchReviews = async (pageParam, musicalId) => {
     const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=24&page=${pageParam}`);
@@ -41,12 +43,10 @@ const Review = () => {
                 }
             }
         )
-
-        console.log(data)
-        
     
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
+
 
 
     return (
@@ -100,7 +100,7 @@ const StWrap = styled.div`
 
 const StReviewDiv = styled.div`
 padding: 10px;
-
+cursor: pointer;
 
 width: 200px;
     color: var(--gray-2);

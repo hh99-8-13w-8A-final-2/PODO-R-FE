@@ -6,7 +6,6 @@ import MainBanner from '../components/main/MainBanner';
 import TicketOpenList from '../components/main/TicketOpenList';
 import LiveReviewList from '../components/main/LiveReviewList';
 import NoticeList from '../components/main/NoticeList';
-import CreateBtn from '../components/common/CreateBtn';
 
 const MainPage = () => {
     return (
@@ -19,7 +18,6 @@ const MainPage = () => {
                 <NoticeList/>
             </Layout>
             <Footer/>
-            <CreateBtn/>
         </>
     );
 };

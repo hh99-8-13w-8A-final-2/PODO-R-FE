@@ -47,16 +47,21 @@ const Selector = () => {
         //console.log('http://3.39.240.159/api/musicals/1/reviews',query)
      },[]);
 
+     console.log(Data)
+     console.log(Data1)
+
     for (var floor in Data){
         const data1 = Data[floor]
+        console.log(data1)
         //console.log(data1.floor)
         //floors.push(Object.values(data)[0])
         floorOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
     }
     console.log(Data1)
     if (selectFloor.value === "1F"){
-        for (var secton in Data1.section){
-            const data1 = Data1.section[secton]
+        for (var section in Data1.section){
+            const data1 = Data1.section[section]
+            console.log(data1)
             if(data1 === "0"){
                 sectionOptions.push({"value" : "0" , "label":"구역 없음"})
             }else{
@@ -66,6 +71,7 @@ const Selector = () => {
             if(selectSection.value === Data1.section){
                 for(var rows in Data1.rows){
                     const data1 = Data1.rows[rows]
+                    console.log(data1)
                     if(data1 === "0"){
                         rowOptions.push({"value" : "0" , "label":"열 없음"})
                     }else{
@@ -79,8 +85,9 @@ const Selector = () => {
             }
         }
     }else if(selectFloor.value === "2F"){
-        for (var secton in Data2.section){
-            const data1 = Data2.section[secton]
+        for (var section in Data2.section){
+            const data1 = Data2.section[section]
+            console.log(data1)
             if(data1 === "0"){
                 sectionOptions.splice(0);
                 sectionOptions.push({"value" : "0" , "label":"구역 없음"})   
@@ -94,6 +101,7 @@ const Selector = () => {
                     if(data1 === "0"){
                         rowOptions.push({"value" : "0" , "label":"열 없음"})
                     }else{
+                        console.log(data1)
                         if(Object.values(data1).length === 1){
                             rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
                         }else{
@@ -104,8 +112,9 @@ const Selector = () => {
             }
         }
     }else if (selectFloor.value === "3F"){
-        for (var secton in Data3.section){
-            const data1 = Data3.section[secton]
+        for (var section in Data3.section){
+            const data1 = Data3.section[section]
+            console.log(data1)
             if(data1 === "0"){ 
                 sectionOptions.splice(0);
                 sectionOptions.push({"value" : "0" , "label":"구역 없음"})   

@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select'
 import { useForm, Controller  } from "react-hook-form";
 import styled from 'styled-components';
+
+
+
 const SelectSeat = () => {
     const {register, formState:{errors}, control} = useForm();
+
     const greadeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },

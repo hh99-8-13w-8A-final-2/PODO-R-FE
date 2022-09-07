@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-// <<<<<<< HEAD
 const Modal = ({ onClose, children }) => {
   return (
     <Background>
@@ -13,9 +12,6 @@ const Modal = ({ onClose, children }) => {
       </Content>
     </Background>
   );
-  // =======
-
-  // >>>>>>> upstream/dev
 };
 
 export default Modal;
