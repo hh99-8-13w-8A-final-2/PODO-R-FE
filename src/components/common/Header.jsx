@@ -1,16 +1,21 @@
-import React from 'react';
-import Layout from './Layout';
-import styled from 'styled-components';
-import logo from '../../assets/img/logo.svg'
+import React, { useState } from "react";
+import Layout from "./Layout";
+import styled from "styled-components";
+import logo from "../../assets/img/logo.svg";
 import { useNavigate } from "react-router-dom";
 import user from '../../assets/img/user.svg'
 import loginIcon from '../../assets/img/login.svg'
+import KakaoLogin from "../kakao/KakaoLogIn";
+import KaKaoLogOut from "../kakao/KaKaoLogOut";
+import { useSelector } from "react-redux";
 
 const Header = () => {
     const navigate = useNavigate();
+    const isLogin = useSelector((state) => state.user.isLogin);
     const onClickHandler = () => {
         navigate("/");
       };
+
     return (
         <StHeader>
             <Layout>
@@ -18,8 +23,7 @@ const Header = () => {
                     <div>돌아가기 버튼</div>
                     <img src={logo} alt="" onClick={onClickHandler}/>
                     <div>
-                        <StLoginIcon loginIcon={loginIcon}></StLoginIcon>
-                        <StLoginTxt>로그인</StLoginTxt>
+                        {isLogin ? (<KaKaoLogOut/>) : (<KakaoLogin/>)}
                     </div>
                 </StHeaderCont>
             </Layout>
@@ -28,8 +32,8 @@ const Header = () => {
 };
 
 const StHeader = styled.div`
-    width: 100%;
-`
+  width: 100%;
+`;
 
 const StHeaderCont = styled.div`
     display: flex;
