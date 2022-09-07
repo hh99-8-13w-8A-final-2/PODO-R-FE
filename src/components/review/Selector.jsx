@@ -12,7 +12,7 @@ import up_small from '../../assets/img/up_small.svg'
 import axios from 'axios';
 
 
-const Selector = () => {
+const Selector = ({handleModal}) => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(3,1).toString()
 
@@ -217,7 +217,7 @@ const Selector = () => {
                     </div>
                 </div>
             </StFilterDiv>
-            <Review/>
+            <Review handleModal={handleModal}/>
         </div>
     );
 };

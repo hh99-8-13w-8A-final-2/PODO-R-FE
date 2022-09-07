@@ -1,14 +1,18 @@
 import React from "react";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Modal = ({ onClose, children }) => {
   return (
     <Background>
       <Content>
-          {children}
-        <div className="button">
-          <button onClick={onClose}>닫기</button>
-        </div>
+        <StLoginBox>
+          <button onClick={onClose}>
+            <FontAwesomeIcon icon={faXmark} />
+          </button>
+        </StLoginBox>
+        {children}
       </Content>
     </Background>
   );
@@ -17,49 +21,43 @@ const Modal = ({ onClose, children }) => {
 export default Modal;
 
 const Background = styled.div`
-height: 100%;
-width: 100%;
-display: flex;
-align-items: center;
-justify-content: center;
-position: fixed;
-left: 0;
-top: 0;
-text-align: center;
-background: rgba(0, 0, 0, 0.9);
-z-Index: 1000;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
 `;
 
 const Content = styled.div`
-height: 500px;
-width: 500px;
-position: relative;
-border-radius: 15px;
-background-color: var(--white);
-display: flex;
-flex-direction: column;
-align-content: center;
-justify-content: center;
-align-items: center;
-z-index: 1001;
-  .button{
-    text-align: center;
-    button{
-      padding: 10px 40px;
-      border-radius: 8px;
-      margin: 60px 10px 0 ;
-      color:var(--gray-2);
-      background-color: var(--black);
-      border: 1px solid var(--gray-2);
-      cursor: pointer;
-      transition: all .3s;
-      &:hover{
-        background-color: var(--maincolor-1);
-        color:var(--white);
-        border-color:var(--maincolor-1);
-      }
+  position: relative;
+  border-radius: 15px;
+  background-color: var(--white);
+  padding: 20px;
+  box-sizing: border-box;
+  /* z-index: 1001; */
+`;
+
+const StLoginBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: flex-end;
+  button {
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1.5em;
+    color: var(--gray-2);
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: var(--gray-3);
     }
   }
 `;
-
-

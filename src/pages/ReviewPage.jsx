@@ -5,8 +5,8 @@ import Footer from '../components/common/Footer';
 import HeaderBottom from '../components/common/HeaderBottom'
 import Selector from '../components/review/Selector';
 import CreateBtn from '../components/common/CreateBtn'
-import ModalPortals from '../assets/modal/Portal'
-import Modal from '../assets/modal/Modal'
+import Portal from '../assets/modal/Portal'
+import Modal from '../assets/modal/Modal';
 
 const ReviewPage = () => {
     const [modalOn, setModalOn] = useState(false);
@@ -24,9 +24,9 @@ const ReviewPage = () => {
             </Layout>
             <Footer />
             <CreateBtn />
-            <ModalPortals>
+            <Portal>
                 {modalOn && <Modal onClose={handleModal} />}
-            </ModalPortals>
+            </Portal>
         </>
     );
 };
