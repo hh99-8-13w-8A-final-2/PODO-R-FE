@@ -12,39 +12,33 @@ import customAxios from '../../shared/customAxios'
 const Create = () => {
     const [tagList, setTagList] =useState([]);
     const [imgUrls, setImgUrls] = useState([]);
+
+
     const onSubmit = async () => {
         //이미지 업로드 
         const imgFormdata = new FormData();
         for(let i = 0; i < imgUrls.length; i++){
             imgFormdata.append('image',imgUrls[i])
         }
-        console.log(imgUrls)
         // 폼 데이터
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
-        formdata.append('tag',tagList)
-        /* for (let value of formdata.values()) {
-            console.log(value);
-          }
-         */
+        formdata.append('tags',tagList)
+       
        try {
-            const jsonType ={
-                "Content-Type": "application/json"
-            }
-            const multipartType ={
-                "Content-Type": "multipart/form-data"
-            }
+            const jsonType ={"Content-Type": "application/json"}
+            const multipartType ={"Content-Type": "multipart/form-data"}
             const res1 = await axios.post('http://3.39.240.159/api/image/upload',imgFormdata,{headers:multipartType});
             //이미지 
             
-            console.log(res1.data.imageUrl)
             const obj = {};
             formdata.forEach(function (value, key){
                 obj[key] = value;
             })
             obj.imgUrls = res1.data.imageUrl
+
             const json = JSON.stringify(obj)
-            console.log(json)
+            
             const res2 = await axios.post('http://3.39.240.159/api/musicals/1/reviews',json, {headers:jsonType});
             //const res2 = await customAxios.post('api/musicals/1/reviews', json);
             console.log(res2)

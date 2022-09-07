@@ -13,7 +13,7 @@ const Router = () => {
             <Routes>
                 <Route path='/' element={<MainPage/>} />
                 <Route path='/create' element={<CreatePage/>} />
-                <Route path='/reviews' element={<ReviewPage/>} />
+                <Route path='/api/musicals/:musicalsId/reviews' element={<ReviewPage/>} />
                 <Route path='/*' element={<NotfindPage/>} />
                 <Route path='/api/mypage/:userId' element={<MyPage/>} />
                 <Route path='/oauth/kakao' element={<Kakao/>} />

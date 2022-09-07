@@ -1,34 +1,39 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Iword } from './TicketOpenList';
-
-interface Iprops {
-    loading: boolean
-    tickets: Iword[];
-}
+import { Link } from 'react-router-dom'
 
 
-const Ticket = ({loading, tickets } :Iprops) => {
-    if(loading) { return <h2>Loading...</h2> }
+
+const Ticket = ({status, data, error }) => {
+
+    if (status === 'loading') { return <h2>Loading...</h2> }
+    if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
     return (
         <StWrapDiv>
-            {tickets.map(ticket => (
-                <StDiv imgUrl={ticket.musicalPoster} key={ticket.musicalId}>
-                    <StH4>{ticket.musicalName}</StH4>
-                    <StDiv1>{ticket.musicalTheater}</StDiv1>
-                    <StDiv2>{ticket.openDate} + {ticket.closeDate}</StDiv2>
-                </StDiv>
+            {data?.data.map(ticket => (
+                <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
+                    <StDiv imgUrl={ticket.musicalPoster}>
+                        <StH4>{ticket.musicalName}</StH4>
+                        <StDiv1>{ticket.musicalTheater}</StDiv1>
+                        <StDiv2>{ticket.openDate} ~ {ticket.closeDate}</StDiv2>
+                    </StDiv>
+                </Link>
             ))}
         </StWrapDiv>
     );
 };
+
 const StWrapDiv = styled.div`
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    a {
+        text-decoration: none;
+    }
 `
 
-const StDiv = styled.div< {imgUrl : string} >`
+const StDiv = styled.div`
     width: 200px;
     height: 300px;
     background:linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
@@ -40,6 +45,7 @@ const StDiv = styled.div< {imgUrl : string} >`
     position: relative;
     padding: 10px;
     line-height: 20px;
+    cursor: pointer;
 `
 const StH4 = styled.h4`
     font-size: 20px;

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import event from '../../assets/img/event.png'
 
 const Event = () => {
     return (
@@ -8,7 +9,7 @@ const Event = () => {
                 <h3>이벤트</h3>
                 <div>더보기</div>
             </StDiv>
-            <StEventBanner></StEventBanner>
+            <StEventBanner event={event}></StEventBanner>
         </div>
     );
 };
@@ -31,7 +32,9 @@ const StDiv = styled.div`
 const StEventBanner = styled.div`
     width: 670px;
     height: 100px;
-    background-color: var(--gray-1);
+    background: ${props => `url(${props.event})`};
+    background-size: cover;
+    background-position: center;
 `
 
 export default Event;

@@ -21,11 +21,17 @@ const StHeaderBottom = styled.div`
 `
 
 const StHeaderBottomCont = styled.div`
+    display: flex;
+    align-items: center;
     color: var(--white);
     padding: 20px;
     span {
-        margin-left: 10px;
+        margin: 0 10px;
         font-size: 14px;
+    }
+    img{
+        width: 26px;
+        cursor: pointer;
     }
 `
 
