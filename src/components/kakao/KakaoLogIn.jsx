@@ -5,6 +5,7 @@ import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
 import OAuth from "./Oauth";
 import { useSelector } from "react-redux";
+import loginIcon from '../../assets/img/login.svg'
 
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
@@ -20,8 +21,9 @@ const KakaoLogin = () => {
       {isLogin ? (
         <div></div>
       ) : (
-        <div>
-          <button onClick={handleModal}>로그인</button>
+        <div onClick={handleModal}>
+          <StLoginIcon loginIcon={loginIcon}/>
+          <StLoginTxt>로그인</StLoginTxt>
         </div>
       )}
 
@@ -56,3 +58,14 @@ const StContentbox = styled.div`
     }
   }
 `;
+
+const StLoginIcon = styled.div`
+    width: 20px;
+    height: 16px;
+    align-items: center;
+    background: ${props => `url(${props.loginIcon})`} no-repeat;
+    cursor: pointer;
+`
+const StLoginTxt = styled.span`
+    cursor: pointer;
+`

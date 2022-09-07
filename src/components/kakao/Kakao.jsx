@@ -23,6 +23,7 @@ const Kakao = () => {
       const refreshtoken = response.data.refreshToken;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshtoken);
+      
       // console.log(accessToken);
       // console.log(refreshtoken);
 
@@ -30,9 +31,9 @@ const Kakao = () => {
       const decodeBody = Buffer.from(encodeBody, "base64").toString("utf8");
       const jsonBody = JSON.parse(decodeBody);
       console.log(jsonBody);
-      localStorage.setItem("id", jsonBody.sub);
-      localStorage.setItem("nickname", jsonBody.aud);
-      
+      // localStorage.setItem("id", jsonBody.sub);
+      // localStorage.setItem("nickname", jsonBody.iss);
+      // localStorage.setItem("image", jsonBody.aud);
       dispatch(login(response.data.data))
 
       navigate('/');
