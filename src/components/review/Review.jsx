@@ -207,4 +207,5 @@ const StMoreButton = styled.button`
 
 const StThumbHover = styled.div`
     background-color: #bb63ff;
+    display: flex;
 `
