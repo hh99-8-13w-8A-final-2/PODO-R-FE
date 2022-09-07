@@ -6,8 +6,8 @@ const CheckboxSelect = () => {
                 <h4>추가선택</h4>
                 <input type="checkbox" id='block' name='block' />
                 <label htmlFor="block">#시야방해있음</label>
-                <input type="checkbox" id='operaGrass' name='operaGrass'/>
-                <label htmlFor="operaGrass">#오페라글라스필수</label>
+                <input type="checkbox" id='operaGlass' name='operaGlass'/>
+                <label htmlFor="operaGlass">#오페라글라스필수</label>
         </StCheckbox>
     );
 };

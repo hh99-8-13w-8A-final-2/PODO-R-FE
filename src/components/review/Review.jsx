@@ -5,7 +5,6 @@ import axios from 'axios'
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 
-
 const fetchReviews = async (pageParam, musicalId) => {
     const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=24&page=${pageParam}`);
     const data = res.data.content;
