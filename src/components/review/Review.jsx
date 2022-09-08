@@ -17,6 +17,7 @@ const fetchReviews = async (pageParam, musicalId) => {
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
     const total = res.data.totalElements
+    console.log(res.data)
     return {
         data,
         nextPage: pageParam + 1,
@@ -25,11 +26,11 @@ const fetchReviews = async (pageParam, musicalId) => {
     }
 }
 
-const Review = ({handleModal}) => {
+const Review = ({ handleModal }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다. 
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(3, 1).toString()
-    const [ ishover, setIshover ] = useState(false)
+    const [hover, setHover] = useState('');
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
@@ -53,13 +54,7 @@ const Review = ({handleModal}) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-    const handleMouseEnter = (idx) => {
-        const newArr = Array(data?.pages[0].total).fill(false)
-        console.log(data?.pages.total)
-        newArr[idx] = true;
-        setIshover(newArr)
-    }
-
+    console.log(data)
 
 
 
@@ -69,25 +64,36 @@ const Review = ({handleModal}) => {
                 return (
                     <StWrap key={i}>
                         <Fragment>
-                            {group.data.map((data, index) => (
-                                <StReviewDiv 
-                                    key={data.reviewId} 
+                            {group.data.map((data) => (
+                                <StReviewDiv
+                                    key={data.reviewId}
                                     onClick={handleModal}
-                                    onMouseEnter={() => handleMouseEnter(index)}
-                                    onMouseLeave={() => setIshover(false)}
-                                    >
+                                    onMouseEnter={() => setHover(data.reviewId)}
+                                    onMouseLeave={() => setHover('')}
+                                >
                                     <div className='top'>
-                                        {ishover[index] ? 
-                                        <StThumbHover className='front'>
-                                            <div>
-                                                <div><img src={view} alt="시야"/>시야좋음</div>
-                                                <div><img src={gap} alt="단차"/>단차좋음</div>
-                                                <div><img src={sound} alt="음향"/>음향좋음</div>
-                                                <div><img src={light} alt="조명"/>조명좋음</div>
-                                            </div>
-                                        </StThumbHover> 
-                                        : 
-                                        <StThumb className='front' imgUrl={data.imgUrl} alt="극장 이미지"></StThumb>
+                                        {hover === data.reviewId ?
+                                            <StThumbHover className='front'>
+                                                <div>
+                                                    <StFlexBox>
+                                                        {data.reviewScore === 10 && <StFlexInnerBox><StPerfectDiv imgUrl={perfect}></StPerfectDiv><div>모든게완-벽한!</div></StFlexInnerBox>}
+                                                        {data.evaluation.sight === 3 && data.reviewScore < 10 ? <StFlexInnerBox><StViewDiv imgUrl={view}></StViewDiv><div>시야좋음</div></StFlexInnerBox> : null}
+                                                        {data.evaluation.gap === 3 && data.reviewScore < 10 ? <StFlexInnerBox><StGapDiv imgUrl={gap}></StGapDiv><div>단차좋음</div></StFlexInnerBox> : null}
+                                                        {data.evaluation.sound === 3 && data.reviewScore < 10 ? <StFlexInnerBox><StSoundDiv imgUrl={sound}></StSoundDiv><div>음향좋음</div></StFlexInnerBox> : null}
+                                                        {data.evaluation.light === 3 && data.reviewScore < 10 ? <StFlexInnerBox><StLightDiv imgUrl={light}></StLightDiv><div>조명좋음</div></StFlexInnerBox> : null}
+                                                        {
+                                                            data.evaluation.gap < 3 &&
+                                                            data.evaluation.sight < 3 &&
+                                                            data.evaluation.sound < 3 &&
+                                                            data.evaluation.light < 3 &&
+                                                            <StFlexInnerBox><StNotGoodDiv imgUrl={notgood}></StNotGoodDiv><div>가지마 좋은게 없어...</div></StFlexInnerBox>
+                                                        }
+                                                    </StFlexBox>
+                                                </div>
+                                                <StScoreDiv>{data.reviewScore}</StScoreDiv>
+                                            </StThumbHover>
+                                            :
+                                            <StThumb className='front' imgUrl={data.imgUrl} alt="극장 이미지"></StThumb>
                                         }
                                         <div className='back'></div>
                                     </div>
@@ -208,4 +214,69 @@ const StMoreButton = styled.button`
 const StThumbHover = styled.div`
     background-color: #bb63ff;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
+const StScoreDiv = styled.div`
+    font-size: 60px;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+`
+
+const StFlexBox = styled.div`
+    display: flex;
+`
+
+const StPerfectDiv = styled.div`
+    width: 36px;
+    height: 36px;
+    background:  ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    margin-bottom: 10px;
+`
+const StViewDiv = styled.div`
+    width: 25px;
+    height: 24px;
+    background:  ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    margin-bottom: 10px;
+
+`
+const StGapDiv = styled.div`
+    width: 25px;
+    height: 24px;
+    background:  ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    margin-bottom: 10px;
+`
+const StSoundDiv = styled.div`
+    width: 25px;
+    height: 24px;
+    background:  ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    margin-bottom: 10px;
+`
+const StLightDiv = styled.div`
+    width: 25px;
+    height: 24px;
+    background:  ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    margin-bottom: 10px;
+`
+const StNotGoodDiv = styled.div`
+    width: 36px;
+    height: 36px;
+    background:  ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    margin-bottom: 10px;
+    
+`
+const StFlexInnerBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    margin: 0px 5px 10px 5px;
 `
