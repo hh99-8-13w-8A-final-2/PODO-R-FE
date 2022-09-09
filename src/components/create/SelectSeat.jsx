@@ -56,7 +56,7 @@ const SelectSeat = () => {
         const data1 = Data[floor]
         floorOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
     }
-    if (watch("floor").value === "1F"){
+    if (watch("floor").value === "1층"){
         for (var section in Data1){
             const data1 = Data1[section]
             if(data1.section === "0"){
@@ -82,7 +82,7 @@ const SelectSeat = () => {
                 }
             }
         }
-    }else if (watch("floor").value === "2F"){
+    }else if (watch("floor").value === "2층"){
         for (var section in Data2){
             const data1 = Data2[section]
             if(data1.section === "0"){
@@ -108,7 +108,7 @@ const SelectSeat = () => {
                 }
             }
         }
-    }else if (watch("floor").value === "3F"){
+    }else if (watch("floor").value === "3층"){
         for (var section in Data3){
             const data1 = Data3[section]
             if(data1.section === "0"){
