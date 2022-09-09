@@ -55,7 +55,7 @@ const Review = ({handleModal}) => {
 
     const handleMouseEnter = (idx) => {
         const newArr = Array(data?.pages[0].total).fill(false)
-        console.log(data?.pages.total)
+        //console.log(data?.pages.total)
         newArr[idx] = true;
         setIshover(newArr)
     }
