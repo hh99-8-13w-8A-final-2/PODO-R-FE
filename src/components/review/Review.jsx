@@ -81,8 +81,8 @@ const Review = ({ handleModal }) => {
                                 <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId)}>
                                     <StThumbDiv imgUrl={data.imgUrl}>
                                         <StUtillDiv>
-                                            <Like/><span>200</span>
-                                            <Comment/><span>100</span>
+                                            <Like fill='#fff'/><span>200</span>
+                                            <Comment fill='#fff'/><span>100</span>
                                         </StUtillDiv>
                                     </StThumbDiv>
                                     <StInfoBox>

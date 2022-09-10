@@ -8,6 +8,8 @@ import { useQuery } from "react-query"
 import { useLocation } from 'react-router-dom';
 import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
+import { ReactComponent as Like } from '../../assets/img/like.svg'
+import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
     return axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`)
@@ -55,7 +57,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
             </StSideImgBox>
             <StInfoDiv>
                 <StDetailHeader>
-                    <StH3>{data.data.grade}석 {data.data.floor} {data.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
+                    <StH3>{data?.data.grade}석 {data?.data.floor} {data?.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
                     <div>
                         <button>
                             <FontAwesomeIcon icon={faEllipsis} />
@@ -109,6 +111,28 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                     <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
                 </StDetailHeaderBottom>
                 <ReviewDetailEval data={data}/>
+                <StP>
+                    {data?.data.reviewContent}
+                </StP>
+                <StTagDiv>
+                    {data?.data.tags.map((tag, index) => (
+                        <div key={index}>{tag}</div>
+                    ))}
+                </StTagDiv>
+                <StBottomCont>
+                        <StBottomLeftDiv>
+                            <StThumbDiv></StThumbDiv>
+                            <StDl>
+                                <dt>2022 푸에르자 부르타 웨이라 인 서울 머시기 머시기 머시기</dt>
+                                <dd>잠실 종합운동장FB씨어터</dd>
+                                <dd>22.08.30 ~ 22.11.13</dd>
+                            </StDl>
+                        </StBottomLeftDiv>
+                        <StBottomRightDiv>
+                            <div><Like fill='#000'/><span>200</span></div>
+                            <div><Comment fill='#000'/><span>100</span></div>
+                        </StBottomRightDiv>
+                </StBottomCont>
             </StInfoDiv>
         </StReviewDetailBox>
     );
@@ -125,6 +149,7 @@ const StSideImgBox = styled.div`
 
 const StInfoDiv = styled.div`
     padding: 30px;
+    position: relative;
 `
 
 const StDetailHeader = styled.div`
@@ -206,6 +231,74 @@ const StScore = styled.div`
     font-family: 'Inter', sans-serif;
     font-style: italic;
     font-size: 40px;
+`
+
+const StP = styled.p`
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: start;
+`
+const StTagDiv = styled.div`
+    display: flex;
+    div {
+        border: 1px solid var(--gray-1);
+        padding: 6px 16px; 
+        border-radius: 20px;
+    }
+`
+
+const StBottomCont = styled.div`
+    position: absolute;
+    padding: 20px 0px;
+    bottom: 0;
+    width: 540px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid var(--gray-1);
+`
+
+const StThumbDiv = styled.div`
+    width: 40px;
+    height: 40px;
+    background-color: var(--gray-1);
+    border-radius: 5px;
+    margin-right: 8px;
+`
+
+const StDl = styled.dl`
+    dt {
+        width: 250px;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+        margin-bottom: 4px;
+    }
+    dd {
+        font-size: 10px;
+        color: var(--gray-2);
+        text-align: left;
+    }
+`
+
+const StBottomLeftDiv = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const StBottomRightDiv = styled.div`
+    display: flex;
+    align-items: center;
+    div {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        svg {
+            margin: 0px 5px 0px 10px;
+        }
+    }
 `
 
 export default ReviewDetail;
