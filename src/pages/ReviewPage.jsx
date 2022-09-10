@@ -7,13 +7,16 @@ import Selector from '../components/review/Selector';
 import CreateBtn from '../components/common/CreateBtn'
 import Portal from '../assets/modal/Portal'
 import Modal from '../assets/modal/Modal';
+import ReviewDetail from '../components/review/ReviewDetail';
 
 
 const ReviewPage = () => {
     const [modalOn, setModalOn] = useState(false);
+    const [reviewsId, SetReviewsId ] = useState('');
 
-    const handleModal = () => {
+    const handleModal = (reviewsId) => {
       setModalOn(!modalOn);
+      SetReviewsId(reviewsId)
     };
 
     return (
@@ -26,7 +29,10 @@ const ReviewPage = () => {
             <Footer />
             <CreateBtn />
             <Portal>
-                {modalOn && <Modal onClose={handleModal} />}
+                {modalOn && 
+                <Modal>
+                    <ReviewDetail reviewsId={reviewsId} onClose={handleModal}/>
+                </Modal>}
             </Portal>
         </>
     );

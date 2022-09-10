@@ -27,15 +27,15 @@ const Ticket = ({status, data, error }) => {
 const StWrapDiv = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     a {
         text-decoration: none;
     }
 `
 
 const StDiv = styled.div`
-    width: 200px;
-    height: 300px;
+    width: 240px;
+    height: 320px;
     background:linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
     display: flex;
     flex-direction: column;
@@ -46,6 +46,8 @@ const StDiv = styled.div`
     padding: 10px;
     line-height: 20px;
     cursor: pointer;
+    border-radius: 10px;
+    margin-bottom: 50px;
 `
 const StH4 = styled.h4`
     font-size: 20px;
