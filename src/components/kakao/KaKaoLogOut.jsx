@@ -20,7 +20,7 @@ const KaKaoLogOut = () => {
   };
 
   const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
+    BASE : process.env.REACT_APP_BASE_URL
   }
 
   console.log(isLogin);

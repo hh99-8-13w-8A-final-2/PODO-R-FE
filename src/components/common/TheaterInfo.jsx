@@ -7,8 +7,11 @@ import styled from "styled-components";
 import CONVENIENCE from '../../assets/img/CONVENIENCE.svg'
 import DISABLED from '../../assets/img/DISABLED.svg'
 import PARK from '../../assets/img/PARK.svg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const TheaterInfo = () => {
+    const [signupModalOn, setSignupModalOn] = useState(false);
     const [theaterInfo, setTheaterInfo] = useState({
         theaterName:'',
         theaterAddr:'',
@@ -47,11 +50,18 @@ const TheaterInfo = () => {
         getTheater()
     },[theaterInfo.la])
     
-    
+    const handleModal = () => {
+        setSignupModalOn(!signupModalOn);
+    };
     
 
     return (
         <StInfoDiv>
+            <StLoginBox>
+                <button onClick={handleModal}>
+                    <FontAwesomeIcon icon={faXmark} />
+                </button>
+            </StLoginBox>
             <div className='name'>{theaterInfo.theaterName}</div>
             <div className='info'>
                 <p><span>전화번호</span> {theaterInfo.theaterTel} </p>
@@ -131,3 +141,21 @@ padding: 20px;
     }
     
 `
+const StLoginBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: flex-end;
+  button {
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1.5em;
+    color: var(--gray-2);
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: var(--gray-3);
+    }
+  }
+`;
