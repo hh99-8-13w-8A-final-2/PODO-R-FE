@@ -5,28 +5,43 @@ import { logout } from "../../redux/modules/userSlice";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import axios from "axios";
-import loginIcon from '../../assets/img/login.svg'
+import logoutIcon from "../../assets/img/logout.svg";
+import Modal from "../../assets/modal/Modal";
+import ModalPortal from "../../assets/modal/Portal";
 
 const KaKaoLogOut = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.user.isLogin);
-  console.log(isLogin)
+  const [signupModalOn, setSignupModalOn] = useState(false);
+
+  const handleModal = () => {
+    setSignupModalOn(!signupModalOn);
+  };
+
+  const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
+
+  console.log(isLogin);
 
   const onLogoutHandler = async () => {
     const response = await axios({
       method: "post",
-      url: `http://54.180.140.72:8080/api/member/logout`,
+      url: `${URI.BASE}/api/member/logout`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
-        'Refresh-Token' : localStorage.getItem("refreshToken")
+        'Refresh-Token': localStorage.getItem("refreshToken"),
         // RefreshToken: localStorage.getItem("RefreshToken"),
-      }
+      },
     });
     dispatch(logout());
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    alert("로그아웃 되었습니다.");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("nickname");
+    localStorage.removeItem("profilePic");
+    // alert("로그아웃 되었습니다.");
     navigate("/");
   };
 
@@ -34,7 +49,22 @@ const KaKaoLogOut = () => {
     <StContentbox>
       {isLogin ? (
         <div>
-          <span onClick={onLogoutHandler}>로그아웃</span>
+          <div onClick={handleModal}>
+            <StLogOutIcon logoutIcon={logoutIcon} />
+            <StLoginTxt>로그아웃</StLoginTxt>
+          </div>
+
+          <ModalPortal>
+            {signupModalOn && (
+              <Modal onClose={handleModal}>
+                <StLogOutContainer>
+                  <p>로그아웃 하시겠습니까?</p>
+                  <button onClick={onLogoutHandler}>네</button>
+                  <button onClick={handleModal}>아니요</button>
+                </StLogOutContainer>
+              </Modal>
+            )}
+          </ModalPortal>
         </div>
       ) : (
         <div></div>
@@ -45,9 +75,46 @@ const KaKaoLogOut = () => {
 
 export default KaKaoLogOut;
 
-
 const StContentbox = styled.div`
   display: flex;
   width: 76px;
   cursor: pointer;
 `;
+
+const StLogOutIcon = styled.div`
+  width: 20px;
+  height: 16px;
+  align-items: center;
+  background: ${(props) => `url(${props.logoutIcon})`} no-repeat;
+  cursor: pointer;
+`;
+const StLoginTxt = styled.span`
+  cursor: pointer;
+`;
+
+
+const StLogOutContainer = styled.div`
+  button {
+    background-color: transparent;
+    width: 100px;
+    padding: 8px 0;
+    border-radius: 8px;
+    border: var(--gray-2) 1.5px solid;
+    margin: 0 5px;
+    color: var(--gray-2);
+    transition: all .3s;
+    cursor: pointer;
+    margin-bottom: 20px;
+    &:hover {
+      color: var(--white);
+      background: var(--maincolor-1);
+      border-color: var(--maincolor-1);
+    }
+  }
+  p {
+    padding: 40px 100px;
+  }
+
+
+
+`

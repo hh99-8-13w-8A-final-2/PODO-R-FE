@@ -1,12 +1,18 @@
 import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import twitter from "../../assets/img/twitter.png"
-import kakao2 from "../../assets/img/kakao2.png"
-import kakao from "../../assets/img/kakao.png"
+import twitter from "../../assets/img/twitter.png";
+import kakao_login from "../../assets/img/kakao_login.svg";
+import twitter_login from "../../assets/img/twitter_login.svg";
+import logo_fill from "../../assets/img/logo_fill.svg";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const OAuth = () => {
+  const navigate = useNavigate();
+
   const KAKAO_CLIENT_ID = "227040bd0e4e1fdf84aa3b18e9911713";
   const KAKAO_REDIRECT_URI = "http://localhost:3000/oauth/kakao";
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
@@ -17,26 +23,57 @@ const OAuth = () => {
   const TWIT_AUTH_URL = `https://twitter.com/oauth/request_token?client_id=${TWIT_CLIENT_ID}&${CONSUMER_SECRET}&redirect_uri=${TWIT_REDIRECT_URI}&response_type=code`;
   const URL = `https://api.twitter.com/oauth/request_token?oauth_callback=http://127.0.0.1:3000/oauth/twitter`;
 
-  console.log(KAKAO_AUTH_URL)
+
+
+  async function twitterLogin () {
+    const response = await axios.get(
+      `http://3.39.240.159/api/twitter/login`
+    );
+    window.location.replace(response.data)
+  }
+
+
+
+  console.log(KAKAO_AUTH_URL);
   return (
-    <div>
-      <StKakao>
-        <a href={KAKAO_AUTH_URL}>
-            <img src={kakao} href={KAKAO_AUTH_URL}></img>
+    <StLoginLink>
+      <img src={logo_fill} />
+      <StLogoFill>
+        <p>포도알에서는 극장별/공연별 좌석정보를 디테일하게 제공합니다.</p>
+        <p>포도알과 함께 만족스러운 문화생활을 시작해 보세요.</p>
+      </StLogoFill>
+
+      <StSocialLogIn>
+        <div>
+          <a href={KAKAO_AUTH_URL}>
+            <img src={kakao_login}></img>
           </a>
-      </StKakao>
-      <div>
-          <a href={URL}>
-            <img src={twitter}></img>
+        </div>
+        <div>
+          <a href="#!" onClick={twitterLogin}>
+            <img src={twitter_login}></img>
           </a>
-      </div>
-    </div>
+        </div>
+      </StSocialLogIn>
+    </StLoginLink>
   );
 };
 
 export default OAuth;
 
-const StKakao = styled.div`
-margin-bottom: 50px;
-`
+const StLoginLink = styled.div`
+  padding: 40px;
+`;
 
+const StSocialLogIn = styled.div`
+  div {
+    margin: 10px;
+  }
+`;
+const StLogoFill = styled.div`
+  margin: 30px 20px;
+  p {
+    color: var(--gray-2);
+    padding: 3px;
+  }
+`;
