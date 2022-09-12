@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-
-const Modal = ({ onClose, children }) => {
+const Modal = ({ children }) => {
   return (
-    <Background onClick={onClose}>
+    <Background>
       <Content>
         {children}
       </Content>
@@ -32,8 +31,6 @@ const Content = styled.div`
   position: relative;
   border-radius: 15px;
   background-color: var(--white);
-  padding: 20px;
   box-sizing: border-box;
   /* z-index: 1001; */
 `;
-

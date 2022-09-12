@@ -1,359 +1,142 @@
 {
-  "open": [
-    {
-      "musicalId": 1,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 2,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 3,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 4,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 5,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 6,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 7,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 8,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 9,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    },
-    {
-      "musicalId": 10,
-      "musicalName": "뮤지컬 〈팬레터〉 - 김해",
-      "musicalRegion:": "김해",
-      "musicalTheater": "김해서부문화센터 하늬홀",
-      "musicalPoster": "https://ticketimage.interpark.com/Play/image/large/22/22008504_p.gif",
-      "openDate": "2022.08.27",
-      "closeDate": "2022.08.27"
-    }
-  ],
-  "notice": [
+  "comments": [
     {
       "id": 1,
-      "contents": "[극장정보] 샤롯데시어터 좌성정보가 업데이트 되었습니다.",
-      "date": "2022.08.25"
+      "commentId": 1,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지"
     },
     {
       "id": 2,
-      "contents": "[극장정보] 2022 푸에르자 부르타 잠실 종합운동장 FB씨어터 좌석정보가 업데이트 되었습니다.",
-      "date": "2022.08.25"
+      "commentId": 2,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지"
     },
     {
       "id": 3,
-      "contents": "[공연정보] 샤롯데시어터 좌석정보가 업데이트 되었습니다.",
-      "date": "2022.08.25"
+      "commentId": 3,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지"
     },
     {
       "id": 4,
-      "contents": "[극장정보] 샤롯데시어터 좌성정보가 업데이트 되었습니다.4",
-      "date": "2022.08.25"
+      "commentId": 4,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지"
     },
     {
       "id": 5,
-      "contents": "[극장정보] 2022 푸에르자 부르타 잠실 종합운동장 FB씨어터 좌석정보가 업데이트 되었습니다.5",
-      "date": "2022.08.25"
+      "commentId": 5,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지"
     },
     {
       "id": 6,
-      "contents": "[공연정보] 샤롯데시어터 좌석정보가 업데이트 되었습니다.6",
-      "date": "2022.08.25"
+      "commentId": 6,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지"
     },
     {
-      "id": 7,
-      "contents": "[극장정보] 샤롯데시어터 좌성정보가 업데이트 되었습니다.7",
-      "date": "2022.08.25"
-    },
-    {
-      "id": 8,
-      "contents": "[극장정보] 2022 푸에르자 부르타 잠실 종합운동장 FB씨어터 좌석정보가 업데이트 되었습니다.8",
-      "date": "2022.08.25"
-    },
-    {
-      "id": 9,
-      "contents": "[공연정보] 샤롯데시어터 좌석정보가 업데이트 되었습니다.9",
-      "date": "2022.08.25"
-    }
-  ],
-  "reviews" : [
-    {
-      "id": 1
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㄴㅇㄹㄴㅇㄹㄴ",
       "id": 7
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㄴㅇㄹㄴㅇㄹㅇㄴ",
       "id": 8
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " 1234564",
       "id": 9
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " 45641321",
       "id": 10
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㅈㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹ",
       "id": 11
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㄴㅇㄹㄴㅇㄹㄴㅇ",
       "id": 12
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㄴㅇㄹㄴㅇㄹㄴㅇ",
       "id": 13
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ",
       "id": 14
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㅇㄴㅇ",
       "id": 15
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㄹㅇㄹ",
       "id": 16
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㄴㅇㄹㄴㅇㄹ",
       "id": 17
     },
     {
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㄹㄹㄹㄹ",
       "id": 18
     },
     {
-      "id": 1
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지자정 모든 게 정상. 기대 이상의 발전~자유썼는데 두줄이상 쓰고싶음 그러고싶음 몇자까지 쓸 수 있지",
+      "id": 19
     },
     {
-      "id": 2
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㄴㅇㄹㄴㅇㄹ",
+      "id": 20
     },
     {
-      "id": 3
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㅇㅀㅇㄹ",
+      "id": 21
     },
     {
-      "id": 4
+      "commentId": null,
+      "author": "지킬킬",
+      "content": " ㄹㄹㄹㄹㄹㄹㄹㄹㄹ",
+      "id": 22
     },
     {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "id": 7
-    },
-    {
-      "id": 8
-    },
-    {
-      "id": 9
-    },
-    {
-      "id": 10
-    },
-    {
-      "id": 11
-    },
-    {
-      "id": 12
-    },
-    {
-      "id": 13
-    },
-    {
-      "id": 14
-    },
-    {
-      "id": 15
-    },
-    {
-      "id": 16
-    },
-    {
-      "id": 17
-    },
-    {
-      "id": 18
-    },
-    {
-      "id": 1
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "id": 7
-    },
-    {
-      "id": 8
-    },
-    {
-      "id": 9
-    },
-    {
-      "id": 10
-    },
-    {
-      "id": 11
-    },
-    {
-      "id": 12
-    },
-    {
-      "id": 13
-    },
-    {
-      "id": 14
-    },
-    {
-      "id": 15
-    },
-    {
-      "id": 16
-    },
-    {
-      "id": 17
-    },
-    {
-      "id": 18
-    },
-    {
-      "id": 1
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    },
-    {
-      "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "id": 7
-    },
-    {
-      "id": 8
-    },
-    {
-      "id": 9
-    },
-    {
-      "id": 10
-    },
-    {
-      "id": 11
-    },
-    {
-      "id": 12
-    },
-    {
-      "id": 13
-    },
-    {
-      "id": 14
-    },
-    {
-      "id": 15
-    },
-    {
-      "id": 16
-    },
-    {
-      "id": 17
-    },
-    {
-      "id": 18
+      "commentId": null,
+      "author": "지킬킬",
+      "content": "ㅇㅇㅇ",
+      "id": 23
     }
   ]
 }
