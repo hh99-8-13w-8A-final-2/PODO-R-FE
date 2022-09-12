@@ -56,7 +56,7 @@ const SelectSeat = () => {
         const data1 = Data[floor]
         floorOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
     }
-    if (watch("floor").value === "1F"){
+    if (watch("floor").value === "1층"){
         for (var section in Data1){
             const data1 = Data1[section]
             if(data1.section === "0"){
@@ -82,7 +82,7 @@ const SelectSeat = () => {
                 }
             }
         }
-    }else if (watch("floor").value === "2F"){
+    }else if (watch("floor").value === "2층"){
         for (var section in Data2){
             const data1 = Data2[section]
             if(data1.section === "0"){
@@ -104,11 +104,11 @@ const SelectSeat = () => {
                         }else{
                             rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
                         }
-                    } 
+                    }
                 }
             }
         }
-    }else if (watch("floor").value === "3F"){
+    }else if (watch("floor").value === "3층"){
         for (var section in Data3){
             const data1 = Data3[section]
             if(data1.section === "0"){
@@ -139,33 +139,33 @@ const SelectSeat = () => {
     const greadeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },
-        { value: 'R', label: 'S' },
-        { value: 'R', label: 'A ' }
+        { value: 'S', label: 'S' },
+        { value: 'A', label: 'A ' }
       ]
     return (
         <StTopSelectDiv> 
                 <div>
                     <Controller name="grade" control={control} rules={{required: "필수로 선택하셔야합니다."}}
-                    render={({ field }) => <Select placeholder='좌석등급' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} {...field} options={greadeOptions} />} />
+                    render={({ field }) => <Select name='grade' placeholder='좌석등급'  theme={(theme) => ({
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} {...field} options={greadeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>
                     <Controller name="floor"  control={control} rules={{required: "필수로 선택하셔야합니다."}}
                     render={({ field }) => <Select placeholder='층' onChange={onChangeSelect} name="floor"  theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} {...field} options={floorOptions} />} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} {...field} options={floorOptions} />} />
                     <p className='error'>{errors.floor && errors.floor?.message}</p>
                 </div>
                 <div>
                     <Controller name="section" control={control} rules={{required: "필수로 선택하셔야합니다."}}
                     render={({ field }) => <Select placeholder='구역' onChange={setSelectSection} name="section"  theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} {...field} options={sectionOptions} />} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} {...field} options={sectionOptions} />} />
                     <p className='error'>{errors.section && errors.section?.message}</p>
                 </div>
                 <div>
                     <Controller name="row" control={control} rules={{required: "필수로 선택하셔야합니다."}}
                     render={({ field }) => <Select placeholder='열' onChange={setSelectRow} name="row"  theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} {...field} options={rowOptions} />} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} {...field} options={rowOptions} />} />
                     <p className='error'>{errors.row && errors.row?.message}</p>
                  </div>
                  <div>

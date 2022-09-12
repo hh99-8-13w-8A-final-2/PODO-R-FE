@@ -1,13 +1,14 @@
 import React from 'react';
 import pencil from '../../assets/img/pencil.svg'
 import up from '../../assets/img/up.svg'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useSelector } from "react-redux"
 
 const CreateBtn = () => {
     let location = useLocation();
     const navigate = useNavigate();
+    const isLogin = useSelector((state)=> state.user.isLogin);
     const onClickHandler =()=>{
         navigate(`${location.pathname}/create`)
     }
@@ -22,9 +23,12 @@ const CreateBtn = () => {
             <div>
                 <img src={up} alt="위로 올라가기" onClick={goToTop} />
             </div>
+            {isLogin ?
             <div>
                 <img src={pencil} alt="리뷰쓰기" onClick={onClickHandler} />
-            </div>
+            </div> :
+            null}
+            
         </StCreateDiv>
     );
 };

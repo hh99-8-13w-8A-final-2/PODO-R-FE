@@ -8,6 +8,8 @@ import loginIcon from '../../assets/img/login.svg'
 import KakaoLogin from "../kakao/KakaoLogIn";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import { useSelector } from "react-redux";
+import UserProfile from "../kakao/UserProfile";
+import MyPageBtn from "../kakao/MyPageBtn";
 
 const Header = () => {
     const navigate = useNavigate();
@@ -23,7 +25,7 @@ const Header = () => {
                     <div>돌아가기 버튼</div>
                     <img src={logo} alt="" onClick={onClickHandler}/>
                     <div>
-                        {isLogin ? (<KaKaoLogOut/>) : (<KakaoLogin/>)}
+                        {isLogin ? (<div><MyPageBtn/><KaKaoLogOut/></div>) : (<KakaoLogin/>)}
                     </div>
                 </StHeaderCont>
             </Layout>
