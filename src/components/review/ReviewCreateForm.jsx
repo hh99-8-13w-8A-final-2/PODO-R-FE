@@ -1,19 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form"
-import { useParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from "react-query"
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 
-const postComment = async(comment) => {
-    const {data} = await axios.post('http://localhost:3001/comments', comment)
+const postComment = async(new_comment) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const { reviewId, content } = new_comment
+    const {data} = await axios.post(`http://3.39.240.159/api/comments?reviewId=${reviewId}`, content, {headers: headers})
     return data
   }
 
-const ReviewCreateForm = () => {
-    const { postId } = useParams();
+const ReviewCreateForm = ({ reviewId }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const black_pattern = /^\s+|\s+$/g;
     const isBlank = (value) => (
@@ -27,11 +31,11 @@ const ReviewCreateForm = () => {
         }
     })
 
+
     const onSubmit = (data) => {
         const new_comment = {
-            commentId: parseInt(postId),
-            author: "지킬킬",
-            content: data.comment
+            content: data.comment,
+            reviewId: reviewId,
         }
         mutate(new_comment)
 

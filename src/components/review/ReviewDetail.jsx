@@ -34,6 +34,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
             refetchOnWindowFocus: false,
         }
     )
+    console.log(data)
 
     const convertToDate = new Date(data?.data.createdAt);
     const createYear = convertToDate.getFullYear();
@@ -51,11 +52,10 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-    console.log(data)
     return (
         <StReviewDetailBox>
             <StSideImgBox>
-                <ReviewDetailSlide data={data} isClick={isClick}/>
+                <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes}/>
             </StSideImgBox>
             <StInfoDiv>
                 <StDetailHeader>
@@ -69,7 +69,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                         </button>
                     </div>
                 </StDetailHeader>
-                {isClick ? <ReviewCreate setIsClick={setIsClick} data={data} onClose={onClose} /> :
+                {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
                 <>
                 <StDetailHeaderBottom>
                     <StProfileDiv>
@@ -89,9 +89,13 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                                 {
                                     year === 0 &&
                                     month === 0 &&
-                                    date > 6 ?
+                                    date > 6 &&
                                     <span>{(currentDate - createDate) / 7}주일 전 작성</span>
-                                    :
+                                }
+                                {
+                                    year === 0 &&
+                                    month === 0 &&
+                                    date > 0 &&
                                     <span>{currentDate - createDate}일 전 작성</span>
                                 }
                                 {

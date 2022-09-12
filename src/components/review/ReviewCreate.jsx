@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import ReviewCreateForm from './ReviewCreateForm';
 import ReviewCreateList from './ReviewCreateList';
 
-const ReviewCreate = ({setIsClick}) => {
+const ReviewCreate = ({setIsClick, reviewId}) => {
+    console.log(reviewId)
     return (
         <>
-            <ReviewCreateForm/>
-            <ReviewCreateList setIsClick={setIsClick}/>
+            <ReviewCreateForm reviewId={reviewId}/>
+            <ReviewCreateList setIsClick={setIsClick} reviewId={reviewId}/>
         </>
     );
 };
