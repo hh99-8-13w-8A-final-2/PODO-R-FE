@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MyReview from './MyReview';
 import axios from "axios";
+import { useState } from 'react';
 
 const MyReviewList = () => {
 
@@ -10,6 +11,7 @@ const MyReviewList = () => {
     BASE : process.env.REACT_APP_BASE_URI
   }
 
+  const [data, setData] = useState();
 
     
   const MyReviewFind = async () => {
@@ -18,8 +20,9 @@ const MyReviewList = () => {
       url: `${URI.BASE}/api/mypage/reviews`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
-      },
-    });console.log(response)
+      }
+    });
+    setData(response.data)
   }
   
 
@@ -35,7 +38,7 @@ const MyReviewList = () => {
         <div>
             <StH3>선택된 공연 리뷰</StH3>
             <StMyReviewList>
-                <MyReview/>
+                <MyReview data={data}/>
             </StMyReviewList>
         </div>
     );

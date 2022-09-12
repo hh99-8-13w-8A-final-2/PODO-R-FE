@@ -5,7 +5,9 @@ const MyTicket = () => {
     return (
         <StMyTicket>
             <StDiv imgUrl="http://k.kakaocdn.net/dn/eRxjAn/btrKZ70Mq9D/bl3Kt6sbcDSwFKkg2pnLa0/img_640x640.jpg">
-
+                여기다 글쓰면
+                이렇게 
+                생기냐
             </StDiv>
             
         </StMyTicket>

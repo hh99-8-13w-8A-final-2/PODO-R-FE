@@ -6,25 +6,23 @@ import axios from "axios";
 const MyTicketList = () => {
 
 
-  const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
+  // const URI = {
+  //   BASE : process.env.REACT_APP_BASE_URI
+  // }
 
+  // const [data, setData] = useState();
 
     
-  const MyTicketFind = async () => {
-    try {
-      const response = await axios.get(
-        `${URI.BASE}/api/mypage/reviews`
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    MyTicketFind();
-  }, []);
+  // const MyReviewFind = async () => {
+  //   const response = await axios({
+  //     method: "get",
+  //     url: `${URI.BASE}/api/mypage/reviews`,
+  //     headers: {
+  //       Authorization: localStorage.getItem("accessToken"),
+  //     }
+  //   });
+  //   setData(response.data)
+  // }
 
 
 
