@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Modal = ({ onClose, children }) => {
+  const [title, setTitle] = useState('');
   return (
     <Background>
       <Content>
         <StLoginBox>
+          <p>{title}</p>
           <button onClick={onClose}>
             <FontAwesomeIcon icon={faXmark} />
           </button>

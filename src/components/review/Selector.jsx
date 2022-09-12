@@ -24,7 +24,7 @@ const Selector = ({handleModal}) => {
     const floorOptions =[]; //층 select에 넣어주는 값
     const sectionOptions =[]; //구역 select에 넣어주는 값
     const rowOptions =[]; //열 select에 넣어주는 값
-    const [selectGreade, setSelectGreade] = useState({value : '0', label:'좌석 등급'}); //선택한 등급
+    const [selectGrade, setSelectGrade] = useState({value : '0', label:'좌석 등급'}); //선택한 등급
     const [selectFloor, setSelectFloor] = useState({value : '0', label:'층'}); //선택한 층
     const [selectSection, setSelectSection] = useState({value : '100', label: '구역'}); //선택한 구역
     const [selectRow, setSelectRow] = useState({value : '0', label: '열'}); //선택한 열
@@ -137,7 +137,7 @@ const Selector = ({handleModal}) => {
     } // 좌석 시트 값
     
     const onClickReset = () => {
-        setSelectGreade({value : '0', label:'좌석 등급'})
+        setSelectGrade({value : '0', label:'좌석 등급'})
         setSelectFloor({value : '0', label:'층'})
         setSelectSection({value : '0', label:'구역'}) 
         setSelectRow({value : '0', label: '열'}) 
@@ -147,14 +147,14 @@ const Selector = ({handleModal}) => {
     }
     
     const ClickSeatSerch = () =>{
-        const greade = selectGreade.value
+        const grade = selectGrade.value
         const section = selectSection.value
         const row = selectRow.value
         if(seatNumber !== undefined){
-            const param = createSearchParams({...query, greade :`${greade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
+            const param = createSearchParams({...query, greade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
             navigate({pathname:"", search:`?${param}`})
         }else{
-            const param = createSearchParams({...query, greade :`${greade}`, section: `${section}`, row:`${row}`, seat:'0' })
+            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:'0' })
             navigate({pathname:"", search:`?${param}`})
         }
         
@@ -165,7 +165,7 @@ const Selector = ({handleModal}) => {
         const {name, checked} = e.target;
         const param = createSearchParams({
             ...query,
-            [name]:checked? "1": null
+            [name]:checked? "1": 0
         })
         navigate({pathname:"", search:`?${param}`})
     }
@@ -174,8 +174,8 @@ const Selector = ({handleModal}) => {
     const greadeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },
-        { value: 'R', label: 'S' },
-        { value: 'R', label: 'A ' }
+        { value: 'S', label: 'S' },
+        { value: 'A', label: 'A ' }
       ]
     
    
@@ -198,13 +198,13 @@ const Selector = ({handleModal}) => {
             <StFilterDiv className='bottom' style={{marginBottom:'50px'}}>
                 <div className='left'>
                     <Select placeholder='좌석등급' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--black)', primary: 'var(--black)'},})} options={greadeOptions} onChange={setSelectGreade} value={selectGreade} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={greadeOptions} onChange={setSelectGrade} value={selectGrade} />
                     <Select placeholder='층' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} options={floorOptions}  onChange={setSelectFloor} value={selectFloor} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={floorOptions}  onChange={setSelectFloor} value={selectFloor} />
                     <Select placeholder='구역' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} options={sectionOptions} onChange={setSelectSection} value={selectSection} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={sectionOptions} onChange={setSelectSection} value={selectSection} />
                     <Select placeholder='열' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-1)', primary: 'var(--maincolor-1)'},})} options={rowOptions} onChange={setSelectRow} value={selectRow}  />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={rowOptions} onChange={setSelectRow} value={selectRow}  />
                         <div className='inputSeat'>
                         <input type="number"  id='seat' name='seat' placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} />  
                         <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset}/></span>

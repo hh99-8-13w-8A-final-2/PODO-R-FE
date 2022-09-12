@@ -12,7 +12,7 @@ const RadioSelector = ({query, navigate, params, handleCheck, createSearchParams
         const {name, checked, value} = e.target;
         const param = createSearchParams({
             ...query,
-            [name]:checked? `${value}` : null
+            [name]:checked? `${value}` : 0
         })
         navigate({pathname:"", search:`?${param}`})
     }
