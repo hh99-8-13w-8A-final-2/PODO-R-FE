@@ -18,7 +18,7 @@ const MainBanner = () => {
     const swiperRef = useRef(null)
 
     return (
-        <div
+        <StMainBaanerSction
         onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
         onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
         >
@@ -50,9 +50,16 @@ const MainBanner = () => {
                 </StMainBanner>
             </SwiperSlide>
         </Swiper>
-        </div>
+        </StMainBaanerSction>
     );
 };
+
+const StMainBaanerSction = styled.div`
+    .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after, .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after{
+        color: var(--gray-2);
+    }
+    margin-bottom: 70px;
+`
 
 const StMainBanner = styled.div`
     height: 300px;

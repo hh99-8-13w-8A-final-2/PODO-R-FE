@@ -7,14 +7,26 @@ import axios from 'axios';
 import ModalPortal from '../../assets/modal/Portal';
 import Modal from "../../assets/modal/Modal";
 import TheaterInfo from './TheaterInfo';
+import { useEffect } from 'react';
 
 const HeaderBottom = () => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(3,1).toString()
     const [theaterModal, setTheaterModal] = useState(false)
+    const [musicals, setMusicals] = useState({
+        musicalName: '',
+        theaterName: '',
+        theaterId: ''
+    });
     const getTitle = async() =>{
-       const res = await axios.get(`http://3.39.240.159/api/theaters/${musicalId}/reviews`)
+       const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}`)
+       setMusicals(res.data)
     }
+
+    useEffect(()=>{
+        getTitle()
+    },[])
+
 
     const handleModal = () =>{
         setTheaterModal(!theaterModal)
@@ -24,13 +36,13 @@ const HeaderBottom = () => {
         <StHeaderBottom>    
             <Layout>
                 <StHeaderBottomCont>
-                    <span className='title'> 2022 푸에르자 부르타 웨이라 인 서울 [2022 FUERZA BEUTA WAYRA IN SEOUL]</span> <span className='theater'>잠실 종합운동장 FB 씨어터 <img src={info} alt="" className='icon' onClick={handleModal} /> </span> 
+                     <span className='title'>{musicals.musicalName}</span> <span className='theater'>{musicals.theaterName}<img src={info} alt="" className='icon' onClick={handleModal} /> </span> 
                 </StHeaderBottomCont>
 
                 <ModalPortal>
                     {theaterModal && (
-                        <Modal onClose ={handleModal}>
-                            <TheaterInfo/>
+                        <Modal  onClose ={handleModal} theaterModal={theaterModal} >
+                            <TheaterInfo onClose ={handleModal} theaterId={musicals.theaterId}/>
                         </Modal>
                     )}
                 </ModalPortal>

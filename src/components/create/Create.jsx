@@ -174,7 +174,7 @@ const Create = () => {
       }
       for (let value of formdata.values()) {
         console.log(value);
-  } /* 
+    } 
        try {
             const jsonType ={"Content-Type": "application/json"}
             const multipartType ={"Content-Type": "multipart/form-data"}
@@ -193,7 +193,7 @@ const Create = () => {
             navigate(-1)
         } catch (err) {
             console.log(err)
-        } */
+        }
     }
 
     

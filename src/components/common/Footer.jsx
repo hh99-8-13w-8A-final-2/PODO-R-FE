@@ -25,6 +25,7 @@ const Footer = () => {
 
 const StFooter = styled.footer`
     width: 100%;
+    margin-top: 80px;
 `
 
 const StFooterCont = styled.div`

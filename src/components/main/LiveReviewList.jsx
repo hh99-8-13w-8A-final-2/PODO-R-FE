@@ -32,6 +32,7 @@ const LiveReviewList = () => {
 };
 
 const StReviewBox = styled.div`
+    margin-bottom: 70px;
 `
 
 const StH3 = styled.h3`
