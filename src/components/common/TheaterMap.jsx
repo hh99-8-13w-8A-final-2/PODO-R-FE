@@ -4,7 +4,6 @@ import React, { useEffect } from 'react'
 const TheaterMap = ({coordinate}) => {
     
     const theaterCoordinate = coordinate
-    console.log(theaterCoordinate)
 
     useEffect(()=>{
         var container = document.getElementById('map');
