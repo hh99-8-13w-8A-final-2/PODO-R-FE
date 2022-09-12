@@ -6,7 +6,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import styled from 'styled-components';
-import 'react-slidedown/lib/slidedown.css'
 
 const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes }) => {
     const swiperRef = useRef(null)

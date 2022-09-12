@@ -114,7 +114,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                     :
                                     null    
                                 }
-                                {(comment.memberId === userId) ? 
+                                {(comment.memberId === userId && toggle) ? 
                                     <StButton onClick={() => toggleHandler(comment.commentId)}>
                                         <FontAwesomeIcon icon={faEllipsis} />
                                     </StButton>

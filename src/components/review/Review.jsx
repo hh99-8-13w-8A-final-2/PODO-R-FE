@@ -62,8 +62,6 @@ const Review = ({ handleModal }) => {
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
 
-
-
     return (
         <>
             {data?.pages.map((group, i) => {
