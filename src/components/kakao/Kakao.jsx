@@ -15,7 +15,7 @@ const Kakao = () => {
   console.log(code);
 
   const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
+    BASE : process.env.REACT_APP_BASE_URL
   }
 
   const kakaoLogin = async () => {
