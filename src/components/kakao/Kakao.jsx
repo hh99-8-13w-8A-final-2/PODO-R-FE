@@ -11,7 +11,7 @@ const Kakao = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
-//   console.log(code);
+//console.log(code);
 
   const kakaoLogin = async () => {
     try {

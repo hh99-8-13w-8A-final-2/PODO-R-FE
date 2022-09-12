@@ -38,9 +38,7 @@ const ImageAdd = ({imgfiles}) => {
         setShowImages(showImages.filter((_, index) => index !== id));
         const saveImgfiles = imgfiles.filter((_, index) => index !== id);
         imgfiles.splice(0, imgfiles.length, ...saveImgfiles)
-        console.log(imgfiles)
       };
-      console.log(imgfiles)
 
     return (
         <StaddImageDiv>

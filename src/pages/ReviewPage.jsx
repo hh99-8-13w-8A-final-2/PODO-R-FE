@@ -11,7 +11,7 @@ import Modal from '../assets/modal/Modal';
 
 const ReviewPage = () => {
     const [modalOn, setModalOn] = useState(false);
-
+    
     const handleModal = () => {
       setModalOn(!modalOn);
     };
