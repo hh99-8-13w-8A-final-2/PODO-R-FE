@@ -4,16 +4,16 @@ import GlobalStyle from './assets/style/GlobalStyle'
 import { QueryClientProvider, QueryClient } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 
-const queryClient = new QueryClient() 
+const queryClient = new QueryClient()
 
 function App() {
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-      <Router/>
-      <GlobalStyle/>
-      <ReactQueryDevtools initialIsOpen={false} position='bottom-right'/>
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <Router />
+        <GlobalStyle />
+        <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
+      </QueryClientProvider>
     </>
   );
 }

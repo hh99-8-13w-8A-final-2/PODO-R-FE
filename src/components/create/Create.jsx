@@ -8,23 +8,35 @@ import SelectSeat from './SelectSeat';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
 import customAxios from '../../shared/customAxios'
-
+import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Create = () => {
+    let location = useLocation();
+    let musicalId = location.pathname.split('/').splice(3,1).toString()
+    const navigate = useNavigate();
     const [tagList, setTagList] =useState([]);
-    const [imgUrls, setImgUrls] = useState([]);
-
+    const imgfiles = []; // 이미지 파일
 
     const onSubmit = async () => {
         //이미지 업로드 
         const imgFormdata = new FormData();
-        for(let i = 0; i < imgUrls.length; i++){
-            imgFormdata.append('image',imgUrls[i])
+        //imgFormdata.append('image',imgfiles)
+        for(let i = 0; i < imgfiles.length; i++){
+            imgFormdata.append('image',imgfiles[i])
         }
         // 폼 데이터
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags',tagList)
-       
+        
+        for (let key of imgFormdata.keys()) {
+            console.log(key);
+     }
+        for (let value of imgFormdata.values()) {
+            console.log(value);
+      }
+        
        try {
             const jsonType ={"Content-Type": "application/json"}
             const multipartType ={"Content-Type": "multipart/form-data"}
@@ -38,16 +50,15 @@ const Create = () => {
             obj.imgUrls = res1.data.imageUrl
 
             const json = JSON.stringify(obj)
-            
-            const res2 = await axios.post('http://3.39.240.159/api/musicals/1/reviews',json, {headers:jsonType});
-            //const res2 = await customAxios.post('api/musicals/1/reviews', json);
-            console.log(res2)
+            console.log(json)
+            await axios.post(`http://3.39.240.159/api/musicals/${musicalId}/reviews`,json, {headers:jsonType});
+            navigate(-1)
         } catch (err) {
             console.log(err)
         }
     }
 
-    const {handleSubmit,  watch} = useForm();
+    const {handleSubmit, formState:{errors}, watch} = useForm();
     
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
@@ -58,11 +69,12 @@ const Create = () => {
             <div>
                 <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.'></textarea>
             </div>
-            <ImageAdd setImgUrls={setImgUrls} imgUrls={imgUrls}/>
+            <ImageAdd imgfiles={imgfiles}/>
             <Tag setTagList={setTagList} tagList={tagList}/>
             <div className='button'>
-                <button >등록</button>
+                <button type='submit' >등록</button>
             </div>
+            <ToastContainer />
         </StForm>
     );
 };
