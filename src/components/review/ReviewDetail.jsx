@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useState } from 'react';
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,7 @@ import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
 import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
+import ReviewCreate from './ReviewCreate';
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
     return axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`)
@@ -25,6 +26,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
 
+    const [ isClick, setIsClick ] = useState(false);
     const { status, data, error } = useQuery(
         ['/ReviewDetail', musicalId, reviewsId],
         () => fetchReviewDetail(musicalId, reviewsId),
@@ -53,7 +55,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
     return (
         <StReviewDetailBox>
             <StSideImgBox>
-                <ReviewDetailSlide data={data} />
+                <ReviewDetailSlide data={data} isClick={isClick}/>
             </StSideImgBox>
             <StInfoDiv>
                 <StDetailHeader>
@@ -67,6 +69,8 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                         </button>
                     </div>
                 </StDetailHeader>
+                {isClick ? <ReviewCreate setIsClick={setIsClick} data={data} onClose={onClose} /> :
+                <>
                 <StDetailHeaderBottom>
                     <StProfileDiv>
                         <StProfile></StProfile>
@@ -114,11 +118,16 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                 <StP>
                     {data?.data.reviewContent}
                 </StP>
-                <StTagDiv>
-                    {data?.data.tags.map((tag, index) => (
-                        <div key={index}>{tag}</div>
-                    ))}
-                </StTagDiv>
+                
+                {data?.data.tags[0] !== '' &&
+                    <StTagDiv>
+                        {data?.data.tags.map((tag, index) => (
+                            <div key={index}>{tag}</div>
+                        ))}
+                    </StTagDiv>
+                }
+            </>    
+            }
                 <StBottomCont>
                         <StBottomLeftDiv>
                             <StThumbDiv></StThumbDiv>
@@ -130,7 +139,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                         </StBottomLeftDiv>
                         <StBottomRightDiv>
                             <div><Like fill='#000'/><span>200</span></div>
-                            <div><Comment fill='#000'/><span>100</span></div>
+                            <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>100</span></div>
                         </StBottomRightDiv>
                 </StBottomCont>
             </StInfoDiv>
@@ -237,6 +246,7 @@ const StP = styled.p`
     margin-top: 40px;
     margin-bottom: 40px;
     text-align: start;
+    max-height: 300px;
 `
 const StTagDiv = styled.div`
     display: flex;
@@ -244,6 +254,7 @@ const StTagDiv = styled.div`
         border: 1px solid var(--gray-1);
         padding: 6px 16px; 
         border-radius: 20px;
+        margin-right: 10px;
     }
 `
 
