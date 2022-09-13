@@ -124,10 +124,18 @@ const Review = ({ handleModal }) => {
                                             }
                                         </StDate>
                                         <StIconDiv>
-                                            {data.evaluation.gap === 3 ? <div><Gap fill='#BB63FF'/><span>단차좋음</span></div> : <div><Gap fill='#444'/><span>단차좋음</span></div>}
-                                            {data.evaluation.sight === 3 ? <div><View fill='#BB63FF'/><span>시야좋음</span></div> : <div><View fill='#444'/><span>시야좋음</span></div>}
-                                            {data.evaluation.sound === 3 ? <div><Sound fill='#BB63FF'/><span>음향좋음</span></div> : <div><Sound fill='#444'/><span>음향좋음</span></div>}
-                                            {data.evaluation.light === 3 ? <div><Light fill='#BB63FF'/><span>조명좋음</span></div> : <div><Light fill='#444'/><span>조명좋음</span></div>}
+                                            {data.evaluation.gap === 3 && <div><Gap fill='#BB63FF'/><span>단차좋음</span></div>}
+                                            {data.evaluation.gap === 2 && <div><Gap fill='#444'/><span>단차보통</span></div>}
+                                            {data.evaluation.gap === 1 && <div><Gap fill='#444'/><span>단차나쁨</span></div>}
+                                            {data.evaluation.sight === 3 && <div><View fill='#BB63FF'/><span>시야좋음</span></div>}
+                                            {data.evaluation.sight === 2 && <div><View fill='#444'/><span>시야보통</span></div>}
+                                            {data.evaluation.sight === 1 && <div><View fill='#444'/><span>시야나쁨</span></div>}
+                                            {data.evaluation.sound === 3 && <div><Sound fill='#BB63FF'/><span>음향좋음</span></div>}
+                                            {data.evaluation.sound === 2 && <div><Sound fill='#444'/><span>음향보통</span></div>}
+                                            {data.evaluation.sound === 1 && <div><Sound fill='#444'/><span>음향나쁨</span></div>}
+                                            {data.evaluation.light === 3 && <div><Light fill='#BB63FF'/><span>조명좋음</span></div>}
+                                            {data.evaluation.light === 2 && <div><Light fill='#444'/><span>조명보통</span></div>}
+                                            {data.evaluation.light === 1 && <div><Light fill='#444'/><span>조명나쁨</span></div>}
                                         </StIconDiv>
                                     </StInfoBox>
                                 </StReviewDiv>
@@ -216,12 +224,12 @@ const StDate = styled.div`
 
 const StIconDiv = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    width: 210px;
     div {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-right: 10px;
         &:last-child {
             margin-right: 0;
         }

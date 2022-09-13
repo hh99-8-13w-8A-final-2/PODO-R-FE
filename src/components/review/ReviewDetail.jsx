@@ -79,7 +79,9 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                         </button>
                     </StHeaderRight>
                 </StDetailHeader>
-                {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
+                {isClick ? 
+                <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> 
+                :
                 <>
                 <StDetailHeaderBottom>
                     <StProfileDiv>
@@ -135,6 +137,8 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                 
                 {data?.data.tags[0] !== '' &&
                     <StTagDiv>
+                        {data?.data.operaGlass && <div>오페라글라스필수</div>}
+                        {data?.data.block && <div>시야방해</div>}
                         {data?.data.tags.map((tag, index) => (
                             <div key={index}>{tag}</div>
                         ))}
@@ -144,16 +148,16 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
             }
                 <StBottomCont>
                         <StBottomLeftDiv>
-                            <StThumbDiv></StThumbDiv>
+                            <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
                             <StDl>
-                                <dt>2022 푸에르자 부르타 웨이라 인 서울 머시기 머시기 머시기</dt>
-                                <dd>잠실 종합운동장FB씨어터</dd>
-                                <dd>22.08.30 ~ 22.11.13</dd>
+                                <dt>{data?.data.musical.musicalName}</dt>
+                                <dd>{data?.data.musical.theaterName}</dd>
+                                <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
                             </StDl>
                         </StBottomLeftDiv>
                         <StBottomRightDiv>
                             <div><Like fill='#000'/><span>200</span></div>
-                            <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>100</span></div>
+                            <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>{data?.data.commentCount}</span></div>
                         </StBottomRightDiv>
                 </StBottomCont>
             </StInfoDiv>
@@ -316,9 +320,11 @@ const StBottomCont = styled.div`
 const StThumbDiv = styled.div`
     width: 40px;
     height: 40px;
-    background-color: var(--gray-1);
+    background: ${props => `url(${props.imgUrl})`};
     border-radius: 5px;
     margin-right: 8px;
+    background-size: cover;
+    background-position: center;
 `
 
 const StDl = styled.dl`

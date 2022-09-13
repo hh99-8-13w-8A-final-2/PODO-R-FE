@@ -101,11 +101,11 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                             <StButtonDiv>
                                 {(id === comment.commentId) && toggle ? 
                                     <StButtonToggleDiv>
-                                        {modifyId === id ? 
+                                        {modifyId === comment.commentId ? 
                                         <button>완료</button> 
                                         : 
                                         <button onClick={() => setModifyId(comment.commentId)}>수정</button>}
-                                        {modifyId === id ? 
+                                        {modifyId === comment.commentId ? 
                                         <button onClick={() => setModifyId('')}>취소</button>
                                         : 
                                         <button>삭제</button>
@@ -123,7 +123,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                 }
                             </StButtonDiv>
                         </div>
-                        {(modifyId === comment.commentId)?
+                        {(modifyId === comment.commentId) && toggle?
                         <StCommentContDiv>
                             <input/>
                         </StCommentContDiv>
