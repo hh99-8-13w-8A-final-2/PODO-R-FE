@@ -98,24 +98,28 @@ const Review = ({ handleModal }) => {
                                             {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
-                                            currentDate - createDate > 6 ?
+                                            currentDate - createDate > 6 &&
                                             <span>{(currentDate - createDate)/7}주일 전</span>
-                                            :
-                                            <span>{currentDate - createDate}일 전</span>
+                                            }
+                                            {
+                                            currentYear - createYear === 0 &&
+                                            currentMonth - createMonth === 0 &&
+                                            currentDate - createDate > 0 &&
+                                            <span>{(currentDate - createDate)}일 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate === 0 &&
                                             currentHours - createHours > 0 &&
-                                            <span>{currentHours - createHours}시간 전</span>
+                                            <span>방금 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate === 0 &&
                                             currentHours - createHours === 0 &&
-                                            currentMinutes - createMinute >= 0 &&
+                                            currentMinutes - createMinute > 0 &&
                                             <span>방금 전</span>
                                             }
                                         </StDate>

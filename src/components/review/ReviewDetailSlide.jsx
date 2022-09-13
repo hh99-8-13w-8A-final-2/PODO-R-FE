@@ -7,9 +7,9 @@ import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import styled from 'styled-components';
 
-const ReviewDetailSlide = ({ data, isClick }) => {
+const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes }) => {
     const swiperRef = useRef(null)
-
+    console.log(data)
 
     return (
         <StSlideDiv>
@@ -43,14 +43,47 @@ const ReviewDetailSlide = ({ data, isClick }) => {
             {isClick ?
                 <StContentDiv >
                     <div>
-                        <div>
+                        <StHeader>
                             <StUserNameDiv>천당에서내려온</StUserNameDiv>
-                            <StDate></StDate>
-                        </div>
-                    <StScoreDiv>
-                        <StSpan>평점</StSpan>
-                        <StScore>{data?.data.reviewScore}</StScore>
-                    </StScoreDiv>    
+                            <StDate>
+                            {
+                                    year > 0 &&
+                                    <span>{year}년 전 작성</span>
+                                }
+                                {
+                                    year === 0 &&
+                                    month > 0 &&
+                                    <span>{month}달 전 작성</span>
+                                }
+                                {
+                                    year === 0 &&
+                                    month === 0 &&
+                                    date > 6 &&
+                                    <span>{(date) / 7}주일 전 작성</span>
+                                }
+                                {
+                                    year === 0 &&
+                                    month === 0 &&
+                                    date > 0 &&
+                                    <span>{date}일 전 작성</span>
+                                }
+                                {
+                                    year === 0 &&
+                                    month === 0 &&
+                                    date === 0 &&
+                                    hours > 0 &&
+                                    <span>{hours}시간 전 작성</span>
+                                }
+                                {
+                                    year === 0 &&
+                                    month === 0 &&
+                                    date === 0 &&
+                                    hours === 0 &&
+                                    minutes >= 0 &&
+                                    <span>방금 전 작성</span>
+                                }
+                            </StDate>
+                        </StHeader>
                     </div>
                     <p>{data?.data.reviewContent}</p>
                 </StContentDiv>        
@@ -73,14 +106,22 @@ const StContentDiv = styled.div`
     left: 0;
     bottom: 0;
     background-color: rgba(0,0,0,0.5);
-    padding: 20px;
+    padding: 40px 30px;
     box-sizing: border-box;
     max-height: 200px;
     overflow-y: scroll;
-    p {
-        color: var(--white);
-        text-align: left;
+    color: var(--white);
+    div {
+        display: flex;
     }
+    p {
+        text-align: left;
+        color: var(--gray-1);
+    }
+`
+
+const StHeader = styled.div`
+    margin-bottom: 10px;
 `
 
 const StDiv = styled.div`
@@ -93,28 +134,12 @@ const StDiv = styled.div`
 `
 
 const StUserNameDiv = styled.div`
-    
+    margin-right: 10px;
 `
 
 const StDate = styled.div`
-    
-`
-
-const StScoreDiv = styled.div`
-    display: flex;
-`
-
-const StSpan = styled.div`
-    font-size: 14px;
-    display: block;
-    margin-bottom: 10px;
-    font-weight: bold;
-`
-
-const StScore = styled.div`
-    font-family: 'Inter', sans-serif;
-    font-style: italic;
-    font-size: 40px;
+    font-size: 12px;
+    color: var(--gray-1);
 `
 
 export default ReviewDetailSlide;
