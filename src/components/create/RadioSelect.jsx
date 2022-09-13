@@ -5,7 +5,7 @@ const RadioSelect = () => {
     return (
         <StRadioDiv>
                 <div>
-                    <h4>단차</h4>
+                    <h4><span style={{color:'var(--error)'}}>*</span> 단차</h4>
                     <div className='radio'>
                         <div>
                             <input type="radio" id="gap1" name="gap" value="1"/><label htmlFor="gap1"> <span></span> 나쁨</label>
@@ -19,7 +19,7 @@ const RadioSelect = () => {
                     </div>
                 </div>
                 <div>
-                    <h4>시야</h4>
+                    <h4><span style={{color:'var(--error)'}}>*</span> 시야</h4>
                     <div className='radio'>
                         <div>
                             <input type="radio" id="sight1" name="sight" value="1"/><label htmlFor="sight1"> <span></span> 나쁨</label>
@@ -33,7 +33,7 @@ const RadioSelect = () => {
                     </div>
                 </div>
                 <div>
-                    <h4>음향</h4>
+                    <h4><span style={{color:'var(--error)'}}>*</span> 음향</h4>
                     <div className='radio'>
                        <div>
                             <input type="radio" id="sound1" name="sound" value="1"/><label htmlFor="sound1"> <span></span> 나쁨</label>
@@ -47,7 +47,7 @@ const RadioSelect = () => {
                     </div>
                 </div>
                 <div>
-                    <h4>조명</h4>
+                    <h4><span style={{color:'var(--error)'}}>*</span> 조명</h4>
                     <div className='radio'>
                         <div>
                             <input type="radio" id="light1" name="light" value="1"/><label htmlFor="light1"> <span></span> 나쁨</label>

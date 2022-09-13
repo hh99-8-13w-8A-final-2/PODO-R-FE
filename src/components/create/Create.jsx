@@ -9,8 +9,10 @@ import Tag from './Tag';
 import ImageAdd from './ImageAdd';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
-
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
 const Create = () => {
     const navigate = useNavigate();
     let location = useLocation();
@@ -156,6 +158,14 @@ const Create = () => {
 
     const onSubmit = async () => {
         //이미지 업로드 
+        console.log(imgfiles.length)
+        if(imgfiles.length === 0){
+            toast.error("이미지 등록은 필수 입니다.",{
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "dark"
+            })
+        }
         const imgFormdata = new FormData();
         //imgFormdata.append('image',imgfiles)
         for(let i = 0; i < imgfiles.length; i++){
@@ -166,18 +176,19 @@ const Create = () => {
         const formdata = new FormData(form);
         formdata.append('tags',tagList)
         
-         for (let key of imgFormdata.keys()) {
+        for (let key of imgFormdata.keys()) {
             console.log(key);
-     }
+         }
         for (let value of imgFormdata.values()) {
             console.log(value);
-      }
-      for (let value of formdata.values()) {
+        }
+        for (let value of formdata.values()) {
         console.log(value);
-    } 
+        } 
        try {
-            const jsonType ={"Content-Type": "application/json"}
-            const multipartType ={"Content-Type": "multipart/form-data"}
+            const token = window.localStorage.getItem("accessToken")
+            const jsonType ={"Content-Type": "application/json", "Authorization" : token}
+            const multipartType ={"Content-Type": "multipart/form-data",  "Authorization" : token}
             const res1 = await axios.post('http://3.39.240.159/api/image/upload',imgFormdata,{headers:multipartType});
             //이미지 
             
@@ -189,7 +200,7 @@ const Create = () => {
 
             const json = JSON.stringify(obj)
             console.log(json)
-            await axios.post(`http://3.39.240.159/api/musicals/${musicalId}/reviews`,json, {headers:jsonType});
+            await axios.post(`http://3.39.240.159/api/musicals/${musicalId}/reviews`,json, {headers:jsonType, token});
             navigate(-1)
         } catch (err) {
             console.log(err)
@@ -199,7 +210,7 @@ const Create = () => {
     
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
-            <h4>좌석정보</h4>
+            <h4><span style={{color:'var(--error)'}}>*</span> 좌석정보</h4>
             <StTopSelectDiv> 
                 <div>
                     <Controller name="grade" control={control} rules={{required: "필수로 선택하셔야합니다."}}
@@ -226,9 +237,9 @@ const Create = () => {
                     <p className='error'>{errors.row && errors.row?.message}</p>
                  </div>
                  <div>
-                    <input type="number" placeholder='좌석번호' {...register("seat", { min: 1, max: 300 })} />  
+                    <input type="number" placeholder='좌석번호' {...register("seat", { min: 1, max: 300 , required: true})} />  
                     {errors.seat && errors.seat.type === "max" && <p className='error'> 300이하의 숫자로 입력해주세요. </p>}
-                    {errors.seat && errors.seat.type === "max" && <p className='error'> 필수로 선택하셔야합니다. </p>}
+                    {errors.seat && <p className='error'>필수로 입력하셔야합니다.</p>}
                 </div>
             </StTopSelectDiv>
             <RadioSelect/>
