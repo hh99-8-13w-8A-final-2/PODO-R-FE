@@ -101,6 +101,10 @@ const StButton = styled.button`
     background: none;
     cursor: pointer;
     color: var(--gray-2);
+    transition: all 0.3s;
+    &:hover {
+        color: var(--gray-3);
+    }
 `
 
 export default ReviewCreateForm;

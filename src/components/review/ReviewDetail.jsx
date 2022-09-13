@@ -26,6 +26,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
 
+    const [ toggle, setToggle ] = useState(false);
     const [ isClick, setIsClick ] = useState(false);
     const { status, data, error } = useQuery(
         ['/ReviewDetail', musicalId, reviewsId],
@@ -52,6 +53,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
+
     return (
         <StReviewDetailBox>
             <StSideImgBox>
@@ -60,22 +62,30 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
             <StInfoDiv>
                 <StDetailHeader>
                     <StH3>{data?.data.grade}석 {data?.data.floor} {data?.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
-                    <div>
+                    <StHeaderRight>
+                        {toggle ? 
+                        <StToggleButtonBox>
+                            <StModifyButton>수정</StModifyButton>
+                            <button>삭제</button>
+                        </StToggleButtonBox>
+                        :
+                        null    
+                        }
                         <button>
-                            <FontAwesomeIcon icon={faEllipsis} />
+                            <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))}/>
                         </button>
                         <button onClick={onClose}>
                             <FontAwesomeIcon icon={faXmark} />
                         </button>
-                    </div>
+                    </StHeaderRight>
                 </StDetailHeader>
                 {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
                 <>
                 <StDetailHeaderBottom>
                     <StProfileDiv>
-                        <StProfile></StProfile>
+                        <StProfile imgUrl={data?.data.member.profilePic}></StProfile>
                         <StProfileInfo>
-                            <StNickName>천당에서내려온갸갹</StNickName>
+                            <StNickName>{data?.data.member.nickname}</StNickName>
                             <StDate>
                                 {
                                     year > 0 &&
@@ -189,6 +199,34 @@ const StDetailHeader = styled.div`
   margin-bottom: 30px;
 `;
 
+const StHeaderRight = styled.div`
+    display: flex;
+    align-items: center;
+`
+
+const StToggleButtonBox = styled.div`
+    border: 1px solid var(--gray-2);
+    border-radius: 5px;
+    font-size: 12px;
+    button {
+        margin: 0;
+    }
+`
+
+const StModifyButton = styled.button`
+    position: relative;
+    &::after {
+        position: absolute;
+        display: block;
+        content: '';
+        width: 1px;
+        height: 15px;
+        background-color: var(--gray-2);
+        right: 0;
+        top: 7px;
+    }
+`
+
 const StH3 = styled.h3`
     font-size: 18px;
 `
@@ -209,7 +247,9 @@ const StProfile = styled.div`
     width: 60px;
     height: 60px;
     border-radius: 30px;
-    background-color: var(--gray-1);
+    background: ${props => `url(${props.imgUrl})`};
+    background-position: center;
+    background-size: cover;
     margin-right: 10px;
 `
 

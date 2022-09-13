@@ -39,7 +39,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             <StListHeader>
                 <div>댓글 {data.length}</div>
                 <StToggleDiv onClick={() => setIsClick(false)}>
-                    <TextIcon />
+                    <TextIcon fill='#BB63FF'/>
                     <span>본문보기</span>
                 </StToggleDiv>
             </StListHeader>
@@ -114,7 +114,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                     :
                                     null    
                                 }
-                                {(comment.memberId === userId && toggle) ? 
+                                {(comment.memberId === userId) ? 
                                     <StButton onClick={() => toggleHandler(comment.commentId)}>
                                         <FontAwesomeIcon icon={faEllipsis} />
                                     </StButton>
@@ -200,6 +200,12 @@ const StButtonToggleDiv = styled.div`
         border: none;
         padding: 5px;
         cursor: pointer;
+        color: var(--gray-2);
+        transition: all 0.3s;
+        cursor: pointer;
+        &:hover {
+        color: var(--gray-3);
+        }
     }
 `
 
