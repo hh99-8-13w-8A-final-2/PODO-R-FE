@@ -31,11 +31,11 @@ const TheaterInfo = ({onClose, theaterId}) => {
 
     for(var i in theaterInfo.conveniences){
             if(theaterInfo.conveniences[i].type === 'CONVENIENCE'){
-                convenience.push(<li>{theaterInfo.conveniences[i].value}</li>)
+                convenience.push(<li key={i}>{theaterInfo.conveniences[i].value}</li>)
             }else if(theaterInfo.conveniences[i].type === 'DISABLED'){
-                disabled.push(<li>{theaterInfo.conveniences[i].value}</li>)
+                disabled.push(<li key={i}>{theaterInfo.conveniences[i].value}</li>)
             }else{
-                park.push(<li>{theaterInfo.conveniences[i].value}</li>)
+                park.push(<li key={i}   >{theaterInfo.conveniences[i].value}</li>)
             }
         }
 

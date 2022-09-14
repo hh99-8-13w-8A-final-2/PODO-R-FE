@@ -18,7 +18,9 @@ const ReviewPage = () => {
       setModalOn(!modalOn);
       SetReviewsId(reviewsId)
     };
-
+    const modalclose = () =>{
+        setModalOn(!modalOn);
+    }
     return (
         <>
             <Header />
@@ -30,7 +32,7 @@ const ReviewPage = () => {
             <CreateBtn />
             <Portal>
                 {modalOn && 
-                <Modal>
+                <Modal onClose={modalclose} modalOn={modalOn}>
                     <ReviewDetail reviewsId={reviewsId} onClose={handleModal}/>
                 </Modal>}
             </Portal>

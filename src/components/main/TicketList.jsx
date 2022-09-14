@@ -26,7 +26,7 @@ const TicketList = ({status, data, error }) => {
           className="mySwiper"
         >
           {data?.data.map(ticket => (
-                <SwiperSlide>
+                <SwiperSlide  key={ticket.musicalId}>
                     <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
                         <StDiv imgUrl={ticket.musicalPoster}>
                             <StH4>{ticket.musicalName}</StH4>

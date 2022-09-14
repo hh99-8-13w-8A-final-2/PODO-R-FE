@@ -11,6 +11,7 @@ import ReviewDetailEval from './ReviewDetailEval';
 import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import ReviewCreate from './ReviewCreate';
+import ReviewModify from './ReviewModify';
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
     return axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`)
@@ -28,6 +29,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
 
     const [ toggle, setToggle ] = useState(false);
     const [ isClick, setIsClick ] = useState(false);
+    const [ modify, setModify] = useState(false)
     const { status, data, error } = useQuery(
         ['/ReviewDetail', musicalId, reviewsId],
         () => fetchReviewDetail(musicalId, reviewsId),
@@ -56,107 +58,111 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
 
     return (
         <StReviewDetailBox>
-            <StSideImgBox>
-                <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes}/>
-            </StSideImgBox>
-            <StInfoDiv>
-                <StDetailHeader>
-                    <StH3>{data?.data.grade}석 {data?.data.floor} {data?.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
-                    <StHeaderRight>
-                        {toggle ? 
-                        <StToggleButtonBox>
-                            <StModifyButton>수정</StModifyButton>
-                            <button>삭제</button>
-                        </StToggleButtonBox>
-                        :
-                        null    
-                        }
-                        <button>
-                            <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))}/>
-                        </button>
-                        <button onClick={onClose}>
-                            <FontAwesomeIcon icon={faXmark} />
-                        </button>
-                    </StHeaderRight>
-                </StDetailHeader>
-                {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
-                <>
-                <StDetailHeaderBottom>
-                    <StProfileDiv>
-                        <StProfile imgUrl={data?.data.member.profilePic}></StProfile>
-                        <StProfileInfo>
-                            <StNickName>{data?.data.member.nickname}</StNickName>
-                            <StDate>
-                                {
-                                    year > 0 &&
-                                    <span>{currentYear - createYear}년 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month > 0 &&
-                                    <span>{currentMonth - createMonth}달 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date > 6 &&
-                                    <span>{(currentDate - createDate) / 7}주일 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date > 0 &&
-                                    <span>{currentDate - createDate}일 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date === 0 &&
-                                    hours > 0 &&
-                                    <span>{currentHours - createHours}시간 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date === 0 &&
-                                    hours === 0 &&
-                                    minutes >= 0 &&
-                                    <span>방금 전 작성</span>
-                                }
-                            </StDate>
-                        </StProfileInfo>
-                    </StProfileDiv>
-                    <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
-                </StDetailHeaderBottom>
-                <ReviewDetailEval data={data}/>
-                <StP>
-                    {data?.data.reviewContent}
-                </StP>
-                
-                {data?.data.tags[0] !== '' &&
-                    <StTagDiv>
-                        {data?.data.tags.map((tag, index) => (
-                            <div key={index}>{tag}</div>
-                        ))}
-                    </StTagDiv>
+            {modify ? <ReviewModify data={data} onClose={onClose} setModify={setModify}/>:
+            <>
+                <StSideImgBox>
+                    <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes}/>
+                </StSideImgBox>
+                <StInfoDiv>
+                    <StDetailHeader>
+                        <StH3>{data?.data.grade}석 {data?.data.floor} {data?.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
+                        <StHeaderRight>
+                            {toggle ? 
+                            <StToggleButtonBox>
+                                <StModifyButton onClick={() => setModify(true)}>수정</StModifyButton>
+                                <button>삭제</button>
+                            </StToggleButtonBox>
+                            :
+                            null    
+                            }
+                            <button>
+                                <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))}/>
+                            </button>
+                            <button onClick={onClose}>
+                                <FontAwesomeIcon icon={faXmark} />
+                            </button>
+                        </StHeaderRight>
+                    </StDetailHeader>
+                    {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
+                    <>
+                    <StDetailHeaderBottom>
+                        <StProfileDiv>
+                            <StProfile imgUrl={data?.data.member.profilePic}></StProfile>
+                            <StProfileInfo>
+                                <StNickName>{data?.data.member.nickname}</StNickName>
+                                <StDate>
+                                    {
+                                        year > 0 &&
+                                        <span>{currentYear - createYear}년 전 작성</span>
+                                    }
+                                    {
+                                        year === 0 &&
+                                        month > 0 &&
+                                        <span>{currentMonth - createMonth}달 전 작성</span>
+                                    }
+                                    {
+                                        year === 0 &&
+                                        month === 0 &&
+                                        date > 6 &&
+                                        <span>{(currentDate - createDate) / 7}주일 전 작성</span>
+                                    }
+                                    {
+                                        year === 0 &&
+                                        month === 0 &&
+                                        date > 0 &&
+                                        <span>{currentDate - createDate}일 전 작성</span>
+                                    }
+                                    {
+                                        year === 0 &&
+                                        month === 0 &&
+                                        date === 0 &&
+                                        hours > 0 &&
+                                        <span>{currentHours - createHours}시간 전 작성</span>
+                                    }
+                                    {
+                                        year === 0 &&
+                                        month === 0 &&
+                                        date === 0 &&
+                                        hours === 0 &&
+                                        minutes >= 0 &&
+                                        <span>방금 전 작성</span>
+                                    }
+                                </StDate>
+                            </StProfileInfo>
+                        </StProfileDiv>
+                        <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
+                    </StDetailHeaderBottom>
+                    <ReviewDetailEval data={data}/>
+                    <StP>
+                        {data?.data.reviewContent}
+                    </StP>
+                    
+                    {data?.data.tags[0] !== '' &&
+                        <StTagDiv>
+                            {data?.data.tags.map((tag, index) => (
+                                <div key={index}>{tag}</div>
+                            ))}
+                        </StTagDiv>
+                    }
+                </>    
                 }
-            </>    
+                    <StBottomCont>
+                            <StBottomLeftDiv>
+                                <StThumbDiv></StThumbDiv>
+                                <StDl>
+                                    <dt>2022 푸에르자 부르타 웨이라 인 서울 머시기 머시기 머시기</dt>
+                                    <dd>잠실 종합운동장FB씨어터</dd>
+                                    <dd>22.08.30 ~ 22.11.13</dd>
+                                </StDl>
+                            </StBottomLeftDiv>
+                            <StBottomRightDiv>
+                                <div><Like fill='#000'/><span>200</span></div>
+                                <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>100</span></div>
+                            </StBottomRightDiv>
+                    </StBottomCont>
+                </StInfoDiv> 
+            </>
             }
-                <StBottomCont>
-                        <StBottomLeftDiv>
-                            <StThumbDiv></StThumbDiv>
-                            <StDl>
-                                <dt>2022 푸에르자 부르타 웨이라 인 서울 머시기 머시기 머시기</dt>
-                                <dd>잠실 종합운동장FB씨어터</dd>
-                                <dd>22.08.30 ~ 22.11.13</dd>
-                            </StDl>
-                        </StBottomLeftDiv>
-                        <StBottomRightDiv>
-                            <div><Like fill='#000'/><span>200</span></div>
-                            <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>100</span></div>
-                        </StBottomRightDiv>
-                </StBottomCont>
-            </StInfoDiv>
         </StReviewDetailBox>
     );
 };
@@ -202,29 +208,54 @@ const StDetailHeader = styled.div`
 const StHeaderRight = styled.div`
     display: flex;
     align-items: center;
+    position: relative;
 `
 
 const StToggleButtonBox = styled.div`
-    border: 1px solid var(--gray-2);
-    border-radius: 5px;
+    display: flex;
+    position: absolute;
+    right: 80px;
+    border-radius: 8px;
     font-size: 12px;
     button {
+        font-size: 1.2em;
         margin: 0;
+        width: 53px;
+        height: 100%;
+        padding: 10px;
+        border-radius: 0;
+        background-color: transparent;
+        overflow: hidden;
+        border: 1px solid var(--gray-1);
+        &:first-of-type{
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+        }
+        &:last-of-type{
+            border-radius: 0 8px 8px 0;
+            color: var(--error);
+            &:hover{
+                background-color: var(--error);
+                color: var(--white);
+                border-color: var(--error);
+            }
+        }
     }
+    
 `
 
 const StModifyButton = styled.button`
     position: relative;
-    &::after {
+    /* &::after {
         position: absolute;
         display: block;
         content: '';
         width: 1px;
-        height: 15px;
+        height: 12px;
         background-color: var(--gray-2);
         right: 0;
-        top: 7px;
-    }
+        top: 5px;
+    } */
 `
 
 const StH3 = styled.h3`

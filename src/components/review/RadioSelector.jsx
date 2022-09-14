@@ -14,7 +14,7 @@ const RadioSelector = ({query, navigate, params, handleCheck, createSearchParams
             ...query,
             [name]:checked? `${value}` : 0
         })
-        navigate({pathname:"", search:`?${param}`})
+        navigate({pathname:"", search:`?${param}.desc`})
     }
     
     return (
@@ -30,9 +30,9 @@ const RadioSelector = ({query, navigate, params, handleCheck, createSearchParams
                 <label htmlFor="light"> <img src={light} alt="" /> 조명좋음</label>
             </div>
             <div>
-                <input type="radio" id='rank' name='order' value='SCORE' defaultChecked={params.get("order"==="SCORE")} onChange={handleOrderCheck}/>
+                <input type="radio" id='rank' name='sort' value='score' defaultChecked={params.get("order"==="score")} onChange={handleOrderCheck}/>
                 <label htmlFor="rank"> <img src={up_small} alt="" className='up_small'/> 평점좋은순 </label>
-                <input type="radio" id='new' name='order' value='RECENT'  defaultChecked={params.get("order"==="RECENT")} onChange={handleOrderCheck} />
+                <input type="radio" id='new' name='sort' value='createdAt'  defaultChecked={params.get("order"==="createdAt")} onChange={handleOrderCheck} />
                 <label htmlFor="new"> <img src={up_small} alt=""  className='up_small' /> 최신순 </label>
             </div>  
         </>
