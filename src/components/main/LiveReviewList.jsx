@@ -4,9 +4,12 @@ import LiveReview from './LiveReview';
 import axios from 'axios';
 import { useQuery } from "react-query"
 
+const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
 
 const fetchLiveReviews = () => {
-    return axios.get('http://3.39.240.159/api/reviews/live')
+    return axios.get(`${URI.BASE}/api/reviews/live`)
   }
 
 const LiveReviewList = () => {
@@ -21,7 +24,6 @@ const LiveReviewList = () => {
         }
     )
 
-    console.log(data)
 
     return (
         <StReviewBox>

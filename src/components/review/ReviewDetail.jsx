@@ -16,13 +16,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
+const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
+
 const fetchReviewDetail = (musicalId, reviewsId) => {
     const Authorization = localStorage.getItem('accessToken');
     const headers = {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    return axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    return axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
 }
 
 const deleteReviews = async (deleteId) => {
@@ -32,7 +36,7 @@ const deleteReviews = async (deleteId) => {
         Authorization: `${Authorization}`,
     }
     const { musicalId, reviewsId } = deleteId
-    const response = await axios.delete(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
     return response
 }
 
@@ -42,7 +46,7 @@ const likeReviews = async (reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.post(`http://3.39.240.159/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers })
+    const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers })
     return response
 }
 
@@ -52,7 +56,7 @@ const unLikeReviews = async (reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.delete(`http://3.39.240.159/api/hearts?reviewId=${reviewsId}`, { headers: headers })
+    const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers })
     return response
 }
 

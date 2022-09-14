@@ -7,8 +7,12 @@ import { useQuery } from 'react-query'
 import pageRigth from '../../assets/img/pageRight.svg'
 import pageLeft from '../../assets/img/pageLeft.svg'
 
+const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
+
 const fetchNotice = pageNumber => {
-    return axios.get(`http://3.39.240.159/api/notices?size=4&page=${pageNumber}`)
+    return axios.get(`${URI.BASE}/api/notices?size=4&page=${pageNumber}`)
 }
 
 const NoticeList = () => {

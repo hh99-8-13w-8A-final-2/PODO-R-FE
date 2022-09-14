@@ -81,6 +81,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             }
         )
 
+        console.log(data)
+
     useEffect(() => {
         if (inView) fetchNextPage();
     }, [inView]);
@@ -250,8 +252,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                 </StDiv>
                             )
                         })}
-                        </Fragment>
                         <div ref={ref}></div>
+                        </Fragment>
                     </StCommentList>
                 )
             })}

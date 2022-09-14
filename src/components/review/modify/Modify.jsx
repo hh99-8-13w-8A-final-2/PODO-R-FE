@@ -32,9 +32,12 @@ const Modify = ({ data, setModify }) => {
             floor: '1F'
         }
     });
+    const URI = {
+        BASE : process.env.REACT_APP_BASE_URI
+      }
     console.log(data)
     const getSeat = async () => {
-        const res = await axios.get(`http://3.39.240.159/api/theaters/${musicalId}/seats`)
+        const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
         const data = res.data // 전체 좌석정보
         setData(data)
         for (var i in data) {

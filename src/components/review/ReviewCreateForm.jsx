@@ -12,8 +12,11 @@ const postComment = async(new_comment) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
+    const URI = {
+        BASE : process.env.REACT_APP_BASE_URI
+      }
     const { reviewId, content } = new_comment
-    const {data} = await axios.post(`http://3.39.240.159/api/comments?reviewId=${reviewId}`, content, {headers: headers})
+    const {data} = await axios.post(`${URI.BASE}/api/comments?reviewId=${reviewId}`, content, {headers: headers})
     return data
   }
 
