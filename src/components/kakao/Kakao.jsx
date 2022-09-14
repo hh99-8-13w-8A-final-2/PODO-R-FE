@@ -5,17 +5,19 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Buffer } from "buffer";
 import { login } from "../../redux/modules/userSlice";
+import { useState } from "react";
 
 const Kakao = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
+  const [userProfile, setUserProfile] = useState();
 
   console.log(code);
 
   const URI = {
-    BASE : process.env.REACT_APP_BASE_URL
+    BASE : process.env.REACT_APP_BASE_URI
   }
 
   const kakaoLogin = async () => {
@@ -25,7 +27,7 @@ const Kakao = () => {
       );
       console.log(response);
       const accessToken = response.headers.authorization;
-      const refreshToken = response.headers[`Refresh-Token`];
+      const refreshToken = response.headers[`refresh-token`];
       const nickname = response.data.nickname;
       const profilePic = response.data.profilePic;
       const userId = response.data.id;

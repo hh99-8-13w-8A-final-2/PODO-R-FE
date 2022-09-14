@@ -1,29 +1,53 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
 
-const MyTicketList = () => {
+const MyTicketList = ({ setMyReviewData }) => {
 
 
   const URI = {
     BASE : process.env.REACT_APP_BASE_URI
   }
 
+  const [data, setData] = useState();
+  const [reviewData, setReviewData] = useState([]);
+  const [musicalId, setMusicalId] = useState("");
+  
 
     
-  const MyTicketFind = async () => {
-    try {
-      const response = await axios.get(
-        `${URI.BASE}/api/mypage/reviews`
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
+  const MyMusicalFind = async () => {
+    const response = await axios({
+      method: "get",
+      url: `${URI.BASE}/api/mypage/musicals`,
+      headers: {
+        Authorization: localStorage.getItem("accessToken"),
+      }
+    });
+    setData(response.data)
   };
+
+  
+
+  const GetMyReview = (getMusicalId) => {
+    const MyDetailReview = async () => {
+      const response2 = await axios({
+        method: "get",
+        url: `${URI.BASE}/api/mypage/${getMusicalId}/reviews`,
+        headers: {
+          Authorization: localStorage.getItem("accessToken"),
+        },
+      });
+      setMyReviewData(response2.data)
+    };
+    MyDetailReview()
+  }
+  
+
+// console.log("123123123", reviewData)
+
   useEffect(() => {
-    MyTicketFind();
+    MyMusicalFind();
   }, []);
 
 
@@ -33,11 +57,7 @@ const MyTicketList = () => {
     <div>
       <StH3>내가 관람한 공연</StH3>
       <StMyTicketList>
-        <MyTicket />
-        <MyTicket />
-        <MyTicket />
-        <MyTicket />
-        <MyTicket />
+        <MyTicket data={data} GetMyReview = {GetMyReview}/>
       </StMyTicketList>
     </div>
   );
@@ -46,9 +66,7 @@ const MyTicketList = () => {
 export default MyTicketList;
 
 const StMyTicketList = styled.div`
-  width: 1400px;
-  /* height: 200px; */
-  /* background-color: white; */
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;

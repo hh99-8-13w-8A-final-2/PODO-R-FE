@@ -20,19 +20,18 @@ const KaKaoLogOut = () => {
   };
 
   const URI = {
-    BASE : process.env.REACT_APP_BASE_URL
-  }
+    BASE: process.env.REACT_APP_BASE_URI,
+  };
 
   console.log(isLogin);
 
-  const onLogoutHandler = async () => {
-    const response = await axios({
+  const onLogoutHandler = () => {
+    axios({
       method: "post",
       url: `${URI.BASE}/api/member/logout`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
-        'Refresh-Token': localStorage.getItem("refreshToken"),
-        // RefreshToken: localStorage.getItem("RefreshToken"),
+        "Refresh-Token": localStorage.getItem("refreshToken"),
       },
     });
     dispatch(logout());
@@ -41,7 +40,6 @@ const KaKaoLogOut = () => {
     localStorage.removeItem("userId");
     localStorage.removeItem("nickname");
     localStorage.removeItem("profilePic");
-    // alert("로그아웃 되었습니다.");
     navigate("/");
   };
 
@@ -92,7 +90,6 @@ const StLoginTxt = styled.span`
   cursor: pointer;
 `;
 
-
 const StLogOutContainer = styled.div`
   button {
     background-color: transparent;
@@ -102,7 +99,7 @@ const StLogOutContainer = styled.div`
     border: var(--gray-2) 1.5px solid;
     margin: 0 5px;
     color: var(--gray-2);
-    transition: all .3s;
+    transition: all 0.3s;
     cursor: pointer;
     margin-bottom: 20px;
     &:hover {
@@ -114,7 +111,4 @@ const StLogOutContainer = styled.div`
   p {
     padding: 40px 100px;
   }
-
-
-
-`
+`;

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Buffer } from "buffer";
+import axios from "axios";
+
 
 const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
@@ -9,7 +11,11 @@ const UserProfile = () => {
 
   const [newNickName, setNewNickName] = useState();
   const [isShow, setIsShow] = useState(false);
+  const [data, setData] = useState();
 
+  const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
   const onChangeHandler = (e) => {
     setNewNickName(e.target.value);
   };
@@ -18,14 +24,39 @@ const UserProfile = () => {
   };
 
   const onEditHandler = () => {
+    if(
+      newNickName.trim() === "" 
+    ) {
+      return alert("asd")
+    }
+    const MyDetailReview = async () => {
+      const response = await axios({
+        method: "put",
+        url: `${URI.BASE}/api/mypage/update`,
+        headers: {
+          Authorization: localStorage.getItem("accessToken"),
+        },
+        data : {
+          nickname : newNickName
+        }
+      });
+    };
+    MyDetailReview()
     localStorage.removeItem("nickname");
     localStorage.setItem("nickname", newNickName);
     setNewNickName("");
     setIsShow((prev) => !prev)
   };
 
+
+  
+
+
+
+
+
   return (
-    <div>
+    <form>
       {isShow === false ? (
         <div>
           <StUserProfile>
@@ -40,18 +71,19 @@ const UserProfile = () => {
           <StUserProfile>
             <StThumb imgUrl={profilePic}></StThumb>
             <StUserNickName>
-              {nickname} 님 <button onClick={onEditHandler}>수정</button>
-            </StUserNickName>
             <input
               type="text"
               onChange={onChangeHandler}
-              value={newNickName}
-              placeholder="닉네임을 입력하세요"
-            />
+              placeholder={nickname}
+              required
+            /> 
+            <button onClick={() => onEditHandler()}>수정</button>
+            </StUserNickName>
+            
           </StUserProfile>
         </div>
       )}
-    </div>
+    </form>
   );
 };
 
@@ -74,7 +106,7 @@ export default UserProfile;
 //     }
 // `
 const StUserProfile = styled.div`
-  width: 1400px;
+  width: 100%;
   height: 200px;
   display: flex;
   flex-direction: column;
@@ -87,6 +119,7 @@ const StThumb = styled.div`
   height: 100px;
   width: 100px;
   margin: 10px;
+  border-radius: 8px;
   background: ${(props) => `url(${props.imgUrl})`};
   background-position: center;
   background-size: cover;
