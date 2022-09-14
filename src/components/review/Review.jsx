@@ -61,16 +61,6 @@ const Review = ({ handleModal }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-<<<<<<< HEAD
-=======
-    const handleMouseEnter = (idx) => {
-        const newArr = Array(data?.pages[0].total).fill(false)
-        //console.log(data?.pages.total)
-        newArr[idx] = true;
-        setIshover(newArr)
-    }
-
->>>>>>> upstream/dev
 
 
 

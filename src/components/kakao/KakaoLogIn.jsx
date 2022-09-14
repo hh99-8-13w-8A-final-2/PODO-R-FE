@@ -6,6 +6,8 @@ import ModalPortal from "../../assets/modal/Portal";
 import OAuth from "./Oauth";
 import { useSelector } from "react-redux";
 import loginIcon from '../../assets/img/login.svg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
@@ -29,7 +31,12 @@ const KakaoLogin = () => {
 
       <ModalPortal>
         {signupModalOn && (
-          <Modal onClose={handleModal}>
+          <Modal>
+            <StLoginBox>
+              <button onClick={handleModal}>
+                <FontAwesomeIcon icon={faXmark}/>
+              </button>
+            </StLoginBox>
             <OAuth />
           </Modal>
         )}
@@ -69,3 +76,23 @@ const StLoginIcon = styled.div`
 const StLoginTxt = styled.span`
     cursor: pointer;
 `
+
+const StLoginBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: flex-end;
+  padding: 12px;
+  button {
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1.5em;
+    color: var(--gray-2);
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: var(--gray-3);
+    }
+  }
+`;

@@ -19,6 +19,7 @@ const Router = () => {
                 <Route path='/mypage/:userId' element={<MyPage/>} />
                 <Route path='/oauth/kakao' element={<Kakao/>} />
                 <Route path='/oauth/twitter' element={<Twitter/>} />
+                {/* <Route path='/mypage/:musicalsId/reviews' element={<ReviewPage/>} /> */}
             </Routes>
         </BrowserRouter>
     );
