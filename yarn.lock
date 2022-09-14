@@ -9379,6 +9379,16 @@
     "picocolors" "^1.0.0"
     "stable" "^0.1.8"
 
+"sweetalert2-react-content@^5.0.3":
+  "integrity" "sha512-DQXblZn0LHTvmaZquNQncZIE3Ljox85sAKKbXjYlDyFejyOibHwprAVvtQQpAUG3bgvyDUeAOE/BDFcVx6KUow=="
+  "resolved" "https://registry.npmjs.org/sweetalert2-react-content/-/sweetalert2-react-content-5.0.3.tgz"
+  "version" "5.0.3"
+
+"sweetalert2@^11.0.0", "sweetalert2@^11.4.33":
+  "integrity" "sha512-gnXH7c7xFzs9BtmHBVH4Fl/cEKhOhf4gv6UuZpFqUoFWtwIKG5sjNkcDNYW+8v3wyFestLab5qI4i1H1MkN0Pg=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.4.33.tgz"
+  "version" "11.4.33"
+
 "swiper@^8.3.2":
   "integrity" "sha512-8wsC7ORYvVSnLUoxs2+xmfLrDPNjBVQXMCFbOlqtHeON6wtu/blOyySDr8TCBCdse1bdcIbn7m8xJNxVFL8o4Q=="
   "resolved" "https://registry.npmjs.org/swiper/-/swiper-8.3.2.tgz"

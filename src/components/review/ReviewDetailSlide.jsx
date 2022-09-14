@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import styled from 'styled-components';
 
-const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes }) => {
+const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, nickname }) => {
     const swiperRef = useRef(null)
     console.log(data)
 
@@ -44,7 +44,7 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes })
                 <StContentDiv >
                     <div>
                         <StHeader>
-                            <StUserNameDiv>천당에서내려온</StUserNameDiv>
+                            <StUserNameDiv>{nickname}</StUserNameDiv>
                             <StDate>
                             {
                                     year > 0 &&
@@ -64,7 +64,7 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes })
                                 {
                                     year === 0 &&
                                     month === 0 &&
-                                    date > 0 &&
+                                    date > 0 && date < 7 &&
                                     <span>{date}일 전 작성</span>
                                 }
                                 {
