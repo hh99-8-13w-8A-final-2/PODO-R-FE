@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
@@ -79,8 +79,8 @@ const Review = ({ handleModal }) => {
                                 <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId)}>
                                     <StThumbDiv imgUrl={data.imgUrl}>
                                         <StUtillDiv>
-                                            <Like fill='#fff'/><span>200</span>
-                                            <Comment fill='#fff'/><span>100</span>
+                                            <Like fill='#fff'/><span>{data.heartCount}</span>
+                                            <Comment fill='#fff'/><span>{data.commentCount}</span>
                                         </StUtillDiv>
                                     </StThumbDiv>
                                     <StInfoBox>
@@ -104,7 +104,7 @@ const Review = ({ handleModal }) => {
                                             {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
-                                            currentDate - createDate > 0 &&
+                                            currentDate - createDate > 0 && currentDate - createDate < 7 &&
                                             <span>{(currentDate - createDate)}일 전</span>
                                             }
                                             {
@@ -112,7 +112,7 @@ const Review = ({ handleModal }) => {
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate === 0 &&
                                             currentHours - createHours > 0 &&
-                                            <span>방금 전</span>
+                                            <span>{currentHours - createHours}시간 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&

@@ -1,11 +1,14 @@
 import axios from 'axios';
 import { useQuery } from "react-query";
+import { useMutation, useQueryClient } from "react-query"
 import React from 'react';
 import styled from 'styled-components';
 import { ReactComponent as TextIcon } from '../../assets/img/textIcon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import { useForm } from "react-hook-form"
+import { toast } from 'react-toastify';
 
 const getComments = async (reviewId) => {
     const { data } = await axios.get(`http://3.39.240.159/api/comments?reviewId=${reviewId}`);
@@ -13,18 +16,59 @@ const getComments = async (reviewId) => {
     return data
 }
 
+const postModifyedComment = async(new_comment) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const { modifyId, content } = new_comment
+    const {data} = await axios.put(`http://3.39.240.159/api/comments/${modifyId}`, content, {headers: headers})
+    return data
+}
+
+const deleteComment = async(commentId) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const response = await axios.delete(`http://3.39.240.159/api/comments/${commentId}`, {headers: headers})
+    return response
+}
+
+
 const ReviewCreateList = ({ setIsClick, reviewId }) => {
     const [ id, setId ] = useState('');
     const [ modifyId, setModifyId ] = useState('');
     const [ toggle, setToggle ]  = useState(false);
     const userId = parseInt(localStorage.getItem('userId')) 
+    
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
     let currentMonth = today.getMonth() + 1;  // 월
     let currentDate = today.getDate();  // 날짜
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
+
     const { status, data, error } = useQuery(["comments", reviewId], () => getComments(reviewId), { refetchOnWindowFocus: false })
+    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const black_pattern = /^\s+|\s+$/g;
+    const isBlank = (value) => (
+        value.replace(black_pattern, '') === "" ? false : true
+    )
+
+    const queryClient = useQueryClient()
+    const { mutate } = useMutation(postModifyedComment, {
+        onSuccess: () => {
+            queryClient.invalidateQueries("comments")
+        }
+    })
+    const deleteMutation = useMutation((commentId) => deleteComment(commentId), {
+        onSuccess: () => {
+            queryClient.invalidateQueries("comments")
+        }
+    })
 
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
@@ -32,6 +76,29 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     const toggleHandler = (commentId) => {
         setId(commentId);
         setToggle(!toggle);
+        setModifyId('');
+    }
+
+    const onSubmit = (data) => {
+        toast.success("수정이 완료되었습니다", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_RIGHT
+        })
+        const modify_comment = {
+            content: data.modify,
+            modifyId: modifyId,
+        }
+        mutate(modify_comment)
+        setToggle(!toggle)
+        reset({ modify: "" })
+    }
+
+    const deleteHandler = (commentId) => {
+        deleteMutation.mutate(commentId)
+        toast.success("댓글 삭제되었습니다", {
+            autoClose: 3000,
+            position: toast.POSITION.TOP_RIGHT
+        })
     }
 
     return (
@@ -53,6 +120,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                     const createMinute = convertToDate.getMinutes();    
                     return(
                     <StDiv key={comment.commentId}>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
                             <StCommentHeader>
                                 <StUserImg imgUrl={comment.profilePic}></StUserImg>
@@ -104,18 +172,18 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                         {modifyId === comment.commentId ? 
                                         <button>완료</button> 
                                         : 
-                                        <button onClick={() => setModifyId(comment.commentId)}>수정</button>}
+                                        <button onClick={() => setModifyId(comment.commentId)} type="button" key="notsubmit">수정</button>}
                                         {modifyId === comment.commentId ? 
-                                        <button onClick={() => setModifyId('')}>취소</button>
+                                        <button onClick={() => setModifyId('')} type='button'>취소</button>
                                         : 
-                                        <button>삭제</button>
+                                        <button type='button' onClick={() => deleteHandler(comment.commentId)}>삭제</button>
                                         }
                                     </StButtonToggleDiv>
                                     :
                                     null    
                                 }
                                 {(comment.memberId === userId) ? 
-                                    <StButton onClick={() => toggleHandler(comment.commentId)}>
+                                    <StButton onClick={() => toggleHandler(comment.commentId)} type='button'>
                                         <FontAwesomeIcon icon={faEllipsis} />
                                     </StButton>
                                     :
@@ -125,13 +193,20 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                         </div>
                         {(modifyId === comment.commentId) && toggle?
                         <StCommentContDiv>
-                            <input/>
+                                <StModifyInput
+                                    type="text" 
+                                    placeholder='수정할 내용을 입력하세요'
+                                    {...register("modify", { required: true, validate: value => isBlank(value) })}
+                                />
+                                {errors.comment && errors.comment.type === "required" && <p>댓글 내용을 입력해 주세요~</p>}
+                                {errors.comment && errors.comment.type === "validate" && <p>공백만 입력되었어요!</p>}
                         </StCommentContDiv>
                         :
                         <StCommentContDiv>
                             <p>{comment.content}</p>
                         </StCommentContDiv>
                         }
+                    </form>
                     </StDiv>
                 )})}
             </StCommentList>
@@ -258,6 +333,11 @@ const StCommentContDiv = styled.div`
         font-size: 14px;
         width: 434px;
     }
+`
+
+const StModifyInput = styled.input`
+    background-color: #eee;
+    width: 350px;
 `
 
 export default ReviewCreateList;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "react-query"
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 
 const postComment = async(new_comment) => {
@@ -28,6 +28,8 @@ const ReviewCreateForm = ({ reviewId }) => {
     const { mutate } = useMutation(postComment, {
         onSuccess: () => {
             queryClient.invalidateQueries("comments")
+            queryClient.invalidateQueries("reviews")
+            queryClient.invalidateQueries("/ReviewDetail")
         }
     })
 
@@ -51,7 +53,6 @@ const ReviewCreateForm = ({ reviewId }) => {
 
     return (
         <>
-            <ToastContainer/>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <StDiv>
                     <div>
