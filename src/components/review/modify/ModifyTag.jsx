@@ -1,11 +1,15 @@
-import React from 'react';
-import { useState } from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+const ModifyTag = ({ setTagList, tagList, data }) => {
+    useEffect(()=>{
+        for(var i in data?.data.tags){
+            tagList.push(data?.data.tags[i])
+        }
+    },[])
 
-const Tag = ({ setTagList, tagList }) => {
     const handelKeyDown = (e) => {
         if (e.keyCode !== 32) return
         const value = e.target.value
@@ -34,7 +38,8 @@ const Tag = ({ setTagList, tagList }) => {
     )
 };
 
-export default Tag;
+export default ModifyTag;
+
 
 const StTagDiv = styled.div`
     margin-top: 10px;
@@ -44,8 +49,8 @@ const StTagDiv = styled.div`
     gap:2px;
     
     .tagObject{
-        background-color: var(--black);
-        border: 1px solid var(--gray-2);
+        background-color: var(--white);
+        border: 1px solid var(--gray-1);
         color: var(--gray-2);
         display: inline-block;
         padding: 8px 15px;
@@ -62,7 +67,7 @@ const StTagDiv = styled.div`
         >span:last-of-type{
             color: var(--white);
             margin-left: 8px;
-            background-color: var(--gray-3);
+            background-color: var(--gray-1);
             padding: .04em .4em;
             border-radius:20px ;
             font-size: 14px;
@@ -76,6 +81,6 @@ const StTagDiv = styled.div`
     input {
         flex-grow: 1;
         outline: none;
-        background-color: var(--gray-3);
+        background-color: var(--white);
     }
 `

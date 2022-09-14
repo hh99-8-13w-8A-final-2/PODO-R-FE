@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const Modal = ({ children, onClose, theaterModal }) => {
-  console.log(theaterModal)
+const Modal = ({ children, onClose, theaterModal,modalOn }) => {
+  
   return (
     <Background theaterModal>
       <Content>
