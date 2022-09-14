@@ -48,6 +48,7 @@ const GlobalStyle = createGlobalStyle`
     /* 임의의 영역 생성 */
     ::-webkit-scrollbar {
         width: 7px;  /* 스크롤바의 너비 */
+        height: 7px;
     }
 
     ::-webkit-scrollbar-thumb {

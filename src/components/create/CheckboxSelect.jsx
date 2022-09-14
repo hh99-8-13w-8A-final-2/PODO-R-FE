@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 const CheckboxSelect = () => {
+    const onChang = (e) =>{
+        console.log(e.target.value)
+    }
     return (
         <StCheckbox>
                 <h4>추가선택</h4>
-                <input type="checkbox" id='block' name='block' />
+                <input type="checkbox" id='block' name='block' onChange={onChang} />
                 <label htmlFor="block">#시야방해있음</label>
                 <input type="checkbox" id='operaGlass' name='operaGlass'/>
                 <label htmlFor="operaGlass">#오페라글라스필수</label>

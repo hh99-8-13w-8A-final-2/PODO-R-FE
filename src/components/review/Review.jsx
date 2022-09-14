@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
@@ -10,9 +10,15 @@ import { ReactComponent as Sound } from '../../assets/img/sound.svg'
 import { ReactComponent as Light } from '../../assets/img/light.svg'
 import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
+import { useInView } from "react-intersection-observer";
 
 const fetchReviews = async (pageParam, musicalId) => {
-    const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`);
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
@@ -31,6 +37,7 @@ const Review = ({ handleModal }) => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(3, 1).toString()
 
+    // 현재 시간 정보
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
     let currentMonth = today.getMonth() + 1;  // 월
@@ -38,6 +45,7 @@ const Review = ({ handleModal }) => {
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
 
+    const { ref, inView } = useInView();
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
@@ -57,11 +65,13 @@ const Review = ({ handleModal }) => {
                 }
             }
         )
+    
+    useEffect(() => {
+        if(inView) fetchNextPage();
+    }, [inView]);
 
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
-
-
 
 
     return (
@@ -81,8 +91,8 @@ const Review = ({ handleModal }) => {
                                 <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId)}>
                                     <StThumbDiv imgUrl={data.imgUrl}>
                                         <StUtillDiv>
-                                            <Like fill='#fff'/><span>200</span>
-                                            <Comment fill='#fff'/><span>100</span>
+                                        {data.heartChecked ? <><Like fill='#BB63FF'/><span>{data.heartCount}</span></> : <><Like fill='#fff'/><span>{data.heartCount}</span></>}
+                                        <Comment fill='#fff'/><span>{data.commentCount}</span>
                                         </StUtillDiv>
                                     </StThumbDiv>
                                     <StInfoBox>
@@ -100,10 +110,14 @@ const Review = ({ handleModal }) => {
                                             {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
-                                            currentDate - createDate > 6 ?
+                                            currentDate - createDate > 6 &&
                                             <span>{(currentDate - createDate)/7}주일 전</span>
-                                            :
-                                            <span>{currentDate - createDate}일 전</span>
+                                            }
+                                            {
+                                            currentYear - createYear === 0 &&
+                                            currentMonth - createMonth === 0 &&
+                                            currentDate - createDate > 0 && currentDate - createDate < 7 &&
+                                            <span>{(currentDate - createDate)}일 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&
@@ -117,15 +131,23 @@ const Review = ({ handleModal }) => {
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate === 0 &&
                                             currentHours - createHours === 0 &&
-                                            currentMinutes - createMinute >= 0 &&
+                                            currentMinutes - createMinute > 0 &&
                                             <span>방금 전</span>
                                             }
                                         </StDate>
                                         <StIconDiv>
-                                            {data.evaluation.gap === 3 ? <div><Gap fill='#BB63FF'/><span>단차좋음</span></div> : <div><Gap fill='#444'/><span>단차좋음</span></div>}
-                                            {data.evaluation.sight === 3 ? <div><View fill='#BB63FF'/><span>시야좋음</span></div> : <div><View fill='#444'/><span>시야좋음</span></div>}
-                                            {data.evaluation.sound === 3 ? <div><Sound fill='#BB63FF'/><span>음향좋음</span></div> : <div><Sound fill='#444'/><span>음향좋음</span></div>}
-                                            {data.evaluation.light === 3 ? <div><Light fill='#BB63FF'/><span>조명좋음</span></div> : <div><Light fill='#444'/><span>조명좋음</span></div>}
+                                            {data.evaluation.gap === 3 && <div><Gap fill='#BB63FF'/><span>단차좋음</span></div>}
+                                            {data.evaluation.gap === 2 && <div><Gap fill='#444'/><span>단차보통</span></div>}
+                                            {data.evaluation.gap === 1 && <div><Gap fill='#444'/><span>단차나쁨</span></div>}
+                                            {data.evaluation.sight === 3 && <div><View fill='#BB63FF'/><span>시야좋음</span></div>}
+                                            {data.evaluation.sight === 2 && <div><View fill='#444'/><span>시야보통</span></div>}
+                                            {data.evaluation.sight === 1 && <div><View fill='#444'/><span>시야나쁨</span></div>}
+                                            {data.evaluation.sound === 3 && <div><Sound fill='#BB63FF'/><span>음향좋음</span></div>}
+                                            {data.evaluation.sound === 2 && <div><Sound fill='#444'/><span>음향보통</span></div>}
+                                            {data.evaluation.sound === 1 && <div><Sound fill='#444'/><span>음향나쁨</span></div>}
+                                            {data.evaluation.light === 3 && <div><Light fill='#BB63FF'/><span>조명좋음</span></div>}
+                                            {data.evaluation.light === 2 && <div><Light fill='#444'/><span>조명보통</span></div>}
+                                            {data.evaluation.light === 1 && <div><Light fill='#444'/><span>조명나쁨</span></div>}
                                         </StIconDiv>
                                     </StInfoBox>
                                 </StReviewDiv>
@@ -134,17 +156,15 @@ const Review = ({ handleModal }) => {
                     </StWrap>
                 )
             })}
-            <StMoreButton
-                type="button"
-                onClick={() => fetchNextPage()}
-                disabled={!hasNextPage || isFetchingNextPage}
+            <StMoreDiv
+                ref={ref}
             >
                 {isFetchingNextPage
                     ? "Loading more..."
                     : hasNextPage
                         ? "더보기"
                         : "Nothing more to load"}
-            </StMoreButton>
+            </StMoreDiv>
         </>
     );
 };
@@ -214,12 +234,12 @@ const StDate = styled.div`
 
 const StIconDiv = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
+    width: 210px;
     div {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-right: 10px;
         &:last-child {
             margin-right: 0;
         }
@@ -230,13 +250,12 @@ const StIconDiv = styled.div`
     }
 `
 
-const StMoreButton = styled.button`
+const StMoreDiv = styled.button`
     width: 1360px;
     margin: 20px;
     background-color: var(--black);
     border: 1px solid var(--gray-2);
     padding: 10px;
     color: var(--white);
-    cursor: pointer;
     border-radius: 10px;
 `

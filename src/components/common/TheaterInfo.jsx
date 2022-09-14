@@ -2,16 +2,16 @@ import axios from 'axios';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import TheaterMap from './TheaterMap';
 import styled from "styled-components";
 import CONVENIENCE from '../../assets/img/CONVENIENCE.svg'
 import DISABLED from '../../assets/img/DISABLED.svg'
 import PARK from '../../assets/img/PARK.svg'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
-const TheaterInfo = () => {
-    const [signupModalOn, setSignupModalOn] = useState(false);
+
+const TheaterInfo = ({onClose, theaterId}) => {
     const [theaterInfo, setTheaterInfo] = useState({
         theaterName:'',
         theaterAddr:'',
@@ -23,24 +23,19 @@ const TheaterInfo = () => {
     const convenience = []
     const disabled = []
     const park = [] 
-
     const getTheater = async() => {
-        const res = await axios.get(`http://3.39.240.159/api/theaters/2`)
+        const res = await axios.get(`http://3.39.240.159/api/theaters/${theaterId}`)
         setTheaterInfo(res.data)
-        console.log(res.data)
 
     }
 
     for(var i in theaterInfo.conveniences){
             if(theaterInfo.conveniences[i].type === 'CONVENIENCE'){
-                convenience.push(<li>{theaterInfo.conveniences[i].value}</li>)
-                console.log(convenience)
+                convenience.push(<li key={i}>{theaterInfo.conveniences[i].value}</li>)
             }else if(theaterInfo.conveniences[i].type === 'DISABLED'){
-                disabled.push(<li>{theaterInfo.conveniences[i].value}</li>)
-                console.log(disabled)
+                disabled.push(<li key={i}>{theaterInfo.conveniences[i].value}</li>)
             }else{
-                park.push(<li>{theaterInfo.conveniences[i].value}</li>)
-                console.log(park)
+                park.push(<li key={i}   >{theaterInfo.conveniences[i].value}</li>)
             }
         }
 
@@ -50,19 +45,17 @@ const TheaterInfo = () => {
         getTheater()
     },[theaterInfo.la])
     
-    const handleModal = () => {
-        setSignupModalOn(!signupModalOn);
-    };
-    
+
 
     return (
         <StInfoDiv>
             <StLoginBox>
-                <button onClick={handleModal}>
+                <button onClick={onClose}>
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
+                <div className='name'>{theaterInfo.theaterName}</div>
             </StLoginBox>
-            <div className='name'>{theaterInfo.theaterName}</div>
+            {/* <div className='name'>{theaterInfo.theaterName}</div> */}
             <div className='info'>
                 <p><span>전화번호</span> {theaterInfo.theaterTel} </p>
                 <p><span>주소</span>{theaterInfo.theaterAddr}</p>
@@ -78,13 +71,13 @@ const TheaterInfo = () => {
                 <div className='DISABLED'>
                 {disabled.length !== 0 ? 
                     <img src={DISABLED} alt="" />
-                    :<></>}
+                    :null}
                     <div>{disabled}</div>
                 </div>
                 <div className='PARK'>
                 {park.length !== 0 ? 
                     <img src={PARK} alt="" />
-                    :<></>}
+                    :null}
                     <div>{park}</div>
                 </div>
             </div>
@@ -98,7 +91,7 @@ const TheaterInfo = () => {
 export default TheaterInfo;
 
 const StInfoDiv = styled.div`
-padding: 20px;
+padding: 40px;
     .name { 
         font-size: 1.2em;
         font-weight: 700;
@@ -144,8 +137,11 @@ padding: 20px;
 const StLoginBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-content: flex-end;
+  align-items: center;
+  flex-direction: row-reverse;
+  animation-name: fadeOut;
   button {
     border: none;
     border-radius: 10px;
@@ -153,6 +149,7 @@ const StLoginBox = styled.div`
     font-size: 1.5em;
     color: var(--gray-2);
     transition: all 0.3s;
+    animation-name: fadeOut;
     cursor: pointer;
     &:hover {
       color: var(--gray-3);

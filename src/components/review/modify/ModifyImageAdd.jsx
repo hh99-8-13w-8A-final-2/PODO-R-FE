@@ -6,8 +6,7 @@ import { faImages } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ImageAdd = ({ imgfiles }) => {
-
+const ModifyImageAdd = ({ imgfiles }) => {
     const [showImages, setShowImages] = useState([]); // 이미지 프리뷰
     const handleAddImages = (event) => {
         const imageLists = event.target.files;
@@ -42,7 +41,7 @@ const ImageAdd = ({ imgfiles }) => {
 
     return (
         <StaddImageDiv>
-            <h4><span style={{ color: 'var(--error)' }}>*</span> 사진 추가 <span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
+            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span> 사진 추가 <span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
             <div className='image'>
                 <label htmlFor="input-file" className='imageAdd' onChange={handleAddImages}>
                     <input type="file" id="input-file" accept="image/png, image/jpeg" name='imgUrls' multiple style={{ display: 'none' }} />
@@ -58,7 +57,8 @@ const ImageAdd = ({ imgfiles }) => {
     );
 };
 
-export default ImageAdd;
+export default ModifyImageAdd;
+
 
 const StaddImageDiv = styled.div`
     h4>span {font-weight:500; font-size: 16px}
@@ -68,7 +68,7 @@ const StaddImageDiv = styled.div`
     .imageAdd{
         width: 100px;
         height: 100px;
-        background-color: var(--gray-3);
+        background-color: #eee;
         border-radius: 8px;
         span{
             color: var(--gray-2);
@@ -82,7 +82,7 @@ const StaddImageDiv = styled.div`
     .imageList{
         width: 100px;
         height: 100px;
-        background-color: var(--gray-3);
+        background-color: var(--gray-1);
         border-radius: 8px;
         margin-left: 10px;
         position: relative;
@@ -91,13 +91,13 @@ const StaddImageDiv = styled.div`
             top: 5px;
             right: 5px;
             font-size: 12px;
-            color: var(--gray-2);
-            background-color: var(--black);
-            padding: 1px 4px;
+            color: var(--white);
+            background-color: var(--gray-1);
+            padding: 3px 6px;
             border-radius: 10px;
             transition: all .3s;
             &:hover{
-                background-color: var(--gray-3);
+                background-color: var(--gray-2);
             }
         }
     }

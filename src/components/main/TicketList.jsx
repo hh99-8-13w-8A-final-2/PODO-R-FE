@@ -1,39 +1,53 @@
 import React from 'react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
+import { Pagination } from "swiper";
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'
 
-
-
-const Ticket = ({status, data, error }) => {
-
+const TicketList = ({status, data, error }) => {
+    
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
-    
 
     return (
-        <StWrapDiv>
-            {data?.data.map(ticket => (
-                <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
-                    <StDiv imgUrl={ticket.musicalPoster}>
-                        <StH4>{ticket.musicalName}</StH4>
-                        <StDiv1>{ticket.musicalTheater}</StDiv1>
-                        <StDiv2>{ticket.openDate.substr(2,8)} ~ {ticket.closeDate.substr(2,8)}</StDiv2>
-                    </StDiv>
-                </Link>
+        <StListDiv>
+        <Swiper
+          slidesPerView={6}
+          spaceBetween={30}
+          centeredSlides={true}
+          pagination={{
+            clickable: true,
+          }}
+          initialSlide={2}
+          //modules={[Pagination]}
+          className="mySwiper"
+        >
+          {data?.data.map(ticket => (
+                <SwiperSlide  key={ticket.musicalId}>
+                    <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
+                        <StDiv imgUrl={ticket.musicalPoster}>
+                            <StH4>{ticket.musicalName}</StH4>
+                            <StDiv1>{ticket.musicalTheater}</StDiv1>
+                            <StDiv2>{ticket.openDate.substr(2,8)} ~ {ticket.closeDate.substr(2,8)}</StDiv2>
+                        </StDiv>
+                    </Link>
+                </SwiperSlide>
             ))}
-        </StWrapDiv>
+        </Swiper>
+      </StListDiv>
     );
 };
 
-const StWrapDiv = styled.div`
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    margin-bottom: 40px;
-    a {
-        text-decoration: none;
-    }
-`
+export default TicketList;
 
+
+
+const StListDiv =styled.div`
+    .swiper-pagination-bullet {background-color:var(--gray-2)}
+`
 const StDiv = styled.div`
     width: 200px;
     height: 280px;
@@ -86,5 +100,3 @@ const StDiv2 = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
 `
-
-export default Ticket;
