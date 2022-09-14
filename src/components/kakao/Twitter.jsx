@@ -5,6 +5,10 @@ import axios from "axios";
 import { login } from "../../redux/modules/userSlice";
 
 const Twitter = () => {
+  
+  const URI = {
+    BASE: process.env.REACT_APP_BASE_URI,
+  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const oauth_token = new URL(window.location.href).searchParams.get(
@@ -13,10 +17,6 @@ const Twitter = () => {
   const oauth_verifier = new URL(window.location.href).searchParams.get(
     "oauth_verifier"
   );
-
-  const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
 
   const TwitterLogin = async () => {
     try {
