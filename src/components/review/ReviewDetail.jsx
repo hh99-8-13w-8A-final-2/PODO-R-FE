@@ -4,16 +4,55 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { useQuery } from "react-query"
+import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useLocation } from 'react-router-dom';
 import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
 import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import ReviewCreate from './ReviewCreate';
+import { ToastContainer ,toast } from 'react-toastify';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
-    return axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`)
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    return axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`, {headers:headers})
+}
+
+const deleteReviews = async(deleteId) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const {musicalId, reviewsId} = deleteId
+    const response = await axios.delete(`http://3.39.240.159/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers})
+    return response
+}
+
+const likeReviews = async(reviewsId) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const response = await axios.post(`http://3.39.240.159/api/hearts?reviewId=${reviewsId}`,{}, { headers: headers})
+    return response
+}
+
+const unLikeReviews = async(reviewsId) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const response = await axios.delete(`http://3.39.240.159/api/hearts?reviewId=${reviewsId}`,{ headers: headers})
+    return response
 }
 
 const ReviewDetail = ({ reviewsId, onClose }) => {
@@ -35,6 +74,64 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
             refetchOnWindowFocus: false,
         }
     )
+    const MySwal = withReactContent(Swal)
+    const queryClient = useQueryClient();
+    const deleteId = {
+        musicalId: musicalId,
+        reviewsId: reviewsId
+    }
+    const deleteReview = useMutation((deleteId) => deleteReviews(deleteId),{
+        onSuccess: () => {
+            queryClient.invalidateQueries("reviews")
+        }}
+    )
+
+    const likeReview = useMutation((reviewsId) => likeReviews(reviewsId),{
+        onSuccess: () => {
+            queryClient.invalidateQueries("/ReviewDetail")
+            queryClient.invalidateQueries("reviews")
+        }}
+    )
+
+    const unLikeReview = useMutation((reviewsId) => unLikeReviews(reviewsId),{
+        onSuccess: () => {
+            queryClient.invalidateQueries("/ReviewDetail")
+            queryClient.invalidateQueries("reviews")
+        }}
+    )
+
+    const deleteHandler = () => {
+        MySwal.fire({
+            title: "정말 삭제하시겠어요?",
+            text: "삭제를 하면 되돌릴 수 없어요!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "네",
+            cancelButtonText: '아니오'
+          }).then((result) => {
+            if(result.isConfirmed) {
+                deleteReview.mutate(deleteId)
+            } 
+          })
+        onClose()       
+    }
+
+    const likeHandler = () => {
+        if (!data?.data.heartChecked) {
+            likeReview.mutate(reviewsId)
+            toast.success("좋아요 +1 ~!", {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER
+            })
+        }else {
+            unLikeReview.mutate(reviewsId)
+            toast.success("좋아요 취소 ㅜㅜ", {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER
+            })
+        }
+    }
+
     console.log(data)
 
     const convertToDate = new Date(data?.data.createdAt);
@@ -56,8 +153,9 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
 
     return (
         <StReviewDetailBox>
+            <ToastContainer/>
             <StSideImgBox>
-                <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes}/>
+                <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes} nickname={data?.data.member.nickname}/>
             </StSideImgBox>
             <StInfoDiv>
                 <StDetailHeader>
@@ -66,7 +164,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                         {toggle ? 
                         <StToggleButtonBox>
                             <StModifyButton>수정</StModifyButton>
-                            <button>삭제</button>
+                            <button onClick={() => deleteHandler()}>삭제</button>
                         </StToggleButtonBox>
                         :
                         null    
@@ -79,7 +177,9 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                         </button>
                     </StHeaderRight>
                 </StDetailHeader>
-                {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
+                {isClick ? 
+                <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> 
+                :
                 <>
                 <StDetailHeaderBottom>
                     <StProfileDiv>
@@ -105,7 +205,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                                 {
                                     year === 0 &&
                                     month === 0 &&
-                                    date > 0 &&
+                                    date > 0 && date < 7 &&
                                     <span>{currentDate - createDate}일 전 작성</span>
                                 }
                                 {
@@ -135,6 +235,8 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                 
                 {data?.data.tags[0] !== '' &&
                     <StTagDiv>
+                        {data?.data.operaGlass && <div>오페라글라스필수</div>}
+                        {data?.data.block && <div>시야방해</div>}
                         {data?.data.tags.map((tag, index) => (
                             <div key={index}>{tag}</div>
                         ))}
@@ -144,16 +246,16 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
             }
                 <StBottomCont>
                         <StBottomLeftDiv>
-                            <StThumbDiv></StThumbDiv>
+                            <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
                             <StDl>
-                                <dt>2022 푸에르자 부르타 웨이라 인 서울 머시기 머시기 머시기</dt>
-                                <dd>잠실 종합운동장FB씨어터</dd>
-                                <dd>22.08.30 ~ 22.11.13</dd>
+                                <dt>{data?.data.musical.musicalName}</dt>
+                                <dd>{data?.data.musical.theaterName}</dd>
+                                <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
                             </StDl>
                         </StBottomLeftDiv>
                         <StBottomRightDiv>
-                            <div><Like fill='#000'/><span>200</span></div>
-                            <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>100</span></div>
+                            <div onClick={() => likeHandler()}>{data?.data.heartChecked ? <Like fill='#BB63FF'/> : <Like fill='#000'/> }<span>{data?.data.heartCount}</span></div>
+                            <div onClick={() => setIsClick(true)}><Comment fill='#000'/><span>{data?.data.commentCount}</span></div>
                         </StBottomRightDiv>
                 </StBottomCont>
             </StInfoDiv>
@@ -316,9 +418,11 @@ const StBottomCont = styled.div`
 const StThumbDiv = styled.div`
     width: 40px;
     height: 40px;
-    background-color: var(--gray-1);
+    background: ${props => `url(${props.imgUrl})`};
     border-radius: 5px;
     margin-right: 8px;
+    background-size: cover;
+    background-position: center;
 `
 
 const StDl = styled.dl`

@@ -39,8 +39,7 @@ const LiveReview = ({ status, reviewList, error }) => {
                 {reviewList?.data.map((review, index) => (
                     <SwiperSlide key={index}>
                         <StReviewBox imgUrl={review.imgUrl}>
-                                <StH3>{review.floor} {review.section}구역 {review.row}열 {review.seat
-    }</StH3>
+                                <StH3>{review.floor} {review.section !== '0' && review.section + '구역'} {review.row}열 {review.seat}</StH3>
                                 <StIconDiv>
                                     {review.reviewScore === 10 && <StPerfectDiv><Perfect/><span>모든게완-벽</span></StPerfectDiv>}
                                     {review.evaluation.gap === 3 && review.reviewScore < 10 ? <div><Gap fill='#fff' /><span>단차좋음</span></div> : null}
