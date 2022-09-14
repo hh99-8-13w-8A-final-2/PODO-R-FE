@@ -25,8 +25,8 @@ const KaKaoLogOut = () => {
 
   console.log(isLogin);
 
-  const onLogoutHandler = async () => {
-    const response = await axios({
+  const onLogoutHandler = () => {
+    axios({
       method: "post",
       url: `${URI.BASE}/api/member/logout`,
       headers: {

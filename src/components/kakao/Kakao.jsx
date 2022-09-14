@@ -27,7 +27,7 @@ const Kakao = () => {
       );
       console.log(response);
       const accessToken = response.headers.authorization;
-      const refreshToken = response.headers[`Refresh-Token`];
+      const refreshToken = response.headers[`refresh-token`];
       const nickname = response.data.nickname;
       const profilePic = response.data.profilePic;
       const userId = response.data.id;

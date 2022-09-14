@@ -24,6 +24,11 @@ const UserProfile = () => {
   };
 
   const onEditHandler = () => {
+    if(
+      newNickName.trim() === "" 
+    ) {
+      return alert("asd")
+    }
     const MyDetailReview = async () => {
       const response = await axios({
         method: "put",
@@ -51,7 +56,7 @@ const UserProfile = () => {
 
 
   return (
-    <div>
+    <form>
       {isShow === false ? (
         <div>
           <StUserProfile>
@@ -66,18 +71,19 @@ const UserProfile = () => {
           <StUserProfile>
             <StThumb imgUrl={profilePic}></StThumb>
             <StUserNickName>
-              {nickname} 님 <button type="submit" onClick={() => onEditHandler()}>수정</button>
-            </StUserNickName>
             <input
               type="text"
               onChange={onChangeHandler}
-              // value={newNickName}
-              placeholder="닉네임을 입력하세요"
-            />
+              placeholder={nickname}
+              required
+            /> 
+            <button onClick={() => onEditHandler()}>수정</button>
+            </StUserNickName>
+            
           </StUserProfile>
         </div>
       )}
-    </div>
+    </form>
   );
 };
 
