@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
@@ -10,9 +10,15 @@ import { ReactComponent as Sound } from '../../assets/img/sound.svg'
 import { ReactComponent as Light } from '../../assets/img/light.svg'
 import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
+import { useInView } from "react-intersection-observer";
 
 const fetchReviews = async (pageParam, musicalId) => {
-    const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`);
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
@@ -31,6 +37,7 @@ const Review = ({ handleModal }) => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(3, 1).toString()
 
+    // 현재 시간 정보
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
     let currentMonth = today.getMonth() + 1;  // 월
@@ -38,6 +45,7 @@ const Review = ({ handleModal }) => {
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
 
+    const { ref, inView } = useInView();
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
@@ -57,6 +65,10 @@ const Review = ({ handleModal }) => {
                 }
             }
         )
+    
+    useEffect(() => {
+        if(inView) fetchNextPage();
+    }, [inView]);
 
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
@@ -79,8 +91,8 @@ const Review = ({ handleModal }) => {
                                 <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId)}>
                                     <StThumbDiv imgUrl={data.imgUrl}>
                                         <StUtillDiv>
-                                            <Like fill='#fff'/><span>{data.heartCount}</span>
-                                            <Comment fill='#fff'/><span>{data.commentCount}</span>
+                                        {data.heartChecked ? <><Like fill='#BB63FF'/><span>{data.heartCount}</span></> : <><Like fill='#fff'/><span>{data.heartCount}</span></>}
+                                        <Comment fill='#fff'/><span>{data.commentCount}</span>
                                         </StUtillDiv>
                                     </StThumbDiv>
                                     <StInfoBox>
@@ -144,17 +156,15 @@ const Review = ({ handleModal }) => {
                     </StWrap>
                 )
             })}
-            <StMoreButton
-                type="button"
-                onClick={() => fetchNextPage()}
-                disabled={!hasNextPage || isFetchingNextPage}
+            <StMoreDiv
+                ref={ref}
             >
                 {isFetchingNextPage
                     ? "Loading more..."
                     : hasNextPage
                         ? "더보기"
                         : "Nothing more to load"}
-            </StMoreButton>
+            </StMoreDiv>
         </>
     );
 };
@@ -240,13 +250,12 @@ const StIconDiv = styled.div`
     }
 `
 
-const StMoreButton = styled.button`
+const StMoreDiv = styled.button`
     width: 1360px;
     margin: 20px;
     background-color: var(--black);
     border: 1px solid var(--gray-2);
     padding: 10px;
     color: var(--white);
-    cursor: pointer;
     border-radius: 10px;
 `

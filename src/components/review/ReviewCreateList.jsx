@@ -121,7 +121,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                     return(
                     <StDiv key={comment.commentId}>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                        <div>
+                        <StCommentHeaderContainer>
                             <StCommentHeader>
                                 <StUserImg imgUrl={comment.profilePic}></StUserImg>
                                 <dl>
@@ -190,7 +190,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                     null
                                 }
                             </StButtonDiv>
-                        </div>
+                        </StCommentHeaderContainer>
                         {(modifyId === comment.commentId) && toggle?
                         <StCommentContDiv>
                                 <StModifyInput
@@ -198,8 +198,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                     placeholder='수정할 내용을 입력하세요'
                                     {...register("modify", { required: true, validate: value => isBlank(value) })}
                                 />
-                                {errors.comment && errors.comment.type === "required" && <p>댓글 내용을 입력해 주세요~</p>}
-                                {errors.comment && errors.comment.type === "validate" && <p>공백만 입력되었어요!</p>}
+                                {errors.modify && errors.modify.type === "required" && <StValidateP>댓글 내용을 입력해 주세요~</StValidateP>}
+                                {errors.modify && errors.modify.type === "validate" && <StValidateP>공백만 입력되었어요!</StValidateP>}
                         </StCommentContDiv>
                         :
                         <StCommentContDiv>
@@ -242,15 +242,17 @@ const StDiv = styled.div`
     padding: 20px 0px;
     display: flex;
     flex-direction: column;
-    div {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+`
+
+const StCommentHeaderContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `
 
 const StButtonDiv = styled.div`
-    
+    display: flex;
+    align-items: center;
 `
 
 const StButtonToggleDiv = styled.div`
@@ -328,16 +330,24 @@ const StButton = styled.button`
 
 const StCommentContDiv = styled.div`
     padding-left: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     p {
         text-align: left;
         font-size: 14px;
         width: 434px;
     }
 `
+const StValidateP = styled.p`
+    color: red;
+`
 
 const StModifyInput = styled.input`
+    display: block;
     background-color: #eee;
     width: 350px;
+    margin-bottom: 10px;
 `
 
 export default ReviewCreateList;
