@@ -23,11 +23,14 @@ const OAuth = () => {
   const TWIT_AUTH_URL = `https://twitter.com/oauth/request_token?client_id=${TWIT_CLIENT_ID}&${CONSUMER_SECRET}&redirect_uri=${TWIT_REDIRECT_URI}&response_type=code`;
   const URL = `https://api.twitter.com/oauth/request_token?oauth_callback=http://127.0.0.1:3000/oauth/twitter`;
 
+  const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
 
 
   async function twitterLogin () {
     const response = await axios.get(
-      `http://3.39.240.159/api/twitter/login`
+      `${URI.BASE}/api/twitter/login`
     );
     window.location.replace(response.data)
   }

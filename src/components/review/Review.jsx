@@ -18,7 +18,10 @@ const fetchReviews = async (pageParam, musicalId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const res = await axios.get(`http://3.39.240.159/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
+    const URI = {
+        BASE : process.env.REACT_APP_BASE_URI
+      }
+    const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;

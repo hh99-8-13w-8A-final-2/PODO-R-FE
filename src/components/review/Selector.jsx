@@ -28,10 +28,13 @@ const Selector = ({handleModal}) => {
     const [selectFloor, setSelectFloor] = useState({value : '0', label:'층'}); //선택한 층
     const [selectSection, setSelectSection] = useState({value : '100', label: '구역'}); //선택한 구역
     const [selectRow, setSelectRow] = useState({value : '0', label: '열'}); //선택한 열
-    const [seatNumber, setSeatNumber] =useState();//입력한 좌석 
+    const [seatNumber, setSeatNumber] =useState();//입력한 좌석
+    const URI = {
+        BASE : process.env.REACT_APP_BASE_URI
+    } 
 
     const getSeat = async() => {
-        const res = await axios.get(`http://3.39.240.159/api/theaters/${musicalId}/seats`)
+        const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
         const data = res.data // 전체 좌석정보
         
         setData(data)
