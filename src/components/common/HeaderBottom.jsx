@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 
 const HeaderBottom = () => {
     let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(3,1).toString()
+    let musicalId = location.pathname.split('/').splice(2,1).toString()
     const [theaterModal, setTheaterModal] = useState(false)
     const [musicals, setMusicals] = useState({
         musicalName: '',

@@ -13,10 +13,13 @@ import ReviewDetail from '../components/review/ReviewDetail';
 const ReviewPage = () => {
     const [modalOn, setModalOn] = useState(false);
     const [reviewsId, SetReviewsId ] = useState('');
+    const [musicalId, SetMusicalId ] = useState('');
 
-    const handleModal = (reviewsId) => {
+    const handleModal = (reviewsId, musicalId) => {
       setModalOn(!modalOn);
-      SetReviewsId(reviewsId)
+      SetReviewsId(reviewsId);
+      SetMusicalId(musicalId);
+      console.log(musicalId)
     };
     const modalclose = () =>{
         setModalOn(!modalOn);
@@ -26,14 +29,14 @@ const ReviewPage = () => {
             <Header />
             <HeaderBottom />
             <Layout>
-                <Selector handleModal={handleModal}/>
+                <Selector handleModal={handleModal} />
             </Layout>
             <Footer />
             <CreateBtn />
             <Portal>
                 {modalOn && 
                 <Modal onClose={modalclose} modalOn={modalOn}>
-                    <ReviewDetail reviewsId={reviewsId} onClose={handleModal}/>
+                    <ReviewDetail reviewsId={reviewsId} musicalId={musicalId} onClose={handleModal}/>
                 </Modal>}
             </Portal>
         </>

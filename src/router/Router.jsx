@@ -13,8 +13,8 @@ const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<MainPage/>} />
-                <Route path='/api/musicals/:musicalsId/reviews/create' element={<CreatePage/>} />
-                <Route path='/api/musicals/:musicalsId/reviews' element={<ReviewPage/>} />
+                <Route path='/musicals/:musicalsId/reviews/create' element={<CreatePage/>} />
+                <Route path='/musicals/:musicalsId/reviews' element={<ReviewPage/>} />
                 <Route path='/*' element={<NotfindPage/>} />
                 <Route path='/mypage/:userId' element={<MyPage/>} />
                 <Route path='/oauth/kakao' element={<Kakao/>} />

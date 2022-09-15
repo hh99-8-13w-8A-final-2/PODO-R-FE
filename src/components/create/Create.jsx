@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Create = () => {
     const navigate = useNavigate();
     let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(3, 1).toString()
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
     const [tagList, setTagList] = useState([]); // 태그 리스트
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보

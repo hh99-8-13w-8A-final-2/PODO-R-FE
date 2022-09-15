@@ -27,8 +27,6 @@ const getComments = async (reviewId, pageParam) => {
         pageData,
         total
     }
-
-
 }
 
 const postModifyedComment = async (new_comment) => {
@@ -146,7 +144,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     return (
         <div>
             <StListHeader>
-                <div>댓글 {data.length}</div>
+                <div>댓글 {data.pages[0].total}</div>
                 <StToggleDiv onClick={() => setIsClick(false)}>
                     <TextIcon fill='#BB63FF' />
                     <span>본문보기</span>
@@ -258,10 +256,10 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                     </StCommentList>
                 )
             })}
-            <div ref={ref}>
+            <StObserverDiv ref={ref}>
                 {isFetchingNextPage && "Loading more..."}
-                {!hasNextPage && "Nothing more to load"}
-            </div>
+                {!hasNextPage && "댓글이 없네요"}
+            </StObserverDiv>
             </StListWrap>
         </div>
     );
@@ -403,6 +401,10 @@ const StModifyInput = styled.input`
     background-color: #eee;
     width: 350px;
     margin-bottom: 10px;
+`
+const StObserverDiv = styled.div`
+    padding: 10px;
+    color: var(--gray-1);
 `
 
 export default ReviewCreateList;
