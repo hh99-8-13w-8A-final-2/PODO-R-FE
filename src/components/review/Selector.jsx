@@ -10,9 +10,9 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 
 
-const Selector = ({handleModal}) => {
+const Selector = ({ handleModal }) => {
     let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(3,1).toString()
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
     const navigate = useNavigate();
     const [params] = useSearchParams();
