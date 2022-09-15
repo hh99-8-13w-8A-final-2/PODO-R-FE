@@ -5,7 +5,6 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from "react-query"
-import { useLocation } from 'react-router-dom';
 import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
 import { ReactComponent as Like } from '../../assets/img/like.svg'
@@ -60,9 +59,8 @@ const unLikeReviews = async (reviewsId) => {
     return response
 }
 
-const ReviewDetail = ({ reviewsId, onClose }) => {
-    let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(3, 1).toString()
+const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
+
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
     let currentMonth = today.getMonth() + 1;  // 월
@@ -70,6 +68,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
 
+    const userId = parseInt(localStorage.getItem('userId'))
     const [toggle, setToggle] = useState(false);
     const [isClick, setIsClick] = useState(false);
     const [modify, setModify] = useState(false)
@@ -120,9 +119,9 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteReview.mutate(deleteId)
+                onClose()
             }
         })
-        onClose()
     }
 
     const likeHandler = () => {
@@ -181,7 +180,7 @@ const ReviewDetail = ({ reviewsId, onClose }) => {
                                     null
                                 }
                                 <button>
-                                    <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))} />
+                                    {data?.data.member.id === userId && <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))} />}
                                 </button>
                                 <button onClick={onClose}>
                                     <FontAwesomeIcon icon={faXmark} />
