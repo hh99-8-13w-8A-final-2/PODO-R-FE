@@ -11,9 +11,6 @@ const MyTicketList = ({ setMyReviewData }) => {
   }
 
   const [data, setData] = useState();
-  const [reviewData, setReviewData] = useState([]);
-  const [musicalId, setMusicalId] = useState("");
-  
 
     
   const MyMusicalFind = async () => {
@@ -39,18 +36,14 @@ const MyTicketList = ({ setMyReviewData }) => {
         },
       });
       setMyReviewData(response2.data)
+      console.log(response2.data)
     };
     MyDetailReview()
   }
-  
-
-// console.log("123123123", reviewData)
 
   useEffect(() => {
     MyMusicalFind();
   }, []);
-
-
 
 
   return (
