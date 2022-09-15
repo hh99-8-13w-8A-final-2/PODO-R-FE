@@ -2,12 +2,19 @@ import React from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
+
+
 const MyTicket = ({ data, GetMyReview }) => {
+
+
+  const setMusicalIdHandler = (musicalId) => {
+    GetMyReview(musicalId)
+  }
 
   return (
     <StMyTicket>
       {data?.content.map((ticket) => (
-        <StTicket key={ticket.musicalId} onClick={()=>GetMyReview(ticket.musicalId)}>
+        <StTicket key={ticket.musicalId} onClick={()=>setMusicalIdHandler(ticket.musicalId)}>
           <StDiv imgUrl={ticket.musicalPoster}>
             <StH3>{ticket.musicalName}</StH3>
             <StDiv1>{ticket.musicalRegion}</StDiv1>

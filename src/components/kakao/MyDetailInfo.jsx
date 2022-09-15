@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { useParams } from "react-router-dom";
 
-const MyDetailInfo = () => {
+// const MyDetailInfo = () => {
 
-    const param = useParams();
-    console.log(param)
+//     const param = useParams();
+//     console.log(param)
 
-  const URI = {
-    BASE: process.env.REACT_APP_BASE_URL,
-  };
+//   const URI = {
+//     BASE: process.env.REACT_APP_BASE_URL,
+//   };
 
-  const [data, setData] = useState();
+//   const [data, setData] = useState();
 
-  const MyDetailReview = async () => {
-    const response = await axios({
-      method: "get",
-      url: `${URI.BASE}/api/mypage/musicalId/reviews`,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
-      },
-    });
-    setData(response.data);
-  };
+//   const MyDetailReview = async () => {
+//     const response = await axios({
+//       method: "get",
+//       url: `${URI.BASE}/api/mypage/musicalId/reviews`,
+//       headers: {
+//         Authorization: localStorage.getItem("accessToken"),
+//       },
+//     });
+//     setData(response.data);
+//   };
 
-  useEffect(() => {
-    MyDetailReview();
-  }, []);
+//   useEffect(() => {
+//     MyDetailReview();
+//   }, []);
 
-  return <div></div>;
-};
+//   return <div></div>;
+// };
 
-export default MyDetailInfo;
+// export default MyDetailInfo;
