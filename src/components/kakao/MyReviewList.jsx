@@ -4,12 +4,11 @@ import MyReview from "./MyReview";
 import axios from "axios";
 import { useState } from "react";
 
-const MyReviewList = ({ myReviewData }) => {
+const MyReviewList = ({ myReviewData, handleModal, musicalId}) => {
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI
   };
 
-  console.log(myReviewData)
 
   const [data, setData] = useState();
 
@@ -32,7 +31,7 @@ const MyReviewList = ({ myReviewData }) => {
     <div>
       <StH3>선택된 공연 리뷰</StH3>
       <StMyReviewList>
-        <MyReview data={data} myReviewData={myReviewData} />
+        <MyReview data={data} myReviewData={myReviewData} handleModal={handleModal} musicalId={musicalId}/>
       </StMyReviewList>
     </div>
   );

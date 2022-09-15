@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
 
-const MyTicketList = ({ setMyReviewData }) => {
+const MyTicketList = ({ setMyReviewData, setMusicalId }) => {
 
 
   const URI = {
@@ -11,9 +11,6 @@ const MyTicketList = ({ setMyReviewData }) => {
   }
 
   const [data, setData] = useState();
-  const [reviewData, setReviewData] = useState([]);
-  const [musicalId, setMusicalId] = useState("");
-  
 
     
   const MyMusicalFind = async () => {
@@ -57,7 +54,7 @@ const MyTicketList = ({ setMyReviewData }) => {
     <div>
       <StH3>내가 관람한 공연</StH3>
       <StMyTicketList>
-        <MyTicket data={data} GetMyReview = {GetMyReview}/>
+        <MyTicket data={data} GetMyReview = {GetMyReview} setMusicalId={setMusicalId}/>
       </StMyTicketList>
     </div>
   );

@@ -7,8 +7,9 @@ import { ReactComponent as View } from "../../assets/img/view.svg";
 import { ReactComponent as Sound } from "../../assets/img/sound.svg";
 import { ReactComponent as Light } from "../../assets/img/light.svg";
 import { useState } from "react";
+import ReviewDetail from "../review/ReviewDetail";
 
-const MyReview = ({ data, myReviewData }) => {
+const MyReview = ({ data, myReviewData, handleModal, musicalId }) => {
   console.log(data);
   console.log(myReviewData);
   const [isShow, setIsShow] = useState(myReviewData);
@@ -19,7 +20,7 @@ const MyReview = ({ data, myReviewData }) => {
         <div>
           <StMyReview>
             {data?.content.map((review) => (
-              <StReview key={review.reviewId}>
+              <StReview key={review.reviewId} onClick={()=>handleModal(review.musicalId)}>
                 <StDiv imgUrl={review.imgUrl}></StDiv>
                 <StH3>
                   {review.grade}석 {review.floor} {review.section}구역{" "}
@@ -39,7 +40,7 @@ const MyReview = ({ data, myReviewData }) => {
         <div>
           <StMyReview>
             {myReviewData?.content.map((myReviewData) => (
-              <StReview key={myReviewData.reviewId}>
+              <StReview key={myReviewData.reviewId} onClick={()=>handleModal(myReviewData.musicalId)}>
                 <StDiv imgUrl={myReviewData.imgUrl}></StDiv>
                 <StH3>
                   {myReviewData.grade}석 {myReviewData.floor}{" "}
