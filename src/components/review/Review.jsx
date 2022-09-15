@@ -38,8 +38,10 @@ const fetchReviews = async (pageParam, musicalId) => {
 const Review = ({ handleModal }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다. 
     let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(3, 1).toString()
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
+    console.log(location)
+    console.log(musicalId)
     // 현재 시간 정보
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
@@ -76,6 +78,7 @@ const Review = ({ handleModal }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
+    console.log(data)
 
     return (
         <>
@@ -91,7 +94,7 @@ const Review = ({ handleModal }) => {
                                 const createHours = convertToDate.getHours();
                                 const createMinute = convertToDate.getMinutes();    
                                 return(
-                                <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId)}>
+                                <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId, data.musicalId)}>
                                     <StThumbDiv imgUrl={data.imgUrl}>
                                         <StUtillDiv>
                                         {data.heartChecked ? <><Like fill='#BB63FF'/><span>{data.heartCount}</span></> : <><Like fill='#fff'/><span>{data.heartCount}</span></>}
@@ -259,6 +262,6 @@ const StMoreDiv = styled.button`
     background-color: var(--black);
     border: 1px solid var(--gray-2);
     padding: 10px;
-    color: var(--white);
+    color: var(--gray-2);
     border-radius: 10px;
 `
