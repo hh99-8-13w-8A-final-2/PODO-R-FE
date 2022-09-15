@@ -3,6 +3,7 @@ import Select from 'react-select'
 import serach from '../../assets/img/serach.svg'
 import styled from 'styled-components';
 import Review from '../../components/review/Review';
+import { useSelector } from "react-redux";
 import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,9 +12,8 @@ import RadioSelector from './RadioSelector';
 
 
 const Selector = ({ handleModal }) => {
+    const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(2, 1).toString()
-
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
@@ -34,7 +34,7 @@ const Selector = ({ handleModal }) => {
     } 
 
     const getSeat = async() => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
+        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const data = res.data // 전체 좌석정보
         
         setData(data)
@@ -54,7 +54,7 @@ const Selector = ({ handleModal }) => {
     }; 
     useEffect(()=>{
         getSeat();
-        //console.log('http://3.39.240.159/api/musicals/1/reviews',query)
+        //console.log('${URI.BASE}/api/musicals/1/reviews',query)
      },[]);
     for (var floor in Data){
         const data1 = Data[floor]
@@ -218,7 +218,7 @@ const Selector = ({ handleModal }) => {
                     <RadioSelector query={query} navigate={navigate} params ={params} handleCheck={handleCheck} createSearchParams={createSearchParams} />
                 </div>
             </StFilterDiv >
-            <Review handleModal={handleModal}/>
+            <Review handleModal={handleModal} theaterId={theaterId}/>
         </div>
     );
 };

@@ -7,7 +7,6 @@ const Event = () => {
         <div>
             <StDiv>
                 <h3>이벤트</h3>
-                <div>더보기</div>
             </StDiv>
             <StEventBanner event={event}></StEventBanner>
         </div>

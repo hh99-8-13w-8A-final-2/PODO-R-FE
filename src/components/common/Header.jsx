@@ -49,7 +49,7 @@ const StHeaderCont = styled.div`
   justify-content: space-between;
   align-items: center;
   color: var(--white);
-  padding: 20px;
+  padding: 30px 0px;
   position: relative;
   img {
     width: 15%;
