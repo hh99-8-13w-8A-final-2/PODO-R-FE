@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import Select from 'react-select'
@@ -14,8 +15,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Create = () => {
     const navigate = useNavigate();
-    let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(2, 1).toString()
+    const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
+    const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
+
+    /* let location = useLocation();
+    let musicalId = location.pathname.split('/').splice(2, 1).toString() */
     const [tagList, setTagList] = useState([]); // 태그 리스트
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보
@@ -39,7 +43,7 @@ const Create = () => {
 
 
     const getSeat = async () => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
+        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const data = res.data // 전체 좌석정보
         setData(data)
         for (var i in data) {
@@ -153,6 +157,7 @@ const Create = () => {
 
     const greadeOptions = [
         { value: 'VIP', label: 'VIP' },
+        { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
         { value: 'S', label: 'S' },
         { value: 'A', label: 'A ' }
@@ -184,14 +189,14 @@ const Create = () => {
         for (let value of imgFormdata.values()) {
             console.log(value);
         }
-        for (let value of formdata.keys()) {
+        for (let value of formdata.values()) {
             console.log(value);
         }
         try {
             const token = window.localStorage.getItem("accessToken")
             const jsonType = { "Content-Type": "application/json", "Authorization": token }
             const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-            const res1 = await axios.post('http://3.39.240.159/api/image/upload', imgFormdata, { headers: multipartType });
+            const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType });
             //이미지 
 
             const obj = {};
@@ -202,7 +207,7 @@ const Create = () => {
 
             const json = JSON.stringify(obj)
             console.log(json)
-            await axios.post(`http://3.39.240.159/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token });
+            await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token });
             navigate(-1)
         } catch (err) {
             console.log(err)

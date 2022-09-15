@@ -12,6 +12,9 @@ import PARK from '../../assets/img/PARK.svg'
 
 
 const TheaterInfo = ({onClose, theaterId}) => {
+    const URI = {
+        BASE: process.env.REACT_APP_BASE_URI
+      };
     const [theaterInfo, setTheaterInfo] = useState({
         theaterName:'',
         theaterAddr:'',
@@ -24,7 +27,7 @@ const TheaterInfo = ({onClose, theaterId}) => {
     const disabled = []
     const park = [] 
     const getTheater = async() => {
-        const res = await axios.get(`http://3.39.240.159/api/theaters/${theaterId}`)
+        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}`)
         setTheaterInfo(res.data)
 
     }

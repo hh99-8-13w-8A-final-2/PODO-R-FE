@@ -50,4 +50,9 @@ const Content = styled.div`
   animation-timing-function: ease-out;
   animation-name: slideUp;
   animation-fill-mode: forwards;
+  @media screen and (max-width: 768px){
+        width: 90%;
+        align-items: center;
+        margin: 0;
+    }
 `;

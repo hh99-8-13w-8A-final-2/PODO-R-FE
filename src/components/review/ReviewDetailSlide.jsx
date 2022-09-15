@@ -131,6 +131,9 @@ const StDiv = styled.div`
     background-size: cover;
     background-position: center;
     border-radius: 10px 0px 0px 10px;
+    @media screen and (max-width: 768px){
+        width: 90%;
+    }
 `
 
 const StUserNameDiv = styled.div`
