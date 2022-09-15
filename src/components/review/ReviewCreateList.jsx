@@ -258,7 +258,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             })}
             <StObserverDiv ref={ref}>
                 {isFetchingNextPage && "Loading more..."}
-                {!hasNextPage && "댓글이 없네요"}
+                {!data.pages[0].total === 0 && "아직 댓글이 없네요"}
+                {!hasNextPage && "더이상 댓글이 없네요"}
             </StObserverDiv>
             </StListWrap>
         </div>
