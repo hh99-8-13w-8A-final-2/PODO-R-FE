@@ -16,9 +16,10 @@ const MyPage = () => {
   const [reviewsId, SetReviewsId ] = useState('');
   const [musicalId, setMusicalId] = useState('');
 
-  const handleModal = (reviewsId) => {
+  const handleModal = (reviewsId, musicalId) => {
     setModalOn(!modalOn);
     SetReviewsId(reviewsId)
+    setMusicalId(musicalId)
   };
   const modalclose = () =>{
       setModalOn(!modalOn);
@@ -30,14 +31,14 @@ const MyPage = () => {
       <MyPageBottom />
       <Layout>
         <UserProfile />
-        <MyTicketList setMyReviewData={setMyReviewData} setMusicalId={setMusicalId}/>
-        <MyReviewList myReviewData={myReviewData} handleModal={handleModal} musicalId={musicalId}/>
+        <MyTicketList setMyReviewData={setMyReviewData}/>
+        <MyReviewList myReviewData={myReviewData} handleModal={handleModal}/>
       </Layout>
       <Footer />
       <Portal>
         {modalOn && (
           <Modal onClose={modalclose} modalOn={modalOn}>
-            <ReviewDetail reviewsId={reviewsId} onClose={handleModal} />
+            <ReviewDetail reviewsId={reviewsId} onClose={handleModal} musicalId={musicalId}/>
           </Modal>
         )}
       </Portal>

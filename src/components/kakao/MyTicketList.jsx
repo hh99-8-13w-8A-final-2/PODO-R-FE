@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
 
-const MyTicketList = ({ setMyReviewData, setMusicalId }) => {
+const MyTicketList = ({ setMyReviewData }) => {
 
 
   const URI = {
@@ -36,25 +36,21 @@ const MyTicketList = ({ setMyReviewData, setMusicalId }) => {
         },
       });
       setMyReviewData(response2.data)
+      console.log(response2.data)
     };
     MyDetailReview()
   }
-  
-
-// console.log("123123123", reviewData)
 
   useEffect(() => {
     MyMusicalFind();
   }, []);
 
 
-
-
   return (
     <div>
       <StH3>내가 관람한 공연</StH3>
       <StMyTicketList>
-        <MyTicket data={data} GetMyReview = {GetMyReview} setMusicalId={setMusicalId}/>
+        <MyTicket data={data} GetMyReview = {GetMyReview}/>
       </StMyTicketList>
     </div>
   );

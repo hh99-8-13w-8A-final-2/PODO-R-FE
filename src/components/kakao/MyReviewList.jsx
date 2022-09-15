@@ -4,7 +4,7 @@ import MyReview from "./MyReview";
 import axios from "axios";
 import { useState } from "react";
 
-const MyReviewList = ({ myReviewData, handleModal, musicalId}) => {
+const MyReviewList = ({ myReviewData, handleModal }) => {
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI
   };
@@ -31,7 +31,7 @@ const MyReviewList = ({ myReviewData, handleModal, musicalId}) => {
     <div>
       <StH3>선택된 공연 리뷰</StH3>
       <StMyReviewList>
-        <MyReview data={data} myReviewData={myReviewData} handleModal={handleModal} musicalId={musicalId}/>
+        <MyReview data={data} myReviewData={myReviewData} handleModal={handleModal}/>
       </StMyReviewList>
     </div>
   );
