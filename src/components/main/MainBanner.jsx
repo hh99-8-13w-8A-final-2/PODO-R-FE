@@ -40,7 +40,8 @@ const MainBanner = () => {
                     <StMainBanner bnr={bnr}>
                         <div>
                             <h3>포도알 서비스 런칭</h3>
-                            <p>당신이 원하는 바로 그 자리 포도알에 전부 다 있습니다.</p>
+                            <p>당신이 고민하는 그 자리 <br/>포도알에서 좌석 리뷰를 확인해보세요!</p>
+                            <p className='button'>가이드 보러가기</p>
                         </div>    
                     </StMainBanner>
                 </Link>
@@ -81,9 +82,16 @@ const StMainBanner = styled.div`
             font-size: 40px;
         }
         p {
-            margin-top: 20px;
-            font-size: 24px;
+            margin: 20px 0 50px;
+            font-size: 16px;
             width: 260px;
+        }
+        .button{
+            display: inline;
+            padding: 10px 20px;
+            background-color: var(--maincolor-2);
+            border-radius: 20px;
+            margin-top: 100px;
         }
     }
 `
