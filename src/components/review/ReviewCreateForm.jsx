@@ -94,6 +94,9 @@ const StInput = styled.input`
     height: 37px;
     background-color: #eee;
     margin-right: 4px;
+    @media screen and (max-width: 763px) {
+        width: 420px;
+    }
 `
 
 const StButton = styled.button`

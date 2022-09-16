@@ -40,8 +40,6 @@ const Review = ({ handleModal }) => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
-    console.log(location)
-    console.log(musicalId)
     // 현재 시간 정보
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
@@ -81,7 +79,7 @@ const Review = ({ handleModal }) => {
     console.log(data)
 
     return (
-        <>
+        <div>
             {data?.pages.map((group, i) => {
                 return (
                     <StWrap key={i}>
@@ -117,7 +115,7 @@ const Review = ({ handleModal }) => {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate > 6 &&
-                                            <span>{(currentDate - createDate)/7}주일 전</span>
+                                            <span>{parseInt((currentDate - createDate)/7)}주일 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&
@@ -171,7 +169,7 @@ const Review = ({ handleModal }) => {
                         ? "더보기"
                         : "Nothing more to load"}
             </StMoreDiv>
-        </>
+        </div>
     );
 };
 
