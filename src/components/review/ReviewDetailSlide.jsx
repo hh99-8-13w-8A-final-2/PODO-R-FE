@@ -59,7 +59,7 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, n
                                     year === 0 &&
                                     month === 0 &&
                                     date > 6 &&
-                                    <span>{(date) / 7}주일 전 작성</span>
+                                    <span>{parseInt((date) / 7)}주일 전 작성</span>
                                 }
                                 {
                                     year === 0 &&
@@ -96,6 +96,10 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, n
 
 const StSlideDiv = styled.div`
     position: relative;
+    @media screen and (max-width: 763px) {
+        width: 500px;
+        height: 500px;
+    }
 `
 const StContentDiv = styled.div`
     transition-duration: 0.8s;
@@ -118,6 +122,9 @@ const StContentDiv = styled.div`
         text-align: left;
         color: var(--gray-1);
     }
+    @media screen and (max-width: 763px) {
+        width: 500px;
+    }
 `
 
 const StHeader = styled.div`
@@ -131,8 +138,10 @@ const StDiv = styled.div`
     background-size: cover;
     background-position: center;
     border-radius: 10px 0px 0px 10px;
-    @media screen and (max-width: 768px){
-        width: 90%;
+    @media screen and (max-width: 763px) {
+        width: 500px;
+        height: 500px;
+        border-radius: 10px 10px 10px 10px;
     }
 `
 
