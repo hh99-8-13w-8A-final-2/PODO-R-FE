@@ -11,8 +11,8 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 
 
-const Selector = ({ handleModal }) => {
-    const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
+const Selector = ({ handleModal, theaterId }) => {
+    //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     let location = useLocation();
     const navigate = useNavigate();
     const [params] = useSearchParams();
@@ -55,7 +55,7 @@ const Selector = ({ handleModal }) => {
     useEffect(()=>{
         getSeat();
         //console.log('${URI.BASE}/api/musicals/1/reviews',query)
-     },[]);
+     },[theaterId]);
     for (var floor in Data){
         const data1 = Data[floor]
         floorOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})

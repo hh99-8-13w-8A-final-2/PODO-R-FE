@@ -50,18 +50,10 @@ const Content = styled.div`
   animation-timing-function: ease-out;
   animation-name: slideUp;
   animation-fill-mode: forwards;
-<<<<<<< HEAD
   @media all and (max-width: 768px) {
         width: 100vh;
         height: 100vh;
         overflow-y: scroll;
         overflow-x: hidden;
   }
-=======
-  @media screen and (max-width: 768px){
-        width: 90%;
-        align-items: center;
-        margin: 0;
-    }
->>>>>>> upstream/dev
 `;

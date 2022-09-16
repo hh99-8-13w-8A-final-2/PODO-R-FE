@@ -20,12 +20,12 @@ const CreateBtn = ({ onClickHandler }) => {
     }
     return (
         <StCreateDiv>
-            <div>
-                <img src={up} alt="위로 올라가기" onClick={goToTop} />
+            <div onClick={goToTop}>
+                <img src={up} alt="위로 올라가기"  />
             </div>
             {isLogin ?
-            <div>
-                <img src={pencil} alt="리뷰쓰기" onClick={onClickHandler} />
+            <div onClick={onClickHandler}>
+                <img src={pencil} alt="리뷰쓰기"  />
             </div> :
             null}
             

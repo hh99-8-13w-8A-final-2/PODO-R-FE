@@ -13,7 +13,7 @@ import CheckboxSelect from './CheckboxSelect';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-const Create = () => {
+const Create = ({ create, SetCreate }) => {
     const navigate = useNavigate();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
@@ -208,7 +208,7 @@ const Create = () => {
             const json = JSON.stringify(obj)
             console.log(json)
             await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token });
-            navigate(-1)
+            SetCreate(!create)
         } catch (err) {
             console.log(err)
         }
@@ -258,8 +258,8 @@ const Create = () => {
             <div>
                 <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.'></textarea>
             </div>
-            <ImageAdd imgfiles={imgfiles} />
             <Tag setTagList={setTagList} tagList={tagList} />
+            <ImageAdd imgfiles={imgfiles} />
             <div className='button'>
                 <button type='submit' >등록</button>
             </div>
