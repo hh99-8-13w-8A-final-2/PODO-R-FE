@@ -237,8 +237,8 @@ const Modify = ({ data, setModify }) => {
             <div>
                 <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' defaultValue={data?.data.reviewContent}></textarea>
             </div>
-            <ModifyImageAdd imgfiles={imgfiles} data={data} />
             <ModifyTag setTagList={setTagList} tagList={tagList} data={data} />
+            <ModifyImageAdd imgfiles={imgfiles} data={data} />
             <div className='button'>
                 <button type='submit'>등록</button>
                 <button type='button' onClick={() => setModify(false)} className='cancle' >취소</button>

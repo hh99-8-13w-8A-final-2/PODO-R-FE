@@ -16,6 +16,12 @@ import axios from 'axios';
 
 
 const ReviewPage = () => {
+
+    const URI = {
+        BASE: process.env.REACT_APP_BASE_URI
+      };
+    
+    
     let location = useLocation();
     let musical = location.pathname.split('/').splice(2,1).toString()
     const dispatch = useDispatch();
@@ -24,18 +30,18 @@ const ReviewPage = () => {
     const [reviewsId, SetReviewsId ] = useState('');
     const [musicalId, SetMusicalId ] = useState('');
     const [create, SetCreate] = useState(false)
-    const [data, setData]  =useState('')
-
-    /* const getData = async() => {
+    const [musicals, setMusicals] = useState({
+  
+    });
+    const getData = async() =>{
         const res = await axios.get(`${URI.BASE}/api/musicals/${musical}`)
-        console.log(res.data)
-        setData(res.data)
-    } */
+        setMusicals(res.data)
+     }
 
     const onClickHandler = () =>{
         SetCreate(!create)
     }
-
+    console.log(musicals)
     const handleModal = (reviewsId, musicalId) => {
       setModalOn(!modalOn);
       SetReviewsId(reviewsId);
@@ -45,6 +51,7 @@ const ReviewPage = () => {
         setModalOn(!modalOn);
     }
     useEffect(()=>{
+        getData()
         dispatch(__getmusicalData(musical));
         window.scrollTo({
             top: 0,
@@ -58,7 +65,7 @@ const ReviewPage = () => {
             <Header />
             <HeaderBottom />
             <Layout>
-                {create ? <Create /> : <Selector theaterId={data?.theaterId} handleModal={handleModal} /> }
+                {create ? <Create create={create} SetCreate={SetCreate} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} /> }
             </Layout>
             <Footer />
             <CreateBtn onClickHandler={onClickHandler}/>

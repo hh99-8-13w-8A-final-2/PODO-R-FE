@@ -13,7 +13,7 @@ const Ticket = ({status, data, error }) => {
     return (
         <StWrapDiv>
             {data?.data.map(ticket => (
-                <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
+                <Link to={`musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
                     <StDiv imgUrl={ticket.musicalPoster}>
                         <StH4>{ticket.musicalName}</StH4>
                         <StDiv1>{ticket.musicalTheater}</StDiv1>

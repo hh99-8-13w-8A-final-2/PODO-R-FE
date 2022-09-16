@@ -9,7 +9,7 @@ import profile_kimlim from '../assets/img/profile_kimlim.webp'
 import profile_suweon from '../assets/img/profile_suweon.webp'
 import profile_yelim from '../assets/img/profile_yelim.webp'
 import profile_yongwon from '../assets/img/profile_yongwon.webp'
-
+import profile_yuri from '../assets/img/profile_yuri.webp'
 import logo_footer from '../assets/img/logo_footer.svg'
 import Header from '../components/common/Header';
 import Layout from '../components/common/Layout';
@@ -112,7 +112,7 @@ const GuidePage = () => {
                             <p>김휘림</p>
                         </li>
                         <li>
-                            <div></div>
+                            <div><img src={profile_yuri} alt="" /></div>
                             <p className='position'>UI/UX</p>
                             <p>김유리</p>
                             <p className='position'>(Designer)</p>
