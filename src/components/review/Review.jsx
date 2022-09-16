@@ -35,7 +35,7 @@ const fetchReviews = async (pageParam, musicalId) => {
     }
 }
 
-const Review = ({ handleModal }) => {
+const Review = ({ handleModal, theaterId }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다. 
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
@@ -199,6 +199,7 @@ const StThumbDiv = styled.div`
     background-color: rgba(34,34,34,0.4);
     background-blend-mode : multiply;
     position: relative;
+   
 `
 
 const StUtillDiv = styled.div`

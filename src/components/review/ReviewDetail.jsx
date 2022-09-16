@@ -164,7 +164,6 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-
     return (
         <>
         <ToastContainer/>
