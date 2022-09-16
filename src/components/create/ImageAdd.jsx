@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const ImageAdd = ({ imgfiles }) => {
-
     const [showImages, setShowImages] = useState([]); // 이미지 프리뷰
     const handleAddImages = (event) => {
         const imageLists = event.target.files;

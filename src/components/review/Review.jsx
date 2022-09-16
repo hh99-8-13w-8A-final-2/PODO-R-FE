@@ -35,10 +35,10 @@ const fetchReviews = async (pageParam, musicalId) => {
     }
 }
 
-const Review = ({ handleModal }) => {
+const Review = ({ handleModal, theaterId }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다. 
     let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(3, 1).toString()
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
     // 현재 시간 정보
     let today = new Date();
@@ -76,9 +76,10 @@ const Review = ({ handleModal }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
+    console.log(data)
 
     return (
-        <>
+        <div>
             {data?.pages.map((group, i) => {
                 return (
                     <StWrap key={i}>
@@ -91,7 +92,7 @@ const Review = ({ handleModal }) => {
                                 const createHours = convertToDate.getHours();
                                 const createMinute = convertToDate.getMinutes();    
                                 return(
-                                <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId)}>
+                                <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId, data.musicalId)}>
                                     <StThumbDiv imgUrl={data.imgUrl}>
                                         <StUtillDiv>
                                         {data.heartChecked ? <><Like fill='#BB63FF'/><span>{data.heartCount}</span></> : <><Like fill='#fff'/><span>{data.heartCount}</span></>}
@@ -114,7 +115,7 @@ const Review = ({ handleModal }) => {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate > 6 &&
-                                            <span>{(currentDate - createDate)/7}주일 전</span>
+                                            <span>{parseInt((currentDate - createDate)/7)}주일 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&
@@ -168,7 +169,7 @@ const Review = ({ handleModal }) => {
                         ? "더보기"
                         : "Nothing more to load"}
             </StMoreDiv>
-        </>
+        </div>
     );
 };
 
@@ -198,6 +199,7 @@ const StThumbDiv = styled.div`
     background-color: rgba(34,34,34,0.4);
     background-blend-mode : multiply;
     position: relative;
+   
 `
 
 const StUtillDiv = styled.div`
@@ -259,6 +261,6 @@ const StMoreDiv = styled.button`
     background-color: var(--black);
     border: 1px solid var(--gray-2);
     padding: 10px;
-    color: var(--white);
+    color: var(--gray-2);
     border-radius: 10px;
 `

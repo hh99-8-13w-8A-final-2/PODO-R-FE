@@ -27,7 +27,7 @@ const TicketList = ({status, data, error }) => {
         >
           {data?.data.map(ticket => (
                 <SwiperSlide  key={ticket.musicalId}>
-                    <Link to={`api/musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
+                    <Link to={`musicals/${ticket.musicalId}/reviews`} key={ticket.musicalId}>
                         <StDiv imgUrl={ticket.musicalPoster}>
                             <StH4>{ticket.musicalName}</StH4>
                             <StDiv1>{ticket.musicalTheater}</StDiv1>
@@ -47,6 +47,7 @@ export default TicketList;
 
 const StListDiv =styled.div`
     .swiper-pagination-bullet {background-color:var(--gray-2)}
+    margin-bottom: 70px;
 `
 const StDiv = styled.div`
     width: 200px;

@@ -11,8 +11,12 @@ import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import { useInView } from "react-intersection-observer";
 
+const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+  }
+
 const getComments = async (reviewId, pageParam) => {
-    const response = await axios.get(`http://3.39.240.159/api/comments?reviewId=${reviewId}&page=${pageParam}`);
+    const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`);
     console.log(response.data)
     const data = response.data.content;
     const pageData = response.data.totalPages;
@@ -23,8 +27,6 @@ const getComments = async (reviewId, pageParam) => {
         pageData,
         total
     }
-
-
 }
 
 const postModifyedComment = async (new_comment) => {
@@ -34,7 +36,7 @@ const postModifyedComment = async (new_comment) => {
         Authorization: `${Authorization}`,
     }
     const { modifyId, content } = new_comment
-    const { data } = await axios.put(`http://3.39.240.159/api/comments/${modifyId}`, content, { headers: headers })
+    const { data } = await axios.put(`${URI.BASE}/api/comments/${modifyId}`, content, { headers: headers })
     return data
 }
 
@@ -44,7 +46,7 @@ const deleteComment = async (commentId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.delete(`http://3.39.240.159/api/comments/${commentId}`, { headers: headers })
+    const response = await axios.delete(`${URI.BASE}/api/comments/${commentId}`, { headers: headers })
     return response
 }
 
@@ -142,17 +144,16 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     return (
         <div>
             <StListHeader>
-                <div>댓글 {data.length}</div>
+                <div>댓글 {data.pages[0].total}</div>
                 <StToggleDiv onClick={() => setIsClick(false)}>
                     <TextIcon fill='#BB63FF' />
                     <span>본문보기</span>
                 </StToggleDiv>
             </StListHeader>
-            <>
+            <StListWrap>
             {data?.pages.map((group, i) => {
                 return (
                     <StCommentList key={i}>
-                        <Fragment>
                         {group.data.map((comment) => {
                             const convertToDate = new Date(comment.createdAt);
                             const createYear = convertToDate.getFullYear();
@@ -252,12 +253,15 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                 </StDiv>
                             )
                         })}
-                        <div ref={ref}></div>
-                        </Fragment>
                     </StCommentList>
                 )
             })}
-            </>
+            <StObserverDiv ref={ref}>
+                {isFetchingNextPage && "Loading more..."}
+                {data.pages[0].total === 0 && "아직 댓글이 없네요"}
+                {data.pages[0].total !== 0 && !hasNextPage && "더이상 댓글이 없네요"}
+            </StObserverDiv>
+            </StListWrap>
         </div>
     );
 };
@@ -278,10 +282,13 @@ const StListHeader = styled.div`
 const StToggleDiv = styled.div`
     cursor: pointer;
 `
-
-const StCommentList = styled.div`
+const StListWrap = styled.div`
     max-height: 500px;
     overflow-y: scroll;
+`
+
+const StCommentList = styled.div`
+
 `
 
 const StDiv = styled.div`
@@ -395,6 +402,10 @@ const StModifyInput = styled.input`
     background-color: #eee;
     width: 350px;
     margin-bottom: 10px;
+`
+const StObserverDiv = styled.div`
+    padding: 10px;
+    color: var(--gray-1);
 `
 
 export default ReviewCreateList;

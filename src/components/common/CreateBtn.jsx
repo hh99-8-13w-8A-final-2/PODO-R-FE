@@ -5,13 +5,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import { useSelector } from "react-redux"
 
-const CreateBtn = () => {
-    let location = useLocation();
+const CreateBtn = ({ onClickHandler }) => {
+    /* let location = useLocation();
     const navigate = useNavigate();
-    const isLogin = useSelector((state)=> state.user.isLogin);
     const onClickHandler =()=>{
         navigate(`${location.pathname}/create`)
-    }
+    } */
+    const isLogin = useSelector((state)=> state.user.isLogin);
     const goToTop =() =>{
         window.scrollTo({
             top: 0,
@@ -20,12 +20,12 @@ const CreateBtn = () => {
     }
     return (
         <StCreateDiv>
-            <div>
-                <img src={up} alt="위로 올라가기" onClick={goToTop} />
+            <div onClick={goToTop}>
+                <img src={up} alt="위로 올라가기"  />
             </div>
             {isLogin ?
-            <div>
-                <img src={pencil} alt="리뷰쓰기" onClick={onClickHandler} />
+            <div onClick={onClickHandler}>
+                <img src={pencil} alt="리뷰쓰기"  />
             </div> :
             null}
             

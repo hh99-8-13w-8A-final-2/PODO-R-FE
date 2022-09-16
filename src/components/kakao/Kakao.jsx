@@ -1,24 +1,18 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Buffer } from "buffer";
 import { login } from "../../redux/modules/userSlice";
-import { useState } from "react";
 
 const Kakao = () => {
 
+  const URI = {
+    BASE: process.env.REACT_APP_BASE_URI,
+  };
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
-  const [userProfile, setUserProfile] = useState();
-
-  console.log(code);
-
-  const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
 
   const kakaoLogin = async () => {
     try {
@@ -33,24 +27,11 @@ const Kakao = () => {
       const userId = response.data.id;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("nickname", nickname)
-      localStorage.setItem("profilePic", profilePic)
-      localStorage.setItem("userId", userId)
-      
-      
-      // console.log(accessToken);
-      // console.log(refreshtoken);
-
-      // const encodeBody = accessToken.split(".")[1];
-      // const decodeBody = Buffer.from(encodeBody, "base64").toString("utf8");
-      // const jsonBody = JSON.parse(decodeBody);
-      // console.log(jsonBody);
-      // localStorage.setItem("id", jsonBody.sub);
-      // localStorage.setItem("nickname", jsonBody.iss);
-      // localStorage.setItem("image", jsonBody.aud);
-      dispatch(login(response.data))
-
-      navigate('/');
+      localStorage.setItem("nickname", nickname);
+      localStorage.setItem("profilePic", profilePic);
+      localStorage.setItem("userId", userId);
+      dispatch(login(response.data));
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +39,6 @@ const Kakao = () => {
 
   useEffect(() => {
     kakaoLogin();
-    // dispatch(login)
   }, []);
 
   return <div>카카오</div>;
