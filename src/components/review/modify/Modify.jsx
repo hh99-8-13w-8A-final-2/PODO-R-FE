@@ -47,7 +47,6 @@ const Modify = ({ data, setModify }) => {
             if (i === '0') {
                 const data = res.data[i].sections
                 setData1(data)
-
             } else if (i === '1') {
                 const data = res.data[i].sections
                 setData2(data)
