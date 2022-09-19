@@ -27,7 +27,7 @@ const UserProfile = () => {
     if(
       newNickName.trim() === "" 
     ) {
-      return alert("asd")
+      return alert("닉네임은 2글자 이상 8글자 이하 입니다.")
     }
     const MyDetailReview = async () => {
       const response = await axios({

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
 
-const MyTicketList = ({ setMyReviewData }) => {
+const MyTicketList = ({  MyDetailReview }) => {
 
 
   const URI = {
@@ -22,24 +22,10 @@ const MyTicketList = ({ setMyReviewData }) => {
       }
     });
     setData(response.data)
+    console.log(response.data)
   };
 
-  
 
-  const GetMyReview = (getMusicalId) => {
-    const MyDetailReview = async () => {
-      const response2 = await axios({
-        method: "get",
-        url: `${URI.BASE}/api/mypage/${getMusicalId}/reviews`,
-        headers: {
-          Authorization: localStorage.getItem("accessToken"),
-        },
-      });
-      setMyReviewData(response2.data)
-      console.log(response2.data)
-    };
-    MyDetailReview()
-  }
 
   useEffect(() => {
     MyMusicalFind();
@@ -50,7 +36,7 @@ const MyTicketList = ({ setMyReviewData }) => {
     <div>
       <StH3>내가 관람한 공연</StH3>
       <StMyTicketList>
-        <MyTicket data={data} GetMyReview = {GetMyReview}/>
+        <MyTicket data={data} MyDetailReview={MyDetailReview}/>
       </StMyTicketList>
     </div>
   );

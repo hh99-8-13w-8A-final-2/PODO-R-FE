@@ -3,39 +3,71 @@ import styled from "styled-components";
 import MyReview from "./MyReview";
 import axios from "axios";
 import { useState } from "react";
+import { useInfiniteQuery } from 'react-query'
+import { useInView } from "react-intersection-observer";
 
-const MyReviewList = ({ myReviewData, handleModal }) => {
+const fetchReviews = async (pageParam, userId) => {
   const URI = {
-    BASE: process.env.REACT_APP_BASE_URI
+    BASE: process.env.REACT_APP_BASE_URI,
   };
-
-
-  const [data, setData] = useState();
-
-  const MyReviewFind = async () => {
+  // const [data, setData] = useState();
     const response = await axios({
       method: "get",
-      url: `${URI.BASE}/api/mypage/reviews`,
+      url: `${URI.BASE}/api/mypage/reviews?size=20&page=${pageParam}`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
       },
     });
-    setData(response.data);
+    // setData(response.data);
+    const data = response.data.content
+    const pageData = response.data.totalPages
+    const total = response.data.totalElements
+    return{
+      data,
+      nextPage : pageParam + 1,
+      pageData,
+      total
+    }
+}
+
+  const MyReviewList = ({ singleData, handleModal }) => {
+
+   
+  let userId = localStorage.getItem("userId")
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } = 
+    useInfiniteQuery(
+      ["reviews", userId],
+      ({ pageParam = 1 }) => {
+        return fetchReviews(pageParam, userId);
+      },
+      {
+        refetchOnWindowFocus: false,
+        getNextPageParam: (_lastPage, pages) =>{
+          if (pages.length < pages[0].pageData) {
+            return pages.length + 1
+          } else {
+            return undefined
+          }
+        }
+      }
+    )
+
+
+    return (
+      <div>
+        <StH3>선택된 공연 리뷰</StH3>
+        <StMyReviewList>
+          <MyReview
+            data={data}
+            fetchNextPage={fetchNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+            handleModal={handleModal}
+            singleData={singleData}
+          />
+        </StMyReviewList>
+      </div>
+    );
   };
-
-  useEffect(() => {
-    MyReviewFind();
-  }, []);
-
-  return (
-    <div>
-      <StH3>선택된 공연 리뷰</StH3>
-      <StMyReviewList>
-        <MyReview data={data} myReviewData={myReviewData} handleModal={handleModal}/>
-      </StMyReviewList>
-    </div>
-  );
-};
 
 export default MyReviewList;
 
@@ -47,7 +79,6 @@ const StMyReviewList = styled.div`
   align-content: center;
   justify-content: center;
   flex-wrap: wrap;
-  
 `;
 
 const StH3 = styled.h3`

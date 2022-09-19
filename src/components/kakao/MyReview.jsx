@@ -7,67 +7,84 @@ import { ReactComponent as View } from "../../assets/img/view.svg";
 import { ReactComponent as Sound } from "../../assets/img/sound.svg";
 import { ReactComponent as Light } from "../../assets/img/light.svg";
 import { useState } from "react";
-import ReviewDetail from "../review/ReviewDetail";
+import { useInView } from "react-intersection-observer";
 
-const MyReview = ({ data, myReviewData, handleModal }) => {
+const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNextPage}) => {
   console.log(data);
-  console.log(myReviewData);
-  const [isShow, setIsShow] = useState(myReviewData);
+  console.log(singleData);
+  const [isShow, setIsShow] = useState(singleData);
+  const { ref, inView } = useInView();
+
+  useEffect(() => {
+    if(inView) fetchNextPage();
+  }, [inView]);
+
+
 
   return (
     <div>
-      {isShow === myReviewData ? (
+      {isShow === singleData ? (
         <div>
-          <StMyReview>
-            {data?.content.map((review) => (
-              <StReview key={review.reviewId} onClick={()=>handleModal(review.reviewId, review.musicalId)}>
-                <StDiv imgUrl={review.imgUrl}></StDiv>
-                <StH3>
-                  {review.grade}석 {review.floor} {review.section}구역{" "}
-                  {review.row}열 {review.seat}
-                </StH3>
-                <StIconDiv>
-                  {review.evaluation.gap === 3 && <div><Gap fill='#BB63FF'/><span>단차좋음</span></div>}
-                  {review.evaluation.gap === 2 && <div><Gap fill='#444'/><span>단차보통</span></div>}
-                  {review.evaluation.gap === 1 && <div><Gap fill='#444'/><span>단차나쁨</span></div>}
-                  {review.evaluation.sight === 3 && <div><View fill='#BB63FF'/><span>시야좋음</span></div>}
-                  {review.evaluation.sight === 2 && <div><View fill='#444'/><span>시야보통</span></div>}
-                  {review.evaluation.sight === 1 && <div><View fill='#444'/><span>시야나쁨</span></div>}
-                  {review.evaluation.sound === 3 && <div><Sound fill='#BB63FF'/><span>음향좋음</span></div>}
-                  {review.evaluation.sound === 2 && <div><Sound fill='#444'/><span>음향보통</span></div>}
-                  {review.evaluation.sound === 1 && <div><Sound fill='#444'/><span>음향나쁨</span></div>}
-                  {review.evaluation.light === 3 && <div><Light fill='#BB63FF'/><span>조명좋음</span></div>}
-                  {review.evaluation.light === 2 && <div><Light fill='#444'/><span>조명보통</span></div>}
-                  {review.evaluation.light === 1 && <div><Light fill='#444'/><span>조명나쁨</span></div>}
-                </StIconDiv>
-              </StReview>
-            ))}
-          </StMyReview>
+          {data?.pages.map((group, i) => {
+            return(
+            <StMyReview key={i}>
+              {group.data.map((review) => {
+                return(
+                  <StReview key={review.reviewId} onClick={()=>handleModal(review.reviewId, review.musicalId)}>
+                    <StDiv imgUrl={review.imgUrl}></StDiv>
+                    <StH3>
+                      {review.grade}석 {review.floor} {review.section}구역{" "}
+                      {review.row}열 {review.seat}
+                    </StH3>
+                    <StIconDiv>
+                      {review.evaluation.gap === 3 && <div><Gap fill='#BB63FF'/><span>단차좋음</span></div>}
+                      {review.evaluation.gap === 2 && <div><Gap fill='#444'/><span>단차보통</span></div>}
+                      {review.evaluation.gap === 1 && <div><Gap fill='#444'/><span>단차나쁨</span></div>}
+                      {review.evaluation.sight === 3 && <div><View fill='#BB63FF'/><span>시야좋음</span></div>}
+                      {review.evaluation.sight === 2 && <div><View fill='#444'/><span>시야보통</span></div>}
+                      {review.evaluation.sight === 1 && <div><View fill='#444'/><span>시야나쁨</span></div>}
+                      {review.evaluation.sound === 3 && <div><Sound fill='#BB63FF'/><span>음향좋음</span></div>}
+                      {review.evaluation.sound === 2 && <div><Sound fill='#444'/><span>음향보통</span></div>}
+                      {review.evaluation.sound === 1 && <div><Sound fill='#444'/><span>음향나쁨</span></div>}
+                      {review.evaluation.light === 3 && <div><Light fill='#BB63FF'/><span>조명좋음</span></div>}
+                      {review.evaluation.light === 2 && <div><Light fill='#444'/><span>조명보통</span></div>}
+                      {review.evaluation.light === 1 && <div><Light fill='#444'/><span>조명나쁨</span></div>}
+                    </StIconDiv>
+                  </StReview> 
+                      )})}
+            </StMyReview>
+            )
+          })}
+          <StMoreDiv ref = {ref}>
+            {isFetchingNextPage}
+            Nothing more to load
+          </StMoreDiv>
+          
         </div>
       ) : (
         <div>
           <StMyReview>
-            {myReviewData?.content.map((myReviewData) => (
-              <StReview key={myReviewData.reviewId} onClick={()=>handleModal(myReviewData.reviewId, myReviewData.musicalId)}>
-                <StDiv imgUrl={myReviewData.imgUrl}></StDiv>
+            {singleData?.content.map((singleData) => (
+              <StReview key={singleData.reviewId} onClick={()=>handleModal(singleData.reviewId, singleData.musicalId)}>
+                <StDiv imgUrl={singleData.imgUrl}></StDiv>
                 <StH3>
-                  {myReviewData.grade}석 {myReviewData.floor}{" "}
-                  {myReviewData.section}구역 {myReviewData.row}열{" "}
-                  {myReviewData.seat}
+                  {singleData.grade}석 {singleData.floor}{" "}
+                  {singleData.section}구역 {singleData.row}열{" "}
+                  {singleData.seat}
                 </StH3>
                 <StIconDiv>
-                  {myReviewData.evaluation.gap === 3 && <div><Gap fill='#BB63FF'/><span>단차좋음</span></div>}
-                  {myReviewData.evaluation.gap === 2 && <div><Gap fill='#444'/><span>단차보통</span></div>}
-                  {myReviewData.evaluation.gap === 1 && <div><Gap fill='#444'/><span>단차나쁨</span></div>}
-                  {myReviewData.evaluation.sight === 3 && <div><View fill='#BB63FF'/><span>시야좋음</span></div>}
-                  {myReviewData.evaluation.sight === 2 && <div><View fill='#444'/><span>시야보통</span></div>}
-                  {myReviewData.evaluation.sight === 1 && <div><View fill='#444'/><span>시야나쁨</span></div>}
-                  {myReviewData.evaluation.sound === 3 && <div><Sound fill='#BB63FF'/><span>음향좋음</span></div>}
-                  {myReviewData.evaluation.sound === 2 && <div><Sound fill='#444'/><span>음향보통</span></div>}
-                  {myReviewData.evaluation.sound === 1 && <div><Sound fill='#444'/><span>음향나쁨</span></div>}
-                  {myReviewData.evaluation.light === 3 && <div><Light fill='#BB63FF'/><span>조명좋음</span></div>}
-                  {myReviewData.evaluation.light === 2 && <div><Light fill='#444'/><span>조명보통</span></div>}
-                  {myReviewData.evaluation.light === 1 && <div><Light fill='#444'/><span>조명나쁨</span></div>}
+                  {singleData.evaluation.gap === 3 && <div><Gap fill='#BB63FF'/><span>단차좋음</span></div>}
+                  {singleData.evaluation.gap === 2 && <div><Gap fill='#444'/><span>단차보통</span></div>}
+                  {singleData.evaluation.gap === 1 && <div><Gap fill='#444'/><span>단차나쁨</span></div>}
+                  {singleData.evaluation.sight === 3 && <div><View fill='#BB63FF'/><span>시야좋음</span></div>}
+                  {singleData.evaluation.sight === 2 && <div><View fill='#444'/><span>시야보통</span></div>}
+                  {singleData.evaluation.sight === 1 && <div><View fill='#444'/><span>시야나쁨</span></div>}
+                  {singleData.evaluation.sound === 3 && <div><Sound fill='#BB63FF'/><span>음향좋음</span></div>}
+                  {singleData.evaluation.sound === 2 && <div><Sound fill='#444'/><span>음향보통</span></div>}
+                  {singleData.evaluation.sound === 1 && <div><Sound fill='#444'/><span>음향나쁨</span></div>}
+                  {singleData.evaluation.light === 3 && <div><Light fill='#BB63FF'/><span>조명좋음</span></div>}
+                  {singleData.evaluation.light === 2 && <div><Light fill='#444'/><span>조명보통</span></div>}
+                  {singleData.evaluation.light === 1 && <div><Light fill='#444'/><span>조명나쁨</span></div>}
                 </StIconDiv>
               </StReview>
             ))}
@@ -103,6 +120,7 @@ const StReview = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  color: white;
 `;
 
 const StDiv = styled.div`
@@ -134,3 +152,13 @@ const StIconDiv = styled.div`
     font-size: 12px;
   }
 `;
+
+const StMoreDiv = styled.button`
+    width: 1360px;
+    margin: 20px;
+    background-color: var(--black);
+    border: 1px solid var(--gray-2);
+    padding: 10px;
+    color: var(--gray-2);
+    border-radius: 10px;
+`
