@@ -54,6 +54,6 @@ const Content = styled.div`
         width: 100vh;
         height: 100vh;
         overflow-y: scroll;
-        overflow-x: hidden;
+        overflow-x: scroll;
   }
 `;

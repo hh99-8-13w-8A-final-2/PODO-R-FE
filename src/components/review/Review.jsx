@@ -25,17 +25,14 @@ const fetchReviews = async (pageParam, musicalId) => {
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
-    const total = res.data.totalElements
     console.log(res.data)
     return {
         data,
-        nextPage: pageParam + 1,
         pageData,
-        total
     }
 }
 
-const Review = ({ handleModal, theaterId }) => {
+const Review = ({ handleModal }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다. 
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
@@ -57,6 +54,7 @@ const Review = ({ handleModal, theaterId }) => {
                 return fetchReviews(pageParam, musicalId);
             },
             {
+                staleTime: 1000,
                 refetchOnWindowFocus: false,
                 // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
                 getNextPageParam: (_lastPage, pages) => {
@@ -68,6 +66,7 @@ const Review = ({ handleModal, theaterId }) => {
                 }
             }
         )
+
     
     useEffect(() => {
         if(inView) fetchNextPage();
