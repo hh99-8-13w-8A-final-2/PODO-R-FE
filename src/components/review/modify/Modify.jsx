@@ -42,6 +42,7 @@ const Modify = ({ data, setModify }) => {
         const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
         const data = res.data // 전체 좌석정보
         setData(data)
+        console.log(data)
         for (var i in data) {
             if (i === '0') {
                 const data = res.data[i].sections
