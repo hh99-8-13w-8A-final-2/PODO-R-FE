@@ -17,7 +17,7 @@ const ModifyCheckboxSelect = ({ data, setBlock, setOperaGlass }) => {
     const operaGlassChange = e => {
         setOperaGlass1(current => !current);
         setOperaGlass(e.target.value)
-        console.log(e.target.value)
+        //console.log(e.target.value)
     }
 
     const blockChange = e => {

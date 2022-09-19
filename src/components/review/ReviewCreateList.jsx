@@ -17,7 +17,7 @@ const URI = {
 
 const getComments = async (reviewId, pageParam) => {
     const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`);
-    console.log(response.data)
+
     const data = response.data.content;
     const pageData = response.data.totalPages;
     const total = response.data.totalElements
@@ -83,7 +83,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             }
         )
 
-        console.log(data)
+
 
     useEffect(() => {
         if (inView) fetchNextPage();

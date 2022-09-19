@@ -36,7 +36,6 @@ const MyTicketList = ({ setMyReviewData }) => {
         },
       });
       setMyReviewData(response2.data)
-      console.log(response2.data)
     };
     MyDetailReview()
   }

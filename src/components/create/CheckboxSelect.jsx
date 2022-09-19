@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 const CheckboxSelect = () => {
     const onChang = (e) =>{
-        console.log(e.target.value)
     }
     return (
         <StCheckbox>
