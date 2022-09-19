@@ -22,7 +22,7 @@ const ReviewModify = ({ onClose, setModify, data }) => {
 export default ReviewModify;
 
 const StDiv = styled.div`
-    width: 100%;
+    width: 175%;
     height: 800px;
     padding: 30px;
     box-sizing: border-box;

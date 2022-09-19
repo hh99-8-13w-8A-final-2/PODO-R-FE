@@ -10,8 +10,8 @@ import { useState } from "react";
 import ReviewDetail from "../review/ReviewDetail";
 
 const MyReview = ({ data, myReviewData, handleModal }) => {
-  console.log(data);
-  console.log(myReviewData);
+  //console.log(data);
+  //console.log(myReviewData);
   const [isShow, setIsShow] = useState(myReviewData);
 
   return (
