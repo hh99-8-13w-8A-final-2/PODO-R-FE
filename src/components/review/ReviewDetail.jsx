@@ -146,7 +146,7 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
         }
     }
 
-    console.log(data)
+
 
     const convertToDate = new Date(data?.data.createdAt);
     const createYear = convertToDate.getFullYear();

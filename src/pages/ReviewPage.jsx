@@ -41,7 +41,7 @@ const ReviewPage = () => {
     const onClickHandler = () =>{
         SetCreate(!create)
     }
-    console.log(musicals)
+    //console.log(musicals)
     const handleModal = (reviewsId, musicalId) => {
       setModalOn(!modalOn);
       SetReviewsId(reviewsId);
@@ -65,7 +65,7 @@ const ReviewPage = () => {
             <Header />
             <HeaderBottom />
             <Layout>
-                {create ? <Create create={create} SetCreate={SetCreate} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} /> }
+                {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicals.theaterId} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} /> }
             </Layout>
             <Footer />
             <CreateBtn onClickHandler={onClickHandler}/>

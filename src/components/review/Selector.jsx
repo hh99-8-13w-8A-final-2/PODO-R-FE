@@ -21,6 +21,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const [Data1,setData1] =useState([]); //1층 섹션, row 정보
     const [Data2,setData2] =useState([]); //2층 섹션, row 정보
     const [Data3,setData3] =useState([]); //3층 섹션, row 정보
+    const [Data4,setData4] =useState([]); //발코니 섹션, row 정보
     const floorOptions =[]; //층 select에 넣어주는 값
     const sectionOptions =[]; //구역 select에 넣어주는 값
     const rowOptions =[]; //열 select에 넣어주는 값
@@ -42,15 +43,18 @@ const Selector = ({ handleModal, theaterId }) => {
             if(i === '0'){
                 const data = res.data[i].sections
                 setData1(data)
-                
             }else if(i === '1'){
                 const data = res.data[i].sections
                 setData2(data)
-            }else {
+            }else if(i === '2'){
                 const data = res.data[i].sections
                 setData3(data)
+            }else{
+                const data = res.data[i].sections
+                setData4(data)
             }
         }
+        console.log(Data4)
     }; 
     useEffect(()=>{
         getSeat();
@@ -108,7 +112,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 } 
             }
         }
-    }else if (selectFloor.value === "3층"){
+    }else if (selectFloor.value === "3층" || "발코니"){
         for (var section in Data3){
             const data1 = Data3[section]
             if(data1.section === "0"){
@@ -121,6 +125,30 @@ const Selector = ({ handleModal, theaterId }) => {
         if(rowdata !== -1){
             for(var rows in Data3[rowdata].rows){
                 const data1 = Data3[rowdata].rows[rows]
+                if(data1 === "0"){
+                    rowOptions.push({"value" : "0" , "label":"열 없음"})
+                }else{
+                    if(Object.values(data1).length === 1){
+                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+                    }else{
+                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                    }
+                } 
+            }
+        }
+    }else if (selectFloor.value === "발코니"){
+        for (var section in Data4){
+            const data1 = Data4[section]
+            if(data1.section === "0"){
+                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
+            }else{
+                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            }
+        }
+        const rowdata = Data4.findIndex( (e) => e.section === selectSection.value)
+        if(rowdata !== -1){
+            for(var rows in Data4[rowdata].rows){
+                const data1 = Data4[rowdata].rows[rows]
                 if(data1 === "0"){
                     rowOptions.push({"value" : "0" , "label":"열 없음"})
                 }else{

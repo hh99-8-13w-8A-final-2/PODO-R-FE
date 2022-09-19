@@ -8,7 +8,7 @@ import { ReactComponent as SlightlyAver } from '../../assets/img/slightly_aver.s
 import { ReactComponent as SmilingGood } from '../../assets/img/smiling_good.svg'
 
 const ReviewDetailEval = ({ data }) => {
-    console.log(data.data.evaluation)
+    //console.log(data.data.evaluation)
 
     return (
         <StEvalBox>

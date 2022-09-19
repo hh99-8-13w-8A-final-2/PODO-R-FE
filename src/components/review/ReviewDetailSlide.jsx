@@ -9,7 +9,6 @@ import styled from 'styled-components';
 
 const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, nickname }) => {
     const swiperRef = useRef(null)
-    console.log(data)
 
     return (
         <StSlideDiv>

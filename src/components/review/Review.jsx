@@ -26,7 +26,7 @@ const fetchReviews = async (pageParam, musicalId) => {
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
     const total = res.data.totalElements
-    console.log(res.data)
+
     return {
         data,
         nextPage: pageParam + 1,
@@ -76,7 +76,7 @@ const Review = ({ handleModal, theaterId }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-    console.log(data)
+    
 
     return (
         <div>
