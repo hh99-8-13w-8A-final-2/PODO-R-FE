@@ -1,7 +1,6 @@
 import React,{ useState, useEffect } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import Select from 'react-select'
@@ -14,8 +13,7 @@ import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 const Modify = ({ data, setModify }) => {
     console.log(data.data)
     let location = useLocation();
-    const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
-    const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
+    let musicalId = location.pathname.split('/').splice(3, 1).toString()
     const [tagList, setTagList] = useState([]); // 태그 리스트
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보
@@ -41,7 +39,7 @@ const Modify = ({ data, setModify }) => {
       }
     //console.log(data)
     const getSeat = async () => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
         const data = res.data // 전체 좌석정보
         setData(data)
         console.log(data)

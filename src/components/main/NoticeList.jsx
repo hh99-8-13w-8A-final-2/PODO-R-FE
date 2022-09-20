@@ -23,6 +23,7 @@ const NoticeList = () => {
         ['notice', pageNumber],
         () => fetchNotice(pageNumber),
         {
+            staleTime: 1000,
             keepPreviousData: true,
             refetchOnWindowFocus: false
         }

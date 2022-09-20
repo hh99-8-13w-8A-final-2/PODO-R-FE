@@ -15,6 +15,7 @@ const URI = {
 const Popularity = () => {
     const { status, data, error } = useQuery('/PopularMusical', fetchPopularMusical,
         {
+            staleTime: 1000,
             refetchOnWindowFocus: false,
         }
     )

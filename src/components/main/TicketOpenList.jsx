@@ -17,6 +17,7 @@ const TicketOpenList = () => {
 
     const { status, data, error } = useQuery('/OpenMusical', fetchOpenMusical,
         {
+            staleTime: 1000,
             refetchOnWindowFocus: false,
         }
     )
