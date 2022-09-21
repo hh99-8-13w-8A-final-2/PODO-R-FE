@@ -12,8 +12,8 @@ import ReviewDetail from "../components/review/ReviewDetail";
 import axios from "axios";
 import { useInfiniteQuery } from "react-query";
 
-const MyDetailReviews = async (musicalId, pageParam) => {
-  if (musicalId === "") {
+const MyDetailReviews = async (eachMusicalId, pageParam) => {
+  if (eachMusicalId === "") {
     return {
       data: undefined,
       nextPage: pageParam + 1,
@@ -27,7 +27,7 @@ const MyDetailReviews = async (musicalId, pageParam) => {
 
   const response2 = await axios({
     method: "get",
-    url: `${URI.BASE}/api/mypage/${musicalId}/reviews?size=20&page=${pageParam}`,
+    url: `${URI.BASE}/api/mypage/${eachMusicalId}/reviews?size=20&page=${pageParam}`,
     headers: {
       Authorization: localStorage.getItem("accessToken"),
     },
@@ -47,6 +47,7 @@ const MyPage = () => {
   const [modalOn, setModalOn] = useState(false);
   const [reviewsId, SetReviewsId] = useState("");
   const [musicalId, setMusicalId] = useState("");
+  const [eachMusicalId, setEachMusicalId] = useState("");
 
   const {
     data,
@@ -56,9 +57,9 @@ const MyPage = () => {
     status,
     error,
   } = useInfiniteQuery(
-    ["reviews", musicalId],
+    ["reviews", eachMusicalId],
     ({ pageParam = 1 }) => {
-      return MyDetailReviews(musicalId, pageParam);
+      return MyDetailReviews(eachMusicalId, pageParam);
     },
     {
       refetchOnWindowFocus: false,
@@ -85,13 +86,16 @@ const MyPage = () => {
     setModalOn(!modalOn);
   };
 
+  console.log(reviewsId)
+  console.log(musicalId)
+
   return (
     <>
       <Header />
       <MyPageBottom />
       <Layout>
         <UserProfile />
-        <MyTicketList setMusicalId={setMusicalId} />
+        <MyTicketList setEachMusicalId={setEachMusicalId} />
         <MyReviewList
           singleData={singleData}
           handleModal={handleModal}
@@ -105,8 +109,8 @@ const MyPage = () => {
           <Modal onClose={modalclose} modalOn={modalOn}>
             <ReviewDetail
               reviewsId={reviewsId}
-              onClose={handleModal}
               musicalId={musicalId}
+              onClose={handleModal}
             />
           </Modal>
         )}
