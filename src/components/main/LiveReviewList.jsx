@@ -19,6 +19,7 @@ const LiveReviewList = () => {
         fetchLiveReviews,
         {
           // 1분마다 서버에서 새로운 데이터를 refetch 해온다.
+          staleTime: 1000,
           refetchInterval: 60000,
           refetchOnWindowFocus: false
         }

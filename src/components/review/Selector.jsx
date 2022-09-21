@@ -1,14 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Select from 'react-select'
-import serach from '../../assets/img/serach.svg'
 import styled from 'styled-components';
 import Review from '../../components/review/Review';
+import { ReactComponent as Search } from '../../assets/img/search.svg'
+import { useSelector } from "react-redux";
 
 import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
+import AutoComplete from './AutoComplete';
+import { useQuery } from "react-query"
+
+const URI = {
+    BASE : process.env.REACT_APP_BASE_URI
+} 
+
+const getTags = async (pageParam, musicalId) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const URI = {
+        BASE : process.env.REACT_APP_BASE_URI
+      }
+    const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
+    const data = res.data.content;
+    // 서버에서 가져올 데이터 페이지의 전체 길이
+    const pageData = res.data.totalPages;
+    console.log(res.data)
+    return {
+        data,
+        pageData,
+    }
+}
 
 
 const Selector = ({ handleModal, theaterId }) => {
@@ -30,9 +57,6 @@ const Selector = ({ handleModal, theaterId }) => {
     const [selectSection, setSelectSection] = useState({value : '100', label: '구역'}); //선택한 구역
     const [selectRow, setSelectRow] = useState({value : '0', label: '열'}); //선택한 열
     const [seatNumber, setSeatNumber] =useState();//입력한 좌석
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-    } 
 
     const getSeat = async() => {
         const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
@@ -206,21 +230,46 @@ const Selector = ({ handleModal, theaterId }) => {
         { value: 'S', label: 'S' },
         { value: 'A', label: 'A ' }
       ]
+
+
+    const fetchTags = () => {
+        return axios.get(`${URI.BASE}/api/tags`)
+      }
+    
+    const { status, data, error } = useQuery('/getTags', fetchTags,
+        {
+            staleTime: 1000,
+            refetchOnWindowFocus: false,
+        }
+    )
+
+
+    const wholeTagsArray = data?.data.tags;
+
+    console.log(wholeTagsArray)
+
+    const [tags, setTags] = useState([]);
+
+    if(status === 'loading'){return <div className='popularBox'></div>}
+    if(status === 'error'){return <div className='popularBox'><p>Error:{error.message}</p></div>}
     
    
     return (
         <div>
             <StFilterTopDiv>
-                <div className='serach'>
-                    <input type="text" />
-                    <img src={serach} alt="" className='icon'/>
-                </div>
+                <AutoComplete wholeTagsArray={wholeTagsArray} setTags={setTags} tags={tags}/>
                 <div>
                     <StCheckbox>
                         <input type="checkbox" id='block' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
                         <label htmlFor="block">#시야방해있음</label>
                         <input type="checkbox" id='operaGlass' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
                         <label htmlFor="operaGlass">#오페라글라스필수</label>
+                        {tags.map(tag => (
+                            <Fragment>
+                                <input type="checkbox" id={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={handleCheck}/>
+                                <label htmlFor={tag}>{tag}</label>
+                            </Fragment>
+                        ))}
                     </StCheckbox>
                 </div>
             </StFilterTopDiv>
@@ -238,7 +287,7 @@ const Selector = ({ handleModal, theaterId }) => {
                         <input type="number"  id='seat' name='seat' placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} />  
                         <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset}/></span>
                     </div>
-                    <img src={serach} alt="" className='icon' onClick={ClickSeatSerch}/>
+                    <Search className='icon' onClick={ClickSeatSerch}/>
                 </div>
                 <div className='right'>
                     <RadioSelector query={query} navigate={navigate} params ={params} handleCheck={handleCheck} createSearchParams={createSearchParams} />
@@ -259,13 +308,6 @@ const StFilterTopDiv = styled.div`
     align-items: center;
     >div{
         margin: 20px 0 10px;
-    }
-    .serach{
-        display: flex;
-        input{ width:400px }
-        img{
-            margin-left: 10px;
-        }
     }
 `
 
