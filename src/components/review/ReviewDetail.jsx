@@ -14,6 +14,7 @@ import ReviewModify from './ReviewModify';
 import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { useEffect } from 'react';
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
@@ -60,7 +61,7 @@ const unLikeReviews = async (reviewsId) => {
 }
 
 const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
-
+  
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
     let currentMonth = today.getMonth() + 1;  // 월
@@ -470,6 +471,7 @@ const StP = styled.p`
     margin-bottom: 40px;
     text-align: start;
     max-height: 300px;
+    line-height: 20px;
 `
 const StTagDiv = styled.div`
     display: flex;

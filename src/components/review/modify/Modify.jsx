@@ -1,5 +1,5 @@
 import React,{ useState, useEffect } from 'react';
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
@@ -26,9 +26,10 @@ const Modify = ({ data, setModify }) => {
     const [selectFloor, setSelectFloor] = useState({ value: '0' }); //선택한 층
     const [selectSection, setSelectSection] = useState({ value: '0' }); //선택한 구역
     const [selectRow, setSelectRow] = useState({ value: '0' }); //선택한 열
-    const [block, setBlock] = useState(null);
-    const [operaGlass, setOperaGlass] = useState(null);
-    const imgfiles = []; // 이미지 파일
+    const [operaGlass1, setOperaGlass1] = useState("");
+    const [block1, setBlock1] = useState("");
+    const [files, setFiles] = useState() // 이미지 파일
+    const imgUrls = data?.data.imgurls
     const { register, formState: { errors }, control, watch, handleSubmit } = useForm({
         defaultValues: {
             floor: '1F'
@@ -42,7 +43,7 @@ const Modify = ({ data, setModify }) => {
         const res = await axios.get(`${URI.BASE}/api/theaters/${musicalId}/seats`)
         const data = res.data // 전체 좌석정보
         setData(data)
-        console.log(data)
+        console.log(imgUrls)
         for (var i in data) {
             if (i === '0') {
                 const data = res.data[i].sections
@@ -62,7 +63,13 @@ const Modify = ({ data, setModify }) => {
 
     useEffect(() => {
         getSeat();
-    }, [operaGlass]);
+        if (block1 === true){
+            setBlock1 ('on')
+        }
+        if (operaGlass1 === true){
+            setOperaGlass1 ('on')
+        }
+    }, [operaGlass1]);
 
 
     const onChangeSelect = () => {
@@ -70,16 +77,16 @@ const Modify = ({ data, setModify }) => {
     }
 
     for (var floor in Data) {
-        const data1 = Data[floor]
-        floorOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+        const floorData = Data[floor]
+        floorOptions.push({ "value": Object.values(floorData)[0], "label": Object.values(floorData)[0] })
     }
     if (watch("floor").value === "1층") {
         for (var section in Data1) {
-            const data1 = Data1[section]
-            if (data1.section === "0") {
+            const sectionData = Data1[section]
+            if (sectionData.section === "0") {
                 sectionOptions.push({ "value": "0", "label": "구역 없음" })
             } else {
-                sectionOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+                sectionOptions.push({ "value": Object.values(sectionData)[0], "label": Object.values(sectionData)[0] })
             }
         }
         if (watch("section") !== undefined) {
@@ -176,8 +183,8 @@ const Modify = ({ data, setModify }) => {
             }
         }
     }
-    else { }
-    
+    else {}
+
     const greadeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
@@ -187,28 +194,63 @@ const Modify = ({ data, setModify }) => {
     ]
 
     const onSubmit = async () => {
-        if (imgfiles.length === 0) {
+       
+        if (imgUrls.length === 0) {
             toast.error("이미지 등록은 필수 입니다.", {
                 autoClose: 3000,
                 position: toast.POSITION.TOP_CENTER,
                 theme: "dark"
             })
         }
-        const imgFormdata = new FormData();
-        //imgFormdata.append('image',imgfiles)
+/*         const imgFormdata = new FormData();
         for (let i = 0; i < imgfiles.length; i++) {
             imgFormdata.append('image', imgfiles[i])
-        }
-        
+        } */
+        console.log(imgUrls)
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
-        formdata.set('operaGlass', operaGlass)
-        formdata.set('block', block)
+        //formdata.append('imgUrls',imgUrls)
+        formdata.delete('imgUrl')
+        formdata.delete('operaGlass')
         formdata.delete('operaGlass1')
+        formdata.delete('block')
         formdata.delete('block1')
-        console.log(block)
-        console.log(operaGlass)
+        if(block1 === true){            
+            formdata.set('block', 'on')
+        }else if(block1 === false){
+            formdata.set('block',null)
+        }
+        else{
+            formdata.set('block', block1)
+        }
+        if(operaGlass1 === true){
+            formdata.set('operaGlass','on')
+        }else if (operaGlass1 === false){
+            formdata.set('operaGlass',null)
+        }else{formdata.set('operaGlass', operaGlass1)}
+
+        
+        try {
+            const token = window.localStorage.getItem("accessToken")
+            const jsonType = { "Content-Type": "application/json", "Authorization": token }
+     /*        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
+            const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
+            //이미지 
+
+            const obj = {};
+            formdata.forEach(function (value, key) {
+                obj[key] = value;
+            })
+            obj.imgUrls = imgUrls
+
+            const json = JSON.stringify(obj)
+            console.log(json)
+            await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token });
+            setModify(false)
+        } catch (err) {
+            console.log(err)
+        }
         
 
         /* for (let key of imgFormdata.keys()) {
@@ -217,53 +259,38 @@ const Modify = ({ data, setModify }) => {
         for (let value of imgFormdata.values()) {
             console.log(value);
         }*/
-        for (let value of formdata.values()) {
+         for (let value of formdata.values()) {
             console.log(value);
         }
         for (let value of formdata.keys()) {
             console.log(value);
-        }
+        } 
     }
 
-    setTimeout(()=>{
-        console.log(floorOptions[floorOptions.findIndex((e) => e.value === data?.data.floor)])
-    },100)
-
-    setTimeout(()=>{
-        console.log(sectionOptions[sectionOptions.findIndex((e) => e.value === data?.data.section)])
-    },120)
-    setTimeout(()=>{
-        console.log(rowOptions[rowOptions.findIndex((e) => e.value === data?.data.row)])
-    },140)
     
     
-    console.log(data?.data.row)
-    console.log(floorOptions)
-    console.log(sectionOptions)
-    console.log(rowOptions)
-
-   
+    
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
             <h4><span style={{ color: 'var(--error)' }}>*</span> 좌석정보</h4>
             <StTopSelectDiv>
                 <div>
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
-                        render={({ field }) => <Select name='grade' defaultValue={greadeOptions[greadeOptions.findIndex((e) => e.value ===  data?.data.grade)]} placeholder='좌석등급' theme={(theme) => ({
+                        render={({ field }) => <Select name='grade' placeholder='좌석등급' theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: '#f7edff', primary: '#dcb1ff' },
                         })} {...field} options={greadeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>
                     <Controller name="floor" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
-                        render={({ field }) => <Select placeholder='층' defaultValue={floorOptions[floorOptions.findIndex((e) => e.value === data?.data.floor)]} onChange={onChangeSelect} name="floor" theme={(theme) => ({
+                        render={({ field }) => <Select placeholder='층' onChange={onChangeSelect} name="floor" theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: '#f7edff', primary: '#dcb1ff' },
                         })} {...field} options={floorOptions} />} />
                     <p className='error'>{errors.floor && errors.floor?.message}</p>
                 </div>
                 <div>
                     <Controller name="section" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
-                        render={({ field }) => <Select placeholder='구역' defaultValue={sectionOptions[sectionOptions.findIndex((e) => e.value === data?.data.section)]} onChange={setSelectSection} name="section" theme={(theme) => ({
+                        render={({ field }) => <Select placeholder='구역' onChange={setSelectSection} name="section" theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: '#f7edff', primary: '#dcb1ff' },
                         })} {...field} options={sectionOptions} />} />
                     <p className='error'>{errors.section && errors.section?.message}</p>
@@ -276,18 +303,18 @@ const Modify = ({ data, setModify }) => {
                     <p className='error'>{errors.row && errors.row?.message}</p>
                 </div>
                 <div>
-                    <input type="number" defaultValue={data?.data.seat} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
+                    <input type="number" defaultValue={data?.data.seat || ''} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
                     {errors.seat && errors.seat.type === "max" && <p className='error'> 300이하의 숫자로 입력해주세요. </p>}
                     {errors.seat && <p className='error'>필수로 입력하셔야합니다.</p>}
                 </div>
             </StTopSelectDiv>
-            <ModifyRadioSelect data={data} setBlock={setBlock}  />
-            <ModifyCheckboxSelect data={data}  setOperaGlass={setOperaGlass}/>
+            <ModifyRadioSelect data={data}/>
+            <ModifyCheckboxSelect data={data} block1={block1} setBlock1={setBlock1} operaGlass1={operaGlass1} setOperaGlass1={setOperaGlass1}/>
             <div>
-                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' defaultValue={data?.data.reviewContent}></textarea>
+                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' defaultValue={data?.data.reviewContent  || ''}></textarea>
             </div>
             <ModifyTag setTagList={setTagList} tagList={tagList} data={data} />
-            <ModifyImageAdd imgfiles={imgfiles} data={data} />
+            <ModifyImageAdd setFiles={setFiles} files={files} data={data} URI={URI} imgUrls={imgUrls}/>
             <div className='button'>
                 <button type='submit'>등록</button>
                 <button type='button' onClick={() => setModify(false)} className='cancle' >취소</button>

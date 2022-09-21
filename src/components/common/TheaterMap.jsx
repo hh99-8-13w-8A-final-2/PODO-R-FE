@@ -29,7 +29,7 @@ const TheaterMap = ({coordinate}) => {
 
     return (
         <div>
-            <div id="map" style={{width:"540px", height:"240px", borderRadius:'10px'}}></div> 
+            <div id="map" style={{width:"540px", height:"340px", borderRadius:'10px'}}></div> 
         </div>
     );
 };
