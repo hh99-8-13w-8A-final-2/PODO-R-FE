@@ -3,7 +3,7 @@ import Select from 'react-select'
 import serach from '../../assets/img/serach.svg'
 import styled from 'styled-components';
 import Review from '../../components/review/Review';
-import { useSelector } from "react-redux";
+
 import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,7 +37,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const getSeat = async() => {
         const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const data = res.data // 전체 좌석정보
-        
+        console.log(theaterId)
         setData(data)
         for(var i in data){
             if(i === '0'){
@@ -54,11 +54,9 @@ const Selector = ({ handleModal, theaterId }) => {
                 setData4(data)
             }
         }
-        console.log(Data4)
     }; 
     useEffect(()=>{
         getSeat();
-        //console.log('${URI.BASE}/api/musicals/1/reviews',query)
      },[theaterId]);
     for (var floor in Data){
         const data1 = Data[floor]
@@ -196,7 +194,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const {name, checked} = e.target;
         const param = createSearchParams({
             ...query,
-            [name]:checked? "1": 0
+            [name]:checked? "3": 0
         })
         navigate({pathname:"", search:`?${param}`})
     }
