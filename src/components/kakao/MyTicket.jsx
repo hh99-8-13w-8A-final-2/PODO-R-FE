@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 
 
 
-const MyTicket = ({ data, MyDetailReview }) => {
+const MyTicket = ({ data, setMusicalId }) => {
 
 
   const setMusicalIdHandler = (musicalId) => {
-    MyDetailReview(musicalId)
+    setMusicalId(musicalId)
   }
 
   return (

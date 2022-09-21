@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useInfiniteQuery } from 'react-query'
 import { useInView } from "react-intersection-observer";
 
-const fetchReviews = async (pageParam, userId) => {
+const myFetchReviews = async (pageParam, userId) => {
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
   };
@@ -30,7 +30,7 @@ const fetchReviews = async (pageParam, userId) => {
     }
 }
 
-  const MyReviewList = ({ singleData, handleModal }) => {
+  const MyReviewList = ({ singleData, handleModal, fetchNextPage2, isFetchingNextPage2 }) => {
 
    
   let userId = localStorage.getItem("userId")
@@ -38,7 +38,7 @@ const fetchReviews = async (pageParam, userId) => {
     useInfiniteQuery(
       ["reviews", userId],
       ({ pageParam = 1 }) => {
-        return fetchReviews(pageParam, userId);
+        return myFetchReviews(pageParam, userId);
       },
       {
         refetchOnWindowFocus: false,
@@ -52,6 +52,7 @@ const fetchReviews = async (pageParam, userId) => {
       }
     )
 
+    console.log(data)
 
     return (
       <div>
@@ -63,6 +64,8 @@ const fetchReviews = async (pageParam, userId) => {
             isFetchingNextPage={isFetchingNextPage}
             handleModal={handleModal}
             singleData={singleData}
+            fetchNextPage2={fetchNextPage2}
+            isFetchingNextPage2={isFetchingNextPage2}
           />
         </StMyReviewList>
       </div>

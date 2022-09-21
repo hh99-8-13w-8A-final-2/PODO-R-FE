@@ -3,7 +3,7 @@ import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
 
-const MyTicketList = ({  MyDetailReview }) => {
+const MyTicketList = ({ setMusicalId }) => {
 
 
   const URI = {
@@ -22,7 +22,7 @@ const MyTicketList = ({  MyDetailReview }) => {
       }
     });
     setData(response.data)
-    console.log(response.data)
+    // console.log(response.data)
   };
 
 
@@ -36,7 +36,7 @@ const MyTicketList = ({  MyDetailReview }) => {
     <div>
       <StH3>내가 관람한 공연</StH3>
       <StMyTicketList>
-        <MyTicket data={data} MyDetailReview={MyDetailReview}/>
+        <MyTicket data={data} setMusicalId={setMusicalId}/>
       </StMyTicketList>
     </div>
   );

@@ -10,30 +10,72 @@ import Portal from "../assets/modal/Portal";
 import Modal from "../assets/modal/Modal";
 import ReviewDetail from "../components/review/ReviewDetail";
 import axios from "axios";
-import { useInfiniteQuery } from 'react-query'
+import { useInfiniteQuery } from "react-query";
 
-const MyPage = () => {
+const MyDetailReviews = async (musicalId, pageParam) => {
+  if (musicalId === "") {
+    return {
+      data: undefined,
+      nextPage: pageParam + 1,
+      pageData: 1,
+      total: 1,
+    };
+  }
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
   };
 
-  const [singleData, setSingleData] = useState("");
+  const response2 = await axios({
+    method: "get",
+    url: `${URI.BASE}/api/mypage/${musicalId}/reviews?size=20&page=${pageParam}`,
+    headers: {
+      Authorization: localStorage.getItem("accessToken"),
+    },
+  });
+  const data = response2.data.content;
+  const pageData = response2.data.totalPages;
+  const total = response2.data.totalElements;
+  return {
+    data,
+    nextPage: pageParam + 1,
+    pageData,
+    total,
+  };
+};
+
+const MyPage = () => {
   const [modalOn, setModalOn] = useState(false);
   const [reviewsId, SetReviewsId] = useState("");
   const [musicalId, setMusicalId] = useState("");
 
-  const MyDetailReview = async (getMusicalId) => {
-    const response2 = await axios({
-      method: "get",
-      url: `${URI.BASE}/api/mypage/${getMusicalId}/reviews`,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
+  const {
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    status,
+    error,
+  } = useInfiniteQuery(
+    ["reviews", musicalId],
+    ({ pageParam = 1 }) => {
+      return MyDetailReviews(musicalId, pageParam);
+    },
+    {
+      refetchOnWindowFocus: false,
+      // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
+      getNextPageParam: (_lastPage, pages) => {
+        if (pages.length < pages[0].pageData) {
+          return pages.length + 1;
+        } else {
+          return undefined;
+        }
       },
-    });
-    setSingleData(response2.data);
-    console.log(response2.data);
-  };
-  
+    }
+  );
+  // console.log(data.pages[0].data);
+  const singleData = data;
+  const fetchNextPage2 = fetchNextPage;
+  const isFetchingNextPage2 = isFetchingNextPage;
 
   const handleModal = (reviewsId, musicalId) => {
     setModalOn(!modalOn);
@@ -50,8 +92,13 @@ const MyPage = () => {
       <MyPageBottom />
       <Layout>
         <UserProfile />
-        <MyTicketList MyDetailReview={MyDetailReview} />
-        <MyReviewList singleData={singleData} handleModal={handleModal} />
+        <MyTicketList setMusicalId={setMusicalId} />
+        <MyReviewList
+          singleData={singleData}
+          handleModal={handleModal}
+          fetchNextPage2={fetchNextPage2}
+          isFetchingNextPage2={isFetchingNextPage2}
+        />
       </Layout>
       <Footer />
       <Portal>
