@@ -15,11 +15,14 @@ const MyTicket = ({ data, setMusicalId }) => {
     <StMyTicket>
       {data?.content.map((ticket) => (
         <StTicket key={ticket.musicalId} onClick={()=>setMusicalIdHandler(ticket.musicalId)}>
-          <StDiv imgUrl={ticket.musicalPoster}>
-            <StH3>{ticket.musicalName}</StH3>
-            <StDiv1>{ticket.musicalRegion}</StDiv1>
-            <StDiv2>{ticket.openDate} ~ {ticket.closeDate}</StDiv2>
-          </StDiv>
+            <StDiv>
+              <input type="radio" name="musicalBox" id = {ticket.musicalId} />
+              <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
+                <StH3>{ticket.musicalName}</StH3>
+                <StDiv1>{ticket.musicalRegion}</StDiv1>
+                <StDiv2>{ticket.openDate} ~ {ticket.closeDate}</StDiv2>
+              </StLabel>
+            </StDiv>
         </StTicket>
       ))}
     </StMyTicket>
@@ -45,6 +48,18 @@ const StTicket = styled.div`
 `;
 
 const StDiv = styled.div`
+  box-sizing: border-box;
+  input{
+    display: none;
+  }
+  input[type="radio"]:checked + label{
+    border: 3px solid var(--maincolor-1);
+  }
+`
+
+const StLabel = styled.label`
+  //input{display:none}
+  
   width: 190px;
   height: 190px;
   background: linear-gradient(
