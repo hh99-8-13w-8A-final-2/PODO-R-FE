@@ -246,7 +246,7 @@ const Selector = ({ handleModal, theaterId }) => {
 
     const wholeTagsArray = data?.data.tags;
 
-    console.log(wholeTagsArray)
+    /* console.log(wholeTagsArray) */
 
     const [tags, setTags] = useState([]);
 

@@ -50,10 +50,9 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         setShowImages([...showImages])
     };
     const handleDeleteImage = (id) => {
-
-        /*  setShowImages(showImages.filter((_, index) => index !== id));
-         const saveImgfiles = imgfiles.filter((_, index) => index !== id);
-         imgfiles.splice(0, imgfiles.length, ...saveImgfiles) */
+        console.log(id)
+        imgUrls.splice(id,1)
+        setShowImages([...showImages])
     };
 
     return (
