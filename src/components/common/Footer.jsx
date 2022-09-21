@@ -2,8 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
 import logo_footer from '../../assets/img/logo_footer.svg'
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
+    const yelim = "https://github.com/97yelim"
+    const suweon = "https://github.com/kksltv123"
+    const ParkYongWon = "https://github.com/ParkYongWon"
+    const hunkim00 = "https://github.com/hunkim00"
+    const kimilm = "https://github.com/kimilm"
+    const yurikim = "http://yurikim.net"
     return (
         <StFooter>
             <Layout>
@@ -12,10 +19,15 @@ const Footer = () => {
                         <img src={logo_footer} alt="" />
                     </div>
                     <StFooterUl>
-                        <li>About</li>
-                        <li>개인정보처리방침</li>
-                        <li>이용약관</li>
-                        <li>Q&A</li>
+                        <li className='bold'>FE</li>
+                        <li className='name' onClick={()=>{window.open(yelim)}}>김예림</li>
+                        <li className='name' onClick={()=>{window.open(suweon)}}>박수원</li>
+                        <li className='name' onClick={()=>{window.open(ParkYongWon)}}>박용원</li>
+                        <li className='bold'>BE</li>
+                        <li className='name' onClick={()=>{window.open(hunkim00)}}>김훈</li>
+                        <li className='name' onClick={()=>{window.open(kimilm)}}>김휘림</li>
+                        <li className='bold'>UI/UX</li>
+                        <li className='name' onClick={()=>{window.open(yurikim)}}>김유리</li>
                     </StFooterUl>
                 </StFooterCont>
             </Layout>
@@ -42,7 +54,12 @@ const StFooterUl = styled.ul`
     padding: 40px 20px;
     li {
         margin-left: 10px;
-        cursor: pointer;
+        &.bold{
+            font-weight: 700;
+        }
+        &.name{
+            cursor: pointer;
+        }
     }
 `
 

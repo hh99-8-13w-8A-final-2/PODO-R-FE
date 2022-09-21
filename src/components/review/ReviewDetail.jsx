@@ -125,7 +125,13 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
     }
 
     const likeHandler = () => {
-        if (!data?.data.heartChecked) {
+        if (!userId) {
+            toast.success("로그인 해주세요", {
+                autoClose: 3000,
+                position: toast.POSITION.TOP_CENTER
+            })
+        }
+        else if (!data?.data.heartChecked) {
             likeReview.mutate(reviewsId)
             toast.success("좋아요 +1 ~!", {
                 autoClose: 3000,
@@ -140,7 +146,7 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
         }
     }
 
-    console.log(data)
+
 
     const convertToDate = new Date(data?.data.createdAt);
     const createYear = convertToDate.getFullYear();
@@ -158,134 +164,150 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-
     return (
-        <StReviewDetailBox>
-            <ToastContainer/>
-            {modify ? <ReviewModify data={data} onClose={onClose} setModify={setModify} /> :
-                <>
-                    <StSideImgBox>
-                        <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes} nickname={data?.data.member.nickname} />
-                    </StSideImgBox>
-                    <StInfoDiv>
-                        <StDetailHeader>
-                            <StH3>{data?.data.grade}석 {data?.data.floor} {data?.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
-                            <StHeaderRight>
-                                {toggle ?
-                                    <StToggleButtonBox>
-                                        <StModifyButton onClick={() => setModify(true)}>수정</StModifyButton>
-                                        <button onClick={() => deleteHandler()}>삭제</button>
-                                    </StToggleButtonBox>
-                                    :
-                                    null
-                                }
-                                <button>
-                                    {data?.data.member.id === userId && <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))} />}
-                                </button>
-                                <button onClick={onClose}>
-                                    <FontAwesomeIcon icon={faXmark} />
-                                </button>
-                            </StHeaderRight>
-                        </StDetailHeader>
-                        {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
-                            <>
-                                <StDetailHeaderBottom>
-                                    <StProfileDiv>
-                                        <StProfile imgUrl={data?.data.member.profilePic}></StProfile>
-                                        <StProfileInfo>
-                                            <StNickName>{data?.data.member.nickname}</StNickName>
-                                            <StDate>
-                                                {
-                                                    year > 0 &&
-                                                    <span>{currentYear - createYear}년 전 작성</span>
-                                                }
-                                                {
-                                                    year === 0 &&
-                                                    month > 0 &&
-                                                    <span>{currentMonth - createMonth}달 전 작성</span>
-                                                }
-                                                {
-                                                    year === 0 &&
-                                                    month === 0 &&
-                                                    date > 6 &&
-                                                    <span>{(currentDate - createDate) / 7}주일 전 작성</span>
-                                                }
-                                                {
-                                                    year === 0 &&
-                                                    month === 0 &&
-                                                    date > 0 && date < 7 &&
-                                                    <span>{currentDate - createDate}일 전 작성</span>
-                                                }
-                                                {
-                                                    year === 0 &&
-                                                    month === 0 &&
-                                                    date === 0 &&
-                                                    hours > 0 &&
-                                                    <span>{currentHours - createHours}시간 전 작성</span>
-                                                }
-                                                {
-                                                    year === 0 &&
-                                                    month === 0 &&
-                                                    date === 0 &&
-                                                    hours === 0 &&
-                                                    minutes >= 0 &&
-                                                    <span>방금 전 작성</span>
-                                                }
-                                            </StDate>
-                                        </StProfileInfo>
-                                    </StProfileDiv>
-                                    <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
-                                </StDetailHeaderBottom>
-                                <ReviewDetailEval data={data} />
-                                <StP>
-                                    {data?.data.reviewContent}
-                                </StP>
+        <>
+        <ToastContainer/>
+            <StReviewDetailBox>
+                {modify ? <ReviewModify data={data} onClose={onClose} setModify={setModify} /> :
+                    <>
+                        <StSideImgBox>
+                            <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes} nickname={data?.data.member.nickname} />
+                        </StSideImgBox>
+                        <StInfoDiv>
+                            <StDetailHeader>
+                                <StH3>{data?.data.grade}석 {data?.data.floor} {data?.data.section !== "0" && <>{data.data.section}구역</>} {data.data.row}열 {data.data.seat}</StH3>
+                                <StHeaderRight>
+                                    {toggle ?
+                                        <StToggleButtonBox>
+                                            <StModifyButton onClick={() => setModify(true)}>수정</StModifyButton>
+                                            <button onClick={() => deleteHandler()}>삭제</button>
+                                        </StToggleButtonBox>
+                                        :
+                                        null
+                                    }
+                                    <button>
+                                        {data?.data.member.id === userId && <FontAwesomeIcon icon={faEllipsis} onClick={(() => setToggle(!toggle))} />}
+                                    </button>
+                                    <button onClick={onClose}>
+                                        <FontAwesomeIcon icon={faXmark} />
+                                    </button>
+                                </StHeaderRight>
+                            </StDetailHeader>
+                        </StInfoDiv>
+                        <StReviewDiv>
+                            {isClick ? <ReviewCreate setIsClick={setIsClick} reviewId={data.data.reviewId} onClose={onClose} /> :
+                                <>
+                                    <StDetailHeaderBottom>
+                                        <StProfileDiv>
+                                            <StProfile imgUrl={data?.data.member.profilePic}></StProfile>
+                                            <StProfileInfo>
+                                                <StNickName>{data?.data.member.nickname}</StNickName>
+                                                <StDate>
+                                                    {
+                                                        year > 0 &&
+                                                        <span>{currentYear - createYear}년 전 작성</span>
+                                                    }
+                                                    {
+                                                        year === 0 &&
+                                                        month > 0 &&
+                                                        <span>{currentMonth - createMonth}달 전 작성</span>
+                                                    }
+                                                    {
+                                                        year === 0 &&
+                                                        month === 0 &&
+                                                        date > 6 &&
+                                                        <span>{parseInt((currentDate - createDate) / 7)}주일 전 작성</span>
+                                                    }
+                                                    {
+                                                        year === 0 &&
+                                                        month === 0 &&
+                                                        date > 0 && date < 7 &&
+                                                        <span>{currentDate - createDate}일 전 작성</span>
+                                                    }
+                                                    {
+                                                        year === 0 &&
+                                                        month === 0 &&
+                                                        date === 0 &&
+                                                        hours > 0 &&
+                                                        <span>{currentHours - createHours}시간 전 작성</span>
+                                                    }
+                                                    {
+                                                        year === 0 &&
+                                                        month === 0 &&
+                                                        date === 0 &&
+                                                        hours === 0 &&
+                                                        minutes >= 0 &&
+                                                        <span>방금 전 작성</span>
+                                                    }
+                                                </StDate>
+                                            </StProfileInfo>
+                                        </StProfileDiv>
+                                        <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
+                                    </StDetailHeaderBottom>
+                                    <ReviewDetailEval data={data} />
+                                    <StP>
+                                        {data?.data.reviewContent}
+                                    </StP>
 
-                                {data?.data.tags[0] !== '' &&
-                                    <StTagDiv>
-                                        {data?.data.operaGlass && <div>오페라글라스필수</div>}
-                                        {data?.data.block && <div>시야방해</div>}
-                                        {data?.data.tags.map((tag, index) => (
-                                            <div key={index}>{tag}</div>
-                                        ))}
-                                    </StTagDiv>
-                                }
-                            </>
-                        }
-                        <StBottomCont>
-                            <StBottomLeftDiv>
-                                <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
-                                <StDl>
-                                    <dt>{data?.data.musical.musicalName}</dt>
-                                    <dd>{data?.data.musical.theaterName}</dd>
-                                    <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
-                                </StDl>
-                            </StBottomLeftDiv>
-                            <StBottomRightDiv>
-                                <div onClick={() => likeHandler()}>{data?.data.heartChecked ? <Like fill='#BB63FF' /> : <Like fill='#000' />}<span>{data?.data.heartCount}</span></div>
-                                <div onClick={() => setIsClick(true)}><Comment fill='#000' /><span>{data?.data.commentCount}</span></div>
-                            </StBottomRightDiv>
-                        </StBottomCont>
-                    </StInfoDiv>
-                </>
-            }
-
-        </StReviewDetailBox>
+                                    {data?.data.tags[0] !== '' &&
+                                        <StTagDiv>
+                                            {data?.data.operaGlass && <div>오페라글라스필수</div>}
+                                            {data?.data.block && <div>시야방해</div>}
+                                            {data?.data.tags.map((tag, index) => (
+                                                <div key={index}>{tag}</div>
+                                            ))}
+                                        </StTagDiv>
+                                    }
+                                </>
+                            }
+                            <StBottomCont>
+                                <StBottomLeftDiv>
+                                    <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
+                                    <StDl>
+                                        <dt>{data?.data.musical.musicalName}</dt>
+                                        <dd>{data?.data.musical.theaterName}</dd>
+                                        <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
+                                    </StDl>
+                                </StBottomLeftDiv>
+                                <StBottomRightDiv>
+                                    <div onClick={() => likeHandler()}>{data?.data.heartChecked ? <Like fill='#BB63FF' /> : <Like fill='#000' />}<span>{data?.data.heartCount}</span></div>
+                                    <div onClick={() => setIsClick(true)}><Comment fill='#000' /><span>{data?.data.commentCount}</span></div>
+                                </StBottomRightDiv>
+                            </StBottomCont>
+                        </StReviewDiv>
+                    </>
+                }
+            </StReviewDetailBox>
+        </>
     );
 };
 
 const StReviewDetailBox = styled.div`
     width: 1400px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 800px 600px 600px;
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 500px;
+    }
 `
 
 const StSideImgBox = styled.div`
     width: 800px;
+    grid-row: 1/4;
+    @media screen and (max-width: 768px) {
+        width: 500px;
+        grid-row: 2/3;
+        margin-left: 30px;
+    }
 `
 
 const StInfoDiv = styled.div`
-    padding: 30px;
-    position: relative;
+    padding: 30px 30px 0px 30px;
+    @media screen and (max-width: 768px) {
+        width: 500px;
+        grid-row: 1/2;
+        padding-bottom: 0;
+    }
 `
 
 const StDetailHeader = styled.div`
@@ -310,6 +332,10 @@ const StDetailHeader = styled.div`
     }
   }
   margin-bottom: 30px;
+  @media screen and (max-width: 768px) {
+        grid-row: 1/2;
+        width: 500px;
+    }
 `;
 
 const StHeaderRight = styled.div`
@@ -369,12 +395,27 @@ const StH3 = styled.h3`
     font-size: 18px;
 `
 
+const StReviewDiv = styled.div`
+    grid-row: 2/6;
+    padding: 0px 30px;
+    position: relative;
+    @media screen and (max-width: 763px) {
+        width: 500px;
+        height: 800px;
+        grid-row: 3/5;
+        margin-top: 30px;
+    }
+`
+
 const StDetailHeaderBottom = styled.div`
     display: flex;
     justify-content: space-between;
     width: 540px;
     align-items: center;
     margin-bottom: 40px;
+    @media screen and (max-width: 763px) {
+        width: 500px;
+    }
 `
 const StProfileDiv = styled.div`
     display: flex;
@@ -449,6 +490,9 @@ const StBottomCont = styled.div`
     justify-content: space-between;
     align-items: center;
     border-top: 2px solid var(--gray-1);
+    @media screen and (max-width: 763px) {
+        width: 500px;
+    }
 `
 
 const StThumbDiv = styled.div`

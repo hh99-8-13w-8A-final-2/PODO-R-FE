@@ -19,7 +19,7 @@ const Kakao = () => {
       const response = await axios.get(
         `${URI.BASE}/api/oauth/kakao?code=${code}`
       );
-      console.log(response);
+      //console.log(response);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers[`refresh-token`];
       const nickname = response.data.nickname;

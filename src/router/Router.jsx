@@ -7,6 +7,7 @@ import NotfindPage from '../pages/NotfindPage'
 import Kakao from '../components/kakao/Kakao';
 import MyPage from '../pages/MyPage';
 import Twitter from '../components/kakao/Twitter';
+import GuidePage from '../pages/GuidePage';
 
 const Router = () => {
     return (
@@ -19,6 +20,7 @@ const Router = () => {
                 <Route path='/mypage/:userId' element={<MyPage/>} />
                 <Route path='/oauth/kakao' element={<Kakao/>} />
                 <Route path='/oauth/twitter' element={<Twitter/>} />
+                <Route path='/guide' element={<GuidePage/>} />
                 {/* <Route path='/mypage/:musicalsId/reviews' element={<ReviewPage/>} /> */}
             </Routes>
         </BrowserRouter>

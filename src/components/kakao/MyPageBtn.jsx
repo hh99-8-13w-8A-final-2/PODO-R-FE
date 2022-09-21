@@ -7,7 +7,7 @@ const MyPageBtn = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
-  // console.log(userId);
+  //console.log(userId);
 
   const onClickHandler = () => {
     navigate(`/mypage/${userId}`);

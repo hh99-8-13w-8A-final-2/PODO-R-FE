@@ -17,7 +17,7 @@ const URI = {
 
 const getComments = async (reviewId, pageParam) => {
     const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`);
-    console.log(response.data)
+
     const data = response.data.content;
     const pageData = response.data.totalPages;
     const total = response.data.totalElements
@@ -83,7 +83,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             }
         )
 
-        console.log(data)
+
 
     useEffect(() => {
         if (inView) fetchNextPage();
@@ -258,8 +258,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             })}
             <StObserverDiv ref={ref}>
                 {isFetchingNextPage && "Loading more..."}
-                {!data.pages[0].total === 0 && "아직 댓글이 없네요"}
-                {!hasNextPage && "더이상 댓글이 없네요"}
+                {data.pages[0].total === 0 && "아직 댓글이 없네요"}
+                {data.pages[0].total !== 0 && !hasNextPage && "더이상 댓글이 없네요"}
             </StObserverDiv>
             </StListWrap>
         </div>

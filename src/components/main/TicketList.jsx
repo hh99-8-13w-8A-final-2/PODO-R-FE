@@ -47,6 +47,7 @@ export default TicketList;
 
 const StListDiv =styled.div`
     .swiper-pagination-bullet {background-color:var(--gray-2)}
+    margin-bottom: 70px;
 `
 const StDiv = styled.div`
     width: 200px;

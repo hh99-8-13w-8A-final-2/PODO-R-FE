@@ -17,7 +17,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
 
-    body, h1, h2, h3, h4, h5, h6, input, textarea, select {
+    body, h1, h2, h3, h4, h5, h6, input, textarea, select, button {
         font-family: 'SUIT-Regular', sans-serif;
     }
 

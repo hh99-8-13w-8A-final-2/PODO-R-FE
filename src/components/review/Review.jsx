@@ -25,13 +25,10 @@ const fetchReviews = async (pageParam, musicalId) => {
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
-    const total = res.data.totalElements
     console.log(res.data)
     return {
         data,
-        nextPage: pageParam + 1,
         pageData,
-        total
     }
 }
 
@@ -40,8 +37,6 @@ const Review = ({ handleModal }) => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
-    console.log(location)
-    console.log(musicalId)
     // 현재 시간 정보
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
@@ -59,6 +54,7 @@ const Review = ({ handleModal }) => {
                 return fetchReviews(pageParam, musicalId);
             },
             {
+                staleTime: 1000,
                 refetchOnWindowFocus: false,
                 // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
                 getNextPageParam: (_lastPage, pages) => {
@@ -70,6 +66,7 @@ const Review = ({ handleModal }) => {
                 }
             }
         )
+
     
     useEffect(() => {
         if(inView) fetchNextPage();
@@ -78,10 +75,10 @@ const Review = ({ handleModal }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-    console.log(data)
+    
 
     return (
-        <>
+        <div>
             {data?.pages.map((group, i) => {
                 return (
                     <StWrap key={i}>
@@ -117,7 +114,7 @@ const Review = ({ handleModal }) => {
                                             currentYear - createYear === 0 &&
                                             currentMonth - createMonth === 0 &&
                                             currentDate - createDate > 6 &&
-                                            <span>{(currentDate - createDate)/7}주일 전</span>
+                                            <span>{parseInt((currentDate - createDate)/7)}주일 전</span>
                                             }
                                             {
                                             currentYear - createYear === 0 &&
@@ -171,7 +168,7 @@ const Review = ({ handleModal }) => {
                         ? "더보기"
                         : "Nothing more to load"}
             </StMoreDiv>
-        </>
+        </div>
     );
 };
 
@@ -201,6 +198,7 @@ const StThumbDiv = styled.div`
     background-color: rgba(34,34,34,0.4);
     background-blend-mode : multiply;
     position: relative;
+   
 `
 
 const StUtillDiv = styled.div`

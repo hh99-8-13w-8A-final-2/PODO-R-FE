@@ -23,7 +23,7 @@ const Twitter = () => {
       const response = await axios.get(
         `${URI.BASE}/api/oauth/twitter?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`
       );
-      console.log(response);
+      //console.log(response);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers[`refresh-token`];
       const nickname = response.data.nickname;

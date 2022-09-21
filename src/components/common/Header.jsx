@@ -10,6 +10,7 @@ import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import { useSelector } from "react-redux";
 import UserProfile from "../kakao/UserProfile";
 import MyPageBtn from "../kakao/MyPageBtn";
+import goBack from "../../assets/img/goBack.svg"
 
 const Header = () => {
   const navigate = useNavigate();
@@ -17,12 +18,14 @@ const Header = () => {
   const onClickHandler = () => {
     navigate("/");
   };
-
+  const onGoBack = () =>{
+    navigate(-1);
+  }
   return (
     <StHeader>
       <Layout>
         <StHeaderCont>
-          <div>돌아가기 버튼</div>
+          <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>돌아가기</p></div>
           <img src={logo} alt="" onClick={onClickHandler} />
           <div>
             {isLogin ? (
@@ -49,8 +52,12 @@ const StHeaderCont = styled.div`
   justify-content: space-between;
   align-items: center;
   color: var(--white);
-  padding: 20px;
+  padding: 30px 0px;
   position: relative;
+  .goBack{
+    width: 15px;
+    position: static;
+  }
   img {
     width: 15%;
     cursor: pointer;

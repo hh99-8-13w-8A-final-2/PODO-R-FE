@@ -10,11 +10,8 @@ import { useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNextPage, fetchNextPage2, isFetchingNextPage2}) => {
-  console.log(data);
-  console.log(singleData);
-  const [isShow, setIsShow] = useState(data);
+
   const { ref, inView } = useInView();
-  // const { ref2, inView2 } = useInView();
 
   useEffect(() => {
     if(inView) fetchNextPage();
@@ -23,8 +20,6 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
   useEffect(() => {
     if(inView) fetchNextPage2();
   }, [inView]);
-
-
 
   return (
     <div>
@@ -63,8 +58,7 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
           <StMoreDiv ref = {ref}>
             {isFetchingNextPage}
             Nothing more to load
-          </StMoreDiv>
-          
+          </StMoreDiv> 
         </div>
       ) : (
         <div>

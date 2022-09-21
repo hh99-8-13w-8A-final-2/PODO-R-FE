@@ -72,7 +72,6 @@ const MyPage = () => {
       },
     }
   );
-  // console.log(data.pages[0].data);
   const singleData = data;
   const fetchNextPage2 = fetchNextPage;
   const isFetchingNextPage2 = isFetchingNextPage;
