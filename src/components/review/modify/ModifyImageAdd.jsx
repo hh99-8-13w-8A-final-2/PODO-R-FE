@@ -13,7 +13,7 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
 
     const handleAddImages = async (event) => {
         const imgFiles = event.target.files    
-
+        console.log(imgUrls)
         if (imgFiles.length > 4 - imgUrls.length){
             toast.error("4장까지 등록이 가능합니다.", {
                 autoClose: 3000,
@@ -50,6 +50,7 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
     };
     const handleDeleteImage = (id) => {
         imgUrls.splice(id,1)
+        console.log(imgUrls)
         setShowImages([...showImages])
     };
 

@@ -13,7 +13,7 @@ import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
 const Modify = ({ data, setModify }) => {
-    //console.log(data.data)
+    console.log(data.data)
     let location = useLocation();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
