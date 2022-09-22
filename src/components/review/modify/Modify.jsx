@@ -3,6 +3,7 @@ import { useForm, Controller, set } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
+import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios';
 import Select from 'react-select'
 import styled from 'styled-components';
@@ -10,10 +11,9 @@ import ModifyTag from './ModifyTag';
 import ModifyImageAdd from './ModifyImageAdd';
 import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
-import { useMutation, useQueryClient } from "react-query"
 
 const Modify = ({ data, setModify }) => {
-    console.log(data.data)
+    //console.log(data.data)
     let location = useLocation();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
@@ -223,11 +223,7 @@ const Modify = ({ data, setModify }) => {
                 theme: "dark"
             })
         }
-/*         const imgFormdata = new FormData();
-        for (let i = 0; i < imgfiles.length; i++) {
-            imgFormdata.append('image', imgfiles[i])
-        } */
-        console.log(imgUrls)
+
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
@@ -252,26 +248,39 @@ const Modify = ({ data, setModify }) => {
         }else{formdata.set('operaGlass', operaGlass1)}
 
         
-        try {
-     /*        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-            const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
-            //이미지 
+        const token = window.localStorage.getItem("accessToken")
+        const jsonType = { "Content-Type": "application/json", "Authorization": token }
+    /*        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
+        const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
+        //이미지 
 
-            const obj = {};
-            formdata.forEach(function (value, key) {
-                obj[key] = value;
-            })
-            obj.imgUrls = imgUrls
+        const obj = {};
+        formdata.forEach(function (value, key) {
+            obj[key] = value;
+        })
+        obj.imgUrls = imgUrls
 
-            const json = JSON.stringify(obj)
-            console.log(json)
-            modifyMutation.mutate(json)
-            setModify(false)
-        } catch (err) {
-            console.log(err)
-        }
-
-
+        const json = JSON.stringify(obj)
+        console.log(json)
+        await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token })
+        .then(
+            (response) => {
+                setModify(false)
+            }
+        )
+        .catch(
+            (err) => {
+                if(err.response){
+                    let data = err.response.data;
+                    toast.error(data, {
+                        autoClose: 3000,
+                        position: toast.POSITION.TOP_CENTER,
+                        theme: "dark"
+                    })
+                }   
+            }
+        );
+        
         /* for (let key of imgFormdata.keys()) {
             console.log(key);
         }
