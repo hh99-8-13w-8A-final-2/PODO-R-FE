@@ -83,7 +83,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             }
         )
 
-
+        
 
     useEffect(() => {
         if (inView) fetchNextPage();
