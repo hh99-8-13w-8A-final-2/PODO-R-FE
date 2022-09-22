@@ -209,6 +209,8 @@ const Modify = ({ data, setModify }) => {
             queryClient.invalidateQueries("reviews")
         }
     })
+
+    console.log(queryClient)
     
 
 
