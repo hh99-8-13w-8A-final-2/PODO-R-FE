@@ -199,7 +199,24 @@ const Modify = ({ data, setModify }) => {
     const postModifyedReviews = async(json) => {
         const token = window.localStorage.getItem("accessToken")
         const jsonType = { "Content-Type": "application/json", "Authorization": token }
-        await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token });
+        await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token })
+        .then(
+            (response)=>{
+                setModify(false)
+            }
+        )
+        .catch(
+            (err) => {
+                if(err.response){
+                    let data = err.response.data;
+                    toast.error(data, {
+                        autoClose: 3000,
+                        position: toast.POSITION.TOP_CENTER,
+                        theme: "dark"
+                    })
+                }   
+            }
+        )
     }
 
     const queryClient = useQueryClient()
@@ -250,9 +267,7 @@ const Modify = ({ data, setModify }) => {
         
         const token = window.localStorage.getItem("accessToken")
         const jsonType = { "Content-Type": "application/json", "Authorization": token }
-    /*        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-        const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
-        //이미지 
+
 
         const obj = {};
         formdata.forEach(function (value, key) {
@@ -262,24 +277,7 @@ const Modify = ({ data, setModify }) => {
 
         const json = JSON.stringify(obj)
         console.log(json)
-        await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token })
-        .then(
-            (response) => {
-                setModify(false)
-            }
-        )
-        .catch(
-            (err) => {
-                if(err.response){
-                    let data = err.response.data;
-                    toast.error(data, {
-                        autoClose: 3000,
-                        position: toast.POSITION.TOP_CENTER,
-                        theme: "dark"
-                    })
-                }   
-            }
-        );
+        modifyMutation.mutate(json)
         
         /* for (let key of imgFormdata.keys()) {
             console.log(key);
