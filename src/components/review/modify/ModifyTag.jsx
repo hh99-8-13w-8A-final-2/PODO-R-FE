@@ -20,6 +20,7 @@ const ModifyTag = ({ setTagList, tagList, data }) => {
         if (!value.trim()) return
         setTagList([...tagList, value])
         e.target.value = ''
+        console.log(tagList)
     }
     const removeTag = (index) => {
         setTagList(tagList.filter((el, i) => i !== index))

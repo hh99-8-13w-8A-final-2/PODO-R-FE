@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const ModifyImageAdd = ({ data, URI, imgUrls }) => {
     const files = []    
     const [showImages, setShowImages] = useState(data.data.imgurls); // 이미지 프리뷰
-    console.log(imgUrls)
+
     const handleAddImages = async (event) => {
         const imgFiles = event.target.files    
 
@@ -25,7 +25,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         console.log(imgFiles.length)
         for (var i = 0; i < imgFiles.length; i++){
             files.push(imgFiles[i])
-            console.log(imgFiles[i])
         }
 
         console.log("files : " , ...files)
@@ -35,9 +34,9 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         for(var i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
-        for (let value of formData.values()) {
+        /* for (let value of formData.values()) {
             console.log(value);
-        }
+        } */
 
         const token = window.localStorage.getItem("accessToken")
         const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
@@ -50,7 +49,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         setShowImages([...showImages])
     };
     const handleDeleteImage = (id) => {
-        console.log(id)
         imgUrls.splice(id,1)
         setShowImages([...showImages])
     };
