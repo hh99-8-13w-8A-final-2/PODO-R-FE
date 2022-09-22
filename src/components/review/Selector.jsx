@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Review from '../../components/review/Review';
 import { ReactComponent as Search } from '../../assets/img/search.svg'
 import { useSelector } from "react-redux";
-import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams, createSearchParams, useLocation, useParams } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
@@ -216,12 +216,44 @@ const Selector = ({ handleModal, theaterId }) => {
     }
 
     const handleCheck  = (e) =>{
-        const {name, checked} = e.target;
-        const param = createSearchParams({
-            ...query,
-            [name]:checked? "1": 0
-        })
-        navigate({pathname:"", search:`?${param}`})
+        const currentQuery = e.target.dataset.query.toString();
+        // 현재 누른 타켓의 query
+        const prevQuery = searchParams.getAll('tag');
+        // 이전에 가지고 있던 query를 불러오기
+        // 여러개가 될 수 있어, getAll 메서드를 사용했다.
+        // 하나라면, get을 사용할 수 있을 것이다.
+    
+        if (prevQuery.includes(currentQuery)) {
+          // 이전에 가지고 있던 쿼리가, 타겟의 쿼리를 가지고 있다면 (한번 더 눌렀다면)
+          // 현재 누른 타겟의 쿼리는 제거해주자.
+          const newQuery = prevQuery.filter((query) => query !== currentQuery);
+          setSearchParams({
+            tag: newQuery,
+          });
+        } else {
+          // 아니라면, 쿼리를 추가해주자.
+          setSearchParams({
+            tag: [...prevQuery, currentQuery],
+          });
+        }
+    }
+
+    let [searchParams, setSearchParams] = useSearchParams();
+    
+    const tagHandleCheck = (e) => {
+        const currentQuery = e.target.dataset.query.toString();
+        const prevQuery = searchParams.getAll('tag');
+    
+        if (prevQuery.includes(currentQuery)) {
+          const newQuery = prevQuery.filter((query) => query !== currentQuery);
+          setSearchParams({
+            tag: newQuery,
+          });
+        } else {
+          setSearchParams({
+            tag: [...prevQuery, currentQuery],
+          });
+        }
     }
     
     
@@ -244,12 +276,9 @@ const Selector = ({ handleModal, theaterId }) => {
         }
     )
 
-
     const wholeTagsArray = data?.data.tags;
 
-    console.log(wholeTagsArray)
-
-    const [tags, setTags] = useState([]);
+    console.log()
 
     if(status === 'loading'){return <div className='popularBox'></div>}
     if(status === 'error'){return <div className='popularBox'><p>Error:{error.message}</p></div>}
@@ -258,18 +287,18 @@ const Selector = ({ handleModal, theaterId }) => {
     return (
         <div>
             <StFilterTopDiv>
-                <AutoComplete wholeTagsArray={wholeTagsArray} setTags={setTags} tags={tags}/>
+                <AutoComplete/>
                 <div>
                     <StCheckbox>
-                        <input type="checkbox" id='block' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
+                        <input type="checkbox" id='block' data-query='#시야방해있음' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
                         <label htmlFor="block">#시야방해있음</label>
-                        <input type="checkbox" id='operaGlass' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
+                        <input type="checkbox" id='operaGlass' data-query='#오페라글라스필수' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
                         <label htmlFor="operaGlass">#오페라글라스필수</label>
-                        {tags.map(tag => (
-                            <Fragment>
-                                <input type="checkbox" id={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={handleCheck}/>
-                                <label htmlFor={tag}>{tag}</label>
-                            </Fragment>
+                    {wholeTagsArray.map((tag, index) => (
+                        <Fragment key={index}>
+                        <input type="checkbox" id={tag} data-query={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={tagHandleCheck}/>
+                        <label htmlFor={tag}>{tag}</label>
+                        </Fragment>
                         ))}
                     </StCheckbox>
                 </div>
@@ -399,14 +428,23 @@ const StFilterDiv = styled.div`
         }
     }
 `
-const StCheckbox =styled.div`
 
-label {
-    margin-right: 10px;
-    padding: 8px 15px;
-    border-radius:20px;
-    box-sizing: border-box;
-}
+const StCheckbox =styled.div`
+    width: 1400px;
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    div {
+        height: 100px;
+    }
+    label {
+        margin-right: 10px;
+        padding: 8px 15px;
+        border-radius:20px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
     input[type="checkbox"] {
         display:none;
     }
