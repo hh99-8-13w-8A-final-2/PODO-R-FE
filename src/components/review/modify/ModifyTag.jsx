@@ -5,8 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const ModifyTag = ({ setTagList, tagList, data }) => {
     useEffect(()=>{
-        for(var i in data?.data.tags){
-            tagList.push(data?.data.tags[i])
+        if(data?.data.tags[0] === ""){
+            return
+        }else{
+            for(var i in data?.data.tags){
+                tagList.push(data?.data.tags[i])
+            }
         }
     },[])
 

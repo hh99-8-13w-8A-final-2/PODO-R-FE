@@ -44,7 +44,7 @@ const Review = ({ handleModal }) => {
     let currentDate = today.getDate();  // 날짜
     let currentHours = today.getHours(); // 시
     let currentMinutes = today.getMinutes();  // 분
-
+    
     const { ref, inView } = useInView();
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =

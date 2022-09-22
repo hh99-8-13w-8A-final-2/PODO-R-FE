@@ -4,7 +4,8 @@ import styled from 'styled-components';
 import Review from '../../components/review/Review';
 import { ReactComponent as Search } from '../../assets/img/search.svg'
 import { useSelector } from "react-redux";
-import { useNavigate, useSearchParams, createSearchParams, useLocation, useParams } from "react-router-dom";
+
+import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
@@ -60,7 +61,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const getSeat = async() => {
         const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const data = res.data // 전체 좌석정보
-        
+        console.log(theaterId)
         setData(data)
         for(var i in data){
             if(i === '0'){
@@ -77,11 +78,9 @@ const Selector = ({ handleModal, theaterId }) => {
                 setData4(data)
             }
         }
-        console.log(Data4)
     }; 
     useEffect(()=>{
         getSeat();
-        //console.log('${URI.BASE}/api/musicals/1/reviews',query)
      },[theaterId]);
     for (var floor in Data){
         const data1 = Data[floor]
