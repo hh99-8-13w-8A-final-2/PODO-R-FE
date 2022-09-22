@@ -11,9 +11,6 @@ import profile_yelim from '../assets/img/profile_yelim.webp'
 import profile_yongwon from '../assets/img/profile_yongwon.webp'
 import profile_yuri from '../assets/img/profile_yuri.webp'
 import logo_footer from '../assets/img/logo_footer.svg'
-import Header from '../components/common/Header';
-import Layout from '../components/common/Layout';
-import Footer from '../components/common/Footer';
 import styled from 'styled-components';
 import up from '../assets/img/up.svg'
 import { useNavigate } from 'react-router-dom'
@@ -35,8 +32,6 @@ const GuidePage = () => {
     }
     return (
         <>
-        <Header/>
-        <Layout>
             <StDiv>
                 <div className='section'>
                     <h1>명당을 고르는 가장 확실한 방법!</h1>
@@ -126,9 +121,6 @@ const GuidePage = () => {
                     </div>
                 </StCreateDiv>
             </StDiv>
-        </Layout>
-        <Footer/>
-        
         </>
     );
 };

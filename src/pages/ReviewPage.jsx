@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { __getmusicalData } from '../redux/modules/musicalSlice';
 import { useDispatch, useSelector } from "react-redux";
-import Header from '../components/common/Header';
-import Layout from '../components/common/Layout';
-import Footer from '../components/common/Footer';
-import HeaderBottom from '../components/common/HeaderBottom'
 import Selector from '../components/review/Selector';
 import CreateBtn from '../components/common/CreateBtn'
 import Portal from '../assets/modal/Portal'
@@ -62,12 +58,7 @@ const ReviewPage = () => {
 
     return (
         <>
-            <Header />
-            <HeaderBottom />
-            <Layout>
-                {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicals.theaterId} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} /> }
-            </Layout>
-            <Footer />
+            {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicals.theaterId} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} /> }
             <CreateBtn onClickHandler={onClickHandler}/>
             <Portal>
                 {modalOn && 

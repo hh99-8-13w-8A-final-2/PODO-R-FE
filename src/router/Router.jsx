@@ -8,20 +8,28 @@ import Kakao from '../components/kakao/Kakao';
 import MyPage from '../pages/MyPage';
 import Twitter from '../components/kakao/Twitter';
 import GuidePage from '../pages/GuidePage';
+import MainLayout from './MainLayout';
+import MypageLayout from './MypageLayout';
+import ReviewLayout from './ReviewLayout';
 
 const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path='/' element={<MainPage/>} />
-                <Route path='/musicals/:musicalsId/reviews/create' element={<CreatePage/>} />
-                <Route path='/musicals/:musicalsId/reviews' element={<ReviewPage/>} />
-                <Route path='/*' element={<NotfindPage/>} />
-                <Route path='/mypage/:userId' element={<MyPage/>} />
-                <Route path='/oauth/kakao' element={<Kakao/>} />
-                <Route path='/oauth/twitter' element={<Twitter/>} />
-                <Route path='/guide' element={<GuidePage/>} />
-                {/* <Route path='/mypage/:musicalsId/reviews' element={<ReviewPage/>} /> */}
+                <Route element={<MainLayout/>}>
+                    <Route path='/' element={<MainPage/>} />
+                    <Route path='/*' element={<NotfindPage/>} />
+                    <Route path='/oauth/kakao' element={<Kakao/>} />
+                    <Route path='/oauth/twitter' element={<Twitter/>} />
+                    <Route path='/guide' element={<GuidePage/>} />
+                </Route>
+                <Route element={<ReviewLayout/>}>
+                    <Route path='/musicals/:musicalsId/reviews/create' element={<CreatePage/>} />
+                    <Route path='/musicals/:musicalsId/reviews' element={<ReviewPage/>} />
+                </Route>
+                <Route element={<MypageLayout/>}>
+                    <Route path='/mypage/:userId' element={<MyPage/>} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );
