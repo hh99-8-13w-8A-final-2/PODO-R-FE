@@ -10,6 +10,7 @@ import ModifyTag from './ModifyTag';
 import ModifyImageAdd from './ModifyImageAdd';
 import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
+import { useMutation, useQueryClient } from "react-query"
 
 const Modify = ({ data, setModify }) => {
     console.log(data.data)
@@ -194,6 +195,8 @@ const Modify = ({ data, setModify }) => {
         { value: 'S', label: 'S' },
         { value: 'A', label: 'A ' }
     ]
+    
+
 
     const onSubmit = async () => {
        
@@ -248,11 +251,13 @@ const Modify = ({ data, setModify }) => {
 
             const json = JSON.stringify(obj)
             console.log(json)
+
             await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token });
             setModify(false)
         } catch (err) {
             console.log(err)
         }
+
         
 
         /* for (let key of imgFormdata.keys()) {
@@ -266,7 +271,8 @@ const Modify = ({ data, setModify }) => {
         }
         for (let value of formdata.keys()) {
             console.log(value);
-        } 
+        }
+        
     }
 
     

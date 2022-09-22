@@ -254,6 +254,22 @@ const Selector = ({ handleModal, theaterId }) => {
           });
         }
     }
+
+    const handleEvalCheck = (e) => {
+        const currentQuery = e.target.dataset.query.toString();
+        const prevQuery = searchParams.getAll('evaluation');
+    
+        if (prevQuery.includes(currentQuery)) {
+          const newQuery = prevQuery.filter((query) => query !== currentQuery);
+          setSearchParams({
+            evaluation: newQuery,
+          });
+        } else {
+          setSearchParams({
+            evaluation: [...prevQuery, currentQuery],
+          });
+        }
+    }
     
     
     const greadeOptions = [
@@ -319,7 +335,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <Search className='icon' onClick={ClickSeatSerch}/>
                 </div>
                 <div className='right'>
-                    <RadioSelector query={query} navigate={navigate} params ={params} handleCheck={handleCheck} createSearchParams={createSearchParams} />
+                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} createSearchParams={createSearchParams} />
                 </div>
             </StFilterDiv >
             <Review handleModal={handleModal} theaterId={theaterId}/>
