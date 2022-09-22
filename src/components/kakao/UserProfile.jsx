@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { Buffer } from "buffer";
 import axios from "axios";
-
+import { useForm } from "react-hook-form";
+import Modal from "../../assets/modal/Modal";
+import ModalPortal from "../../assets/modal/Portal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
@@ -10,80 +14,62 @@ const UserProfile = () => {
   const nickname = localStorage.getItem("nickname");
 
   const [newNickName, setNewNickName] = useState();
-  const [isShow, setIsShow] = useState(false);
-  const [data, setData] = useState();
+  const [signupModalOn, setSignupModalOn] = useState(false);
 
   const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
+    BASE: process.env.REACT_APP_BASE_URI,
+  };
+
+  const {register, handleSubmit, watch, setFocus} = useForm({ mode : "onChange" })
+
+
+  const handleModal = () => {
+    setSignupModalOn(!signupModalOn);
+  };
+  
   const onChangeHandler = (e) => {
     setNewNickName(e.target.value);
   };
-  const openbox = () => {
-    setIsShow((prev) => !prev);
-  };
 
   const onEditHandler = () => {
-    if(
-      newNickName.trim() === "" 
-    ) {
-      return alert("닉네임은 2글자 이상 8글자 이하 입니다.")
-    }
-    const MyDetailReview = async () => {
-      const response = await axios({
-        method: "put",
-        url: `${URI.BASE}/api/mypage/update`,
-        headers: {
-          Authorization: localStorage.getItem("accessToken"),
-        },
-        data : {
-          nickname : newNickName
-        }
-      });
-    };
-    MyDetailReview()
-    localStorage.removeItem("nickname");
-    localStorage.setItem("nickname", newNickName);
-    setNewNickName("");
-    setIsShow((prev) => !prev)
+    handleModal()
   };
 
-
-  
-
-
-
-
-
   return (
-    <form>
-      {isShow === false ? (
+      
+
+      <div>
         <div>
-          <StUserProfile>
-            <StThumb imgUrl={profilePic}></StThumb>
-            <StUserNickName>
-              {nickname} 님 <button onClick={openbox}>수정</button>
-            </StUserNickName>
-          </StUserProfile>
-        </div>
-      ) : (
-        <div>
-          <StUserProfile>
-            <StThumb imgUrl={profilePic}></StThumb>
-            <StUserNickName>
-            <input
-              type="text"
-              onChange={onChangeHandler}
-              placeholder={nickname}
-              required
-            /> 
-            <button onClick={() => onEditHandler()}>수정</button>
-            </StUserNickName>
-            
-          </StUserProfile>
-        </div>
-      )}
-    </form>
+        <StUserProfile>
+          <StThumb imgUrl={profilePic}></StThumb>
+          <StUserNickName>
+            {nickname} <button onClick={handleModal}>수정</button>
+          </StUserNickName>
+          <ModalPortal>
+            {signupModalOn && (
+            <Modal>
+              <StExit>
+                <button onClick={handleModal}>
+                <FontAwesomeIcon icon={faXmark}/>
+              </button>
+              </StExit>
+              <StProfileBox>
+                <StThumb imgUrl={profilePic}></StThumb>
+                <label>{nickname}</label>
+                <input
+                type="text"
+                onChange={onChangeHandler}
+                placeholder= "닉네임"
+                />
+                <button onClick={onEditHandler}>저장하기</button>
+              </StProfileBox>
+              
+            </Modal>
+            )}
+            </ModalPortal>
+        </StUserProfile>
+      </div>
+      </div>
   );
 };
 
@@ -130,6 +116,16 @@ const StUserNickName = styled.div`
   color: white;
 `;
 
+const StProfileBox = styled.div`
+  padding: 150px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  
+`;
+
 // const StDiv = styled.div`
 //     width: 200px;
 //     height: 300px;
@@ -144,3 +140,24 @@ const StUserNickName = styled.div`
 //     line-height: 20px;
 //     cursor: pointer;
 // `
+
+
+const StExit = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-content: flex-end;
+  padding: 12px;
+  button {
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1.5em;
+    color: var(--gray-2);
+    transition: all 0.3s;
+    cursor: pointer;
+    &:hover {
+      color: var(--gray-3);
+    }
+  }
+`;
