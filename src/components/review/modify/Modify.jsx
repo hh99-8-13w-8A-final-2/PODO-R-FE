@@ -195,6 +195,20 @@ const Modify = ({ data, setModify }) => {
         { value: 'S', label: 'S' },
         { value: 'A', label: 'A ' }
     ]
+
+    const postModifyedReviews = async(json) => {
+        const token = window.localStorage.getItem("accessToken")
+        const jsonType = { "Content-Type": "application/json", "Authorization": token }
+        await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token });
+    }
+
+    const queryClient = useQueryClient()
+    const modifyMutation = useMutation(postModifyedReviews, {
+        onSuccess: () => {
+            queryClient.invalidateQueries("/ReviewDetail")
+            queryClient.invalidateQueries("reviews")
+        }
+    })
     
 
 
@@ -237,8 +251,6 @@ const Modify = ({ data, setModify }) => {
 
         
         try {
-            const token = window.localStorage.getItem("accessToken")
-            const jsonType = { "Content-Type": "application/json", "Authorization": token }
      /*        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
             const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
             //이미지 
@@ -251,14 +263,12 @@ const Modify = ({ data, setModify }) => {
 
             const json = JSON.stringify(obj)
             console.log(json)
-
-            await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token });
+            modifyMutation.mutate(json)
             setModify(false)
         } catch (err) {
             console.log(err)
         }
 
-        
 
         /* for (let key of imgFormdata.keys()) {
             console.log(key);
