@@ -77,7 +77,7 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
         ['/ReviewDetail', musicalId, reviewsId],
         () => fetchReviewDetail(musicalId, reviewsId),
         {
-            refetchOnWindowFocus: true,
+            refetchOnWindowFocus: false,
         }
     )
     const MySwal = withReactContent(Swal)
