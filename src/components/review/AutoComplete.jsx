@@ -3,7 +3,12 @@ import styled from 'styled-components'
 import { ReactComponent as Search } from '../../assets/img/search.svg'
 
 
-const AutoComplete = ({wholeTagsArray, setTags, tags}) => {
+const AutoComplete = () => {
+  const wholeTagsArray = [
+    "123",
+    "456"
+  ]
+
   const [inputValue, setInputValue] = useState('')
   const [isHaveInputValue, setIsHaveInputValue] = useState(false)
   const [dropDownList, setDropDownList] = useState(wholeTagsArray)
@@ -53,7 +58,6 @@ const AutoComplete = ({wholeTagsArray, setTags, tags}) => {
 
   const inputValueHandler = () => {
     if(dropDownList.includes(inputValue)) {
-      setTags([...tags, inputValue])
       setInputValue('')
     }
     else {

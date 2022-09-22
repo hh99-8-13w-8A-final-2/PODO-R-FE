@@ -5,7 +5,7 @@ import sound from '../../assets/img/sound.svg'
 import light from '../../assets/img/light.svg'
 import up_small from '../../assets/img/up_small.svg'
 
-const RadioSelector = ({query, navigate, params, handleCheck, createSearchParams}) => {
+const RadioSelector = ({query, navigate, params, handleEvalCheck, createSearchParams}) => {
      
    
     const handleOrderCheck  = (e) =>{
@@ -20,13 +20,13 @@ const RadioSelector = ({query, navigate, params, handleCheck, createSearchParams
     return (
         <>
           <div>
-                <input type="checkbox" id='gap' name='gap' defaultChecked={params.get("gap"==="1")} onChange={handleCheck}/>
+                <input type="checkbox" id='gap' data-query='단차좋음' name='gap' defaultChecked={params.get("gap"==="1")} onChange={handleEvalCheck}/>
                 <label htmlFor="gap"> <img src={gap} alt="" /> 단차좋음</label>
-                <input type="checkbox" id='sight' name='sight' defaultChecked={params.get("sight"==="1")} onChange={handleCheck} />
+                <input type="checkbox" id='sight' data-query='시야좋음' name='sight' defaultChecked={params.get("sight"==="1")} onChange={handleEvalCheck} />
                 <label htmlFor="sight"> <img src={view} alt="" /> 시야좋음</label>
-                <input type="checkbox" id='sound' name='sound' defaultChecked={params.get("sound"==="1")} onChange={handleCheck}/>
+                <input type="checkbox" id='sound' data-query='음향좋음' name='sound' defaultChecked={params.get("sound"==="1")} onChange={handleEvalCheck}/>
                 <label htmlFor="sound"> <img src={sound} alt="" /> 음향좋음</label>
-                <input type="checkbox" id='light' name='light' defaultChecked={params.get("light"==="1")} onChange={handleCheck}/>
+                <input type="checkbox" id='light' data-query='조명좋음' name='light' defaultChecked={params.get("light"==="1")} onChange={handleEvalCheck}/>
                 <label htmlFor="light"> <img src={light} alt="" /> 조명좋음</label>
             </div>
             <div>
