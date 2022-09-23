@@ -249,6 +249,7 @@ const Selector = ({ handleModal, theaterId }) => {
 
     console.log('&' + window.location.href.split('?').splice(1,1).toString())
     
+    
     const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },

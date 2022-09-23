@@ -13,7 +13,7 @@ import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
 const Modify = ({ data, setModify }) => {
-    //console.log(data.data)
+    console.log(data.data)
     let location = useLocation();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
@@ -38,6 +38,7 @@ const Modify = ({ data, setModify }) => {
             floor: '1F'
         }
     });
+    
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
@@ -240,7 +241,7 @@ const Modify = ({ data, setModify }) => {
                 theme: "dark"
             })
         }
-
+        console.log('제출 : ',  tagList)
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
