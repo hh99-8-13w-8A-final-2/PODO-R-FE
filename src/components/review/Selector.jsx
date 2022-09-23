@@ -17,27 +17,6 @@ const URI = {
     BASE : process.env.REACT_APP_BASE_URI
 } 
 
-const getTags = async (pageParam, musicalId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
-    const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
-    const data = res.data.content;
-    // 서버에서 가져올 데이터 페이지의 전체 길이
-    const pageData = res.data.totalPages;
-    console.log(res.data)
-    return {
-        data,
-        pageData,
-    }
-}
-
-
 const Selector = ({ handleModal, theaterId }) => {
     //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     let location = useLocation();
@@ -204,7 +183,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const section = selectSection.value
         const row = selectRow.value
         if(seatNumber !== undefined){
-            const param = createSearchParams({...query, greade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
+            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
             navigate({pathname:"", search:`?${param}`})
         }else{
             const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:'0' })
@@ -270,7 +249,7 @@ const Selector = ({ handleModal, theaterId }) => {
 
     console.log('&' + window.location.href.split('?').splice(1,1).toString())
     
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },
         { value: 'S', label: 'S' },
@@ -318,7 +297,7 @@ const Selector = ({ handleModal, theaterId }) => {
             <StFilterDiv className='bottom' style={{marginBottom:'50px'}}>
                 <div className='left'>
                     <Select placeholder='좌석등급' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={greadeOptions} onChange={setSelectGrade} value={selectGrade} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={gradeOptions} onChange={setSelectGrade} value={selectGrade} />
                     <Select placeholder='층' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={floorOptions}  onChange={setSelectFloor} value={selectFloor} />
                     <Select placeholder='구역' theme={(theme) => ({
@@ -359,6 +338,9 @@ const StFilterDiv = styled.div`
     align-items: center;
     >div{
         margin: 20px 0 10px;
+    }
+    .icon {
+        cursor: pointer;
     }
     .serach{
         display: flex;
@@ -447,6 +429,7 @@ const StCheckbox =styled.div`
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     div {
         height: 100px;
     }

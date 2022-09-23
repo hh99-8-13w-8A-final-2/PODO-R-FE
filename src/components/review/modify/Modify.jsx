@@ -188,7 +188,7 @@ const Modify = ({ data, setModify }) => {
     }
     else {}
 
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
@@ -305,7 +305,7 @@ const Modify = ({ data, setModify }) => {
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
                         render={({ field }) => <Select name='grade' placeholder='좌석등급' theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: '#f7edff', primary: '#dcb1ff' },
-                        })} {...field} options={greadeOptions} />} />
+                        })} {...field} options={gradeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>
