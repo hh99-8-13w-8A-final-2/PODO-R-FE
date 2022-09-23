@@ -13,7 +13,7 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
 
     const handleAddImages = async (event) => {
         const imgFiles = event.target.files    
-        console.log(imgUrls)
+
         if (imgFiles.length > 4 - imgUrls.length){
             toast.error("4장까지 등록이 가능합니다.", {
                 autoClose: 3000,
@@ -46,17 +46,17 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
          for (var i in img) {
             imgUrls.push(res.data.imageUrl[i])
         } 
-        setShowImages([...showImages])
+        setShowImages([...imgUrls])
     };
     const handleDeleteImage = (id) => {
         imgUrls.splice(id,1)
-        console.log(imgUrls)
-        setShowImages([...showImages])
+        setShowImages([...imgUrls])
     };
+
 
     return (
         <StaddImageDiv>
-            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span> 사진 추가 <span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
+            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span>사진 추가<span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
             <div className='image'>
                 <label htmlFor="input-file" className='imageAdd' onChange={handleAddImages}>
                     <input type="file" id="input-file" accept="image/png, image/jpeg" name='imgUrl' multiple style={{ display: 'none' }} />

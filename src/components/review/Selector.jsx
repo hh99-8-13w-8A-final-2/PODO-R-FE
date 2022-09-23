@@ -204,7 +204,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const section = selectSection.value
         const row = selectRow.value
         if(seatNumber !== undefined){
-            const param = createSearchParams({...query, greade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
+            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
             navigate({pathname:"", search:`?${param}`})
         }else{
             const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:'0' })
@@ -272,7 +272,7 @@ const Selector = ({ handleModal, theaterId }) => {
     }
     
     
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },
         { value: 'S', label: 'S' },
@@ -321,7 +321,7 @@ const Selector = ({ handleModal, theaterId }) => {
             <StFilterDiv className='bottom' style={{marginBottom:'50px'}}>
                 <div className='left'>
                     <Select placeholder='좌석등급' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={greadeOptions} onChange={setSelectGrade} value={selectGrade} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={gradeOptions} onChange={setSelectGrade} value={selectGrade} />
                     <Select placeholder='층' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={floorOptions}  onChange={setSelectFloor} value={selectFloor} />
                     <Select placeholder='구역' theme={(theme) => ({
