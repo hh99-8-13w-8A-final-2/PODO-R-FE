@@ -434,11 +434,17 @@ const StFilterDiv = styled.div`
                 transform: rotate(180deg);
             }
         }
+    
         input[type="checkbox"]:checked + label, input[type="radio"]:checked + label {
             color: var(--white);
             font-weight: 500;
             img{
-                filter: none;
+                filter: invert(1);
+            }
+        }
+        input[type="radio"]:checked + label{
+            img{
+                filter:contrast(1)
             }
         }
     }

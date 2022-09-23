@@ -175,9 +175,9 @@ const Review = ({ handleModal }) => {
 export default Review;
 
 const StWrap = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    row-gap: 10px;
 `
 
 const StReviewDiv = styled.div`
@@ -186,6 +186,8 @@ const StReviewDiv = styled.div`
     border-radius: 10px;
     margin-bottom: 40px;
     cursor: pointer;
+    align-self: center;
+    justify-self: center;
 `
 
 const StThumbDiv = styled.div`

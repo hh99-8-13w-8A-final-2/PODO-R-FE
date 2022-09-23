@@ -54,8 +54,10 @@ const StFooterUl = styled.ul`
     padding: 40px 20px;
     li {
         margin-left: 10px;
+        color: var(--gray-2);
         &.bold{
             font-weight: 700;
+            margin: 0 10px 0 40px;
         }
         &.name{
             cursor: pointer;
