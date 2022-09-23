@@ -214,10 +214,15 @@ const Selector = ({ handleModal, theaterId }) => {
         
     }
 
+    let [searchParams, setSearchParams] = useSearchParams();
+    
+    const [tagUrl, setTagUrl] = useState('');
+
     const handleCheck  = (e) =>{
         const currentQuery = e.target.dataset.query.toString();
         // 현재 누른 타켓의 query
         const prevQuery = searchParams.getAll('tag');
+        const prevQuery2 = searchParams.getAll('evaluation');
         // 이전에 가지고 있던 query를 불러오기
         // 여러개가 될 수 있어, getAll 메서드를 사용했다.
         // 하나라면, get을 사용할 수 있을 것이다.
@@ -227,50 +232,43 @@ const Selector = ({ handleModal, theaterId }) => {
           // 현재 누른 타겟의 쿼리는 제거해주자.
           const newQuery = prevQuery.filter((query) => query !== currentQuery);
           setSearchParams({
+            evaluation: [...prevQuery2],
             tag: newQuery,
           });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         } else {
           // 아니라면, 쿼리를 추가해주자.
           setSearchParams({
-            tag: [...prevQuery, currentQuery],
+            evaluation: [...prevQuery2],
+            tag: [...prevQuery, currentQuery]
           });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         }
     }
 
-    let [searchParams, setSearchParams] = useSearchParams();
-    
-    const tagHandleCheck = (e) => {
-        const currentQuery = e.target.dataset.query.toString();
-        const prevQuery = searchParams.getAll('tag');
-    
-        if (prevQuery.includes(currentQuery)) {
-          const newQuery = prevQuery.filter((query) => query !== currentQuery);
-          setSearchParams({
-            tag: newQuery,
-          });
-        } else {
-          setSearchParams({
-            tag: [...prevQuery, currentQuery],
-          });
-        }
-    }
 
     const handleEvalCheck = (e) => {
         const currentQuery = e.target.dataset.query.toString();
         const prevQuery = searchParams.getAll('evaluation');
+        const prevQuery2 = searchParams.getAll('tag');
     
         if (prevQuery.includes(currentQuery)) {
           const newQuery = prevQuery.filter((query) => query !== currentQuery);
           setSearchParams({
-            evaluation: newQuery,
+            tag: [...prevQuery2],
+            evaluation: newQuery
           });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         } else {
           setSearchParams({
-            evaluation: [...prevQuery, currentQuery],
+            tag: [...prevQuery2],
+            evaluation: [...prevQuery, currentQuery]
           });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         }
     }
-    
+
+    console.log('&' + window.location.href.split('?').splice(1,1).toString())
     
     const greadeOptions = [
         { value: 'VIP', label: 'VIP' },
@@ -293,7 +291,6 @@ const Selector = ({ handleModal, theaterId }) => {
 
     const wholeTagsArray = data?.data.tags;
 
-    console.log()
 
     if(status === 'loading'){return <div className='popularBox'></div>}
     if(status === 'error'){return <div className='popularBox'><p>Error:{error.message}</p></div>}
@@ -311,7 +308,7 @@ const Selector = ({ handleModal, theaterId }) => {
                         <label htmlFor="operaGlass">#오페라글라스필수</label>
                     {wholeTagsArray.map((tag, index) => (
                         <Fragment key={index}>
-                        <input type="checkbox" id={tag} data-query={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={tagHandleCheck}/>
+                        <input type="checkbox" id={tag} data-query={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={handleCheck}/>
                         <label htmlFor={tag}>{tag}</label>
                         </Fragment>
                         ))}
@@ -338,7 +335,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} createSearchParams={createSearchParams} />
                 </div>
             </StFilterDiv >
-            <Review handleModal={handleModal} theaterId={theaterId}/>
+            <Review handleModal={handleModal} theaterId={theaterId} tagUrl={tagUrl}/>
         </div>
     );
 };

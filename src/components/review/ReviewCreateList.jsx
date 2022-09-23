@@ -183,12 +183,12 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                                             currentYear - createYear === 0 &&
                                                             currentMonth - createMonth === 0 &&
                                                             currentDate - createDate > 6 &&
-                                                            <span>{(currentDate - createDate) / 7}주일 전</span>
+                                                            <span>{parseInt((currentDate - createDate) / 7)}주일 전</span>
                                                         }
                                                         {
                                                             currentYear - createYear === 0 &&
                                                             currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate > 0 &&
+                                                            currentDate - createDate > 0 && currentDate - createDate < 7 &&
                                                             <span>{(currentDate - createDate)}일 전</span>
                                                         }
                                                         {
