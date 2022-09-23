@@ -169,7 +169,7 @@ const SelectSeat = () => {
         }
     }
     else{} 
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
@@ -181,7 +181,7 @@ const SelectSeat = () => {
                 <div>
                     <Controller name="grade" control={control} rules={{required: "필수로 선택하셔야합니다."}}
                     render={({ field }) => <Select name='grade' placeholder='좌석등급'  theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} {...field} options={greadeOptions} />} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} {...field} options={gradeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>

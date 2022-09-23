@@ -13,7 +13,7 @@ import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
 const Modify = ({ data, setModify }) => {
-    //console.log(data.data)
+    console.log(data.data)
     let location = useLocation();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
@@ -38,6 +38,7 @@ const Modify = ({ data, setModify }) => {
             floor: '1F'
         }
     });
+    
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
@@ -188,7 +189,7 @@ const Modify = ({ data, setModify }) => {
     }
     else {}
 
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
@@ -240,7 +241,7 @@ const Modify = ({ data, setModify }) => {
                 theme: "dark"
             })
         }
-
+        console.log('제출 : ',  tagList)
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
@@ -305,7 +306,7 @@ const Modify = ({ data, setModify }) => {
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
                         render={({ field }) => <Select name='grade' placeholder='좌석등급' theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: '#f7edff', primary: '#dcb1ff' },
-                        })} {...field} options={greadeOptions} />} />
+                        })} {...field} options={gradeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>
