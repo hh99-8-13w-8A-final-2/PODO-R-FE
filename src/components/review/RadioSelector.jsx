@@ -22,9 +22,9 @@ const RadioSelector = ({query, navigate, params, handleEvalCheck, createSearchPa
                 <label htmlFor="light"> <img src={light} alt="" /> 조명좋음</label>
             </div>
             <div>
-                <input type="radio" id='rank' alt='0' data-query='score' onClick={(e) => handleOrderCheck(e)} checked={isOrderCheck[0]}/>
+                <input type="radio" id='rank' alt='0' data-query='score,desc' onClick={(e) => handleOrderCheck(e)} checked={isOrderCheck[0]}/>
                 <label htmlFor="rank"> <img src={up_small} alt="" className='up_small'/>평점좋은순</label>
-                <input type="radio" id='new' alt='1' data-query='createdAt' onClick={(e) => handleOrderCheck(e)} checked={isOrderCheck[1]}/>
+                <input type="radio" id='new' alt='1' data-query='createdAt,desc' onClick={(e) => handleOrderCheck(e)} checked={isOrderCheck[1]}/>
                 <label htmlFor="new"> <img src={up_small} alt=""  className='up_small' />최신순</label>
             </div>  
         </>
