@@ -12,6 +12,7 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
+import update from 'immutability-helper'
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
@@ -23,6 +24,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
+    console.log(query)
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1,setData1] =useState([]); //1층 섹션, row 정보
     const [Data2,setData2] =useState([]); //2층 섹션, row 정보
@@ -177,31 +179,117 @@ const Selector = ({ handleModal, theaterId }) => {
         navigate(location)
         // 좌석 초기화
     }
+    let [searchParams, setSearchParams] = useSearchParams();
     
     const ClickSeatSerch = () =>{
         const grade = selectGrade.value
+        const floor = selectFloor.value
         const section = selectSection.value
         const row = selectRow.value
-        if(seatNumber !== undefined){
-            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
-            navigate({pathname:"", search:`?${param}`})
-        }else{
-            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:'0' })
-            navigate({pathname:"", search:`?${param}`})
+        console.log(grade)
+        if(grade === '0') {
+            return
         }
-        
+
+        const prevQuery = searchParams.getAll('tag');
+        const prevQuery2 = searchParams.getAll('evaluation');
+        if (floor === '0') {
+            setSearchParams({
+                tag: [...prevQuery],
+                evaluation: [...prevQuery2],
+                grade :`${grade}`,
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+
+        if (section === '100') {
+            setSearchParams({
+                tag: [...prevQuery],
+                evaluation: [...prevQuery2],
+                grade :`${grade}`,
+                floor : `${floor}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+
+        if (row === '0') {
+            setSearchParams({
+                tag: [...prevQuery],
+                evaluation: [...prevQuery2],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+        if (seatNumber !== undefined){
+            setSearchParams({
+                tag: [...prevQuery],
+                evaluation: [...prevQuery2],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+                seat:`${seatNumber}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+        if (seatNumber === undefined){
+            setSearchParams({
+                tag: [...prevQuery],
+                evaluation: [...prevQuery2],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+        if (seatNumber === ''){
+            setSearchParams({
+                tag: [...prevQuery],
+                evaluation: [...prevQuery2],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
         
     }
 
-    let [searchParams, setSearchParams] = useSearchParams();
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
+
+    const fetchTags = () => {
+        return axios.get(`${URI.BASE}/api/tags/popular?musicalId=${musicalId}`)
+      }
+    
+    const { status, data, error } = useQuery('/getTags', fetchTags,
+        {
+            staleTime: 1000,
+            refetchOnWindowFocus: false,
+        }
+    )
     
     const [tagUrl, setTagUrl] = useState('');
+    const wholeTagsArray = data?.data.tags;
+    const [isTagCheck, setIsTagCheck] = useState(Array(15).fill(false))
+    const [isEvalCheck, setIsEvalCheck] = useState(Array(4).fill(false))
+    let update = require('immutability-helper');
 
     const handleCheck  = (e) =>{
+        const key = parseInt(e.target.alt)
+        let newData = update(isTagCheck, {
+            $splice: [[key, 1, !isTagCheck[key]]]
+        })
+        setIsTagCheck(newData)
+        sessionStorage.setItem('tagCheck', newData)
         const currentQuery = e.target.dataset.query.toString();
         // 현재 누른 타켓의 query
         const prevQuery = searchParams.getAll('tag');
         const prevQuery2 = searchParams.getAll('evaluation');
+        const prevQuery3 = searchParams.getAll('sort');
         // 이전에 가지고 있던 query를 불러오기
         // 여러개가 될 수 있어, getAll 메서드를 사용했다.
         // 하나라면, get을 사용할 수 있을 것이다.
@@ -212,13 +300,15 @@ const Selector = ({ handleModal, theaterId }) => {
           const newQuery = prevQuery.filter((query) => query !== currentQuery);
           setSearchParams({
             evaluation: [...prevQuery2],
-            tag: newQuery,
+            sort: [...prevQuery3],
+            tag: newQuery, 
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         } else {
           // 아니라면, 쿼리를 추가해주자.
           setSearchParams({
             evaluation: [...prevQuery2],
+            sort: [...prevQuery3],
             tag: [...prevQuery, currentQuery]
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -227,49 +317,99 @@ const Selector = ({ handleModal, theaterId }) => {
 
 
     const handleEvalCheck = (e) => {
+        const key = parseInt(e.target.alt)
+        let newData = update(isEvalCheck, {
+            $splice: [[key, 1, !isEvalCheck[key]]]
+        })
+        setIsEvalCheck(newData)
+        sessionStorage.setItem('evalCheck', newData)
         const currentQuery = e.target.dataset.query.toString();
         const prevQuery = searchParams.getAll('evaluation');
         const prevQuery2 = searchParams.getAll('tag');
+        const prevQuery3 = searchParams.getAll('sort');
     
         if (prevQuery.includes(currentQuery)) {
           const newQuery = prevQuery.filter((query) => query !== currentQuery);
           setSearchParams({
             tag: [...prevQuery2],
+            sort: [...prevQuery3],
             evaluation: newQuery
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         } else {
           setSearchParams({
             tag: [...prevQuery2],
+            sort: [...prevQuery3],
             evaluation: [...prevQuery, currentQuery]
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
         }
     }
 
-    console.log('&' + window.location.href.split('?').splice(1,1).toString())
-    
+    const [isOrderCheck, setIsOrderCheck] = useState(Array(2).fill(false))
+
+    const handleOrderCheck  = (e) =>{
+        const key = parseInt(e.target.alt)
+        let newData = update(isOrderCheck, {
+            $splice: [[key, 1, !isOrderCheck[key]]]
+        })
+        setIsOrderCheck(newData)
+        sessionStorage.setItem('orderCheck', newData)
+        const currentQuery = e.target.dataset.query.toString();
+        console.log(currentQuery)
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQuerySort = searchParams.getAll('sort');
+        console.log(prevQuerySort)
+        console.log(isOrderCheck[0])
+        if(newData[0]) {
+            const newQueryDesc = prevQuerySort.filter((query) => query !== currentQuery);
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...newQueryDesc, (currentQuery + ',desc')]
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }else {
+            const newQuery = prevQuerySort.filter((query) => query !== (currentQuery + ',desc'));
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...newQuery, currentQuery]
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+    }
+
     
     const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
+        { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
         { value: 'S', label: 'S' },
         { value: 'A', label: 'A ' }
-      ]
+    ]
 
+    useEffect(() => {
+        if(window.location.href.split('?').splice(1,1).toString() === '') {
+            setTagUrl('')
+        }else {
+            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            let checking = sessionStorage.getItem('tagCheck')
+            if(typeof(checking) === 'string') {
+                let checkingBool = (checking.split(',')).map(check => JSON.parse(check))
+                setIsTagCheck(checkingBool)
+            }
 
-    const fetchTags = () => {
-        return axios.get(`${URI.BASE}/api/tags`)
-      }
-    
-    const { status, data, error } = useQuery('/getTags', fetchTags,
-        {
-            staleTime: 1000,
-            refetchOnWindowFocus: false,
+            let evalChecking = sessionStorage.getItem('evalCheck')
+            if(typeof(evalChecking) === 'string') {
+                let evalCheckingBool = (evalChecking.split(',')).map(check => JSON.parse(check))
+                setIsEvalCheck(evalCheckingBool)
+            }
+            sessionStorage.clear()
         }
-    )
+    },[]) 
 
-    const wholeTagsArray = data?.data.tags;
 
 
     if(status === 'loading'){return <div className='popularBox'></div>}
@@ -282,14 +422,10 @@ const Selector = ({ handleModal, theaterId }) => {
                 <AutoComplete/>
                 <div>
                     <StCheckbox>
-                        <input type="checkbox" id='block' data-query='#시야방해있음' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
-                        <label htmlFor="block">#시야방해있음</label>
-                        <input type="checkbox" id='operaGlass' data-query='#오페라글라스필수' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
-                        <label htmlFor="operaGlass">#오페라글라스필수</label>
                     {wholeTagsArray.map((tag, index) => (
-                        <Fragment key={index}>
-                        <input type="checkbox" id={tag} data-query={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={handleCheck}/>
-                        <label htmlFor={tag}>{tag}</label>
+                        <Fragment key={tag}>
+                            <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) =>handleCheck(e)} checked={isTagCheck[index]}/>
+                            <label htmlFor={tag}>{tag}</label>
                         </Fragment>
                         ))}
                     </StCheckbox>
@@ -312,7 +448,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <Search className='icon' onClick={ClickSeatSerch}/>
                 </div>
                 <div className='right'>
-                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} createSearchParams={createSearchParams} />
+                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} createSearchParams={createSearchParams} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck}/>
                 </div>
             </StFilterDiv >
             <Review handleModal={handleModal} theaterId={theaterId} tagUrl={tagUrl}/>
