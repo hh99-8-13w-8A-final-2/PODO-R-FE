@@ -12,6 +12,7 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
+import apis from '../../apis/apis';
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
@@ -26,7 +27,9 @@ const getTags = async (pageParam, musicalId) => {
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
-    const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
+    
+    /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
+    const res = await apis.getTags(musicalId, pageParam, headers);
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
@@ -59,7 +62,9 @@ const Selector = ({ handleModal, theaterId }) => {
     const [seatNumber, setSeatNumber] =useState();//입력한 좌석
 
     const getSeat = async() => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        if(theaterId === undefined){return}
+        /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         console.log(theaterId)
         setData(data)
@@ -204,7 +209,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const section = selectSection.value
         const row = selectRow.value
         if(seatNumber !== undefined){
-            const param = createSearchParams({...query, greade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
+            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
             navigate({pathname:"", search:`?${param}`})
         }else{
             const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:'0' })
@@ -215,16 +220,64 @@ const Selector = ({ handleModal, theaterId }) => {
     }
 
     const handleCheck  = (e) =>{
-        const {name, checked} = e.target;
-        const param = createSearchParams({
-            ...query,
-            [name]:checked? "3": 0
-        })
-        navigate({pathname:"", search:`?${param}`})
+        const currentQuery = e.target.dataset.query.toString();
+        // 현재 누른 타켓의 query
+        const prevQuery = searchParams.getAll('tag');
+        // 이전에 가지고 있던 query를 불러오기
+        // 여러개가 될 수 있어, getAll 메서드를 사용했다.
+        // 하나라면, get을 사용할 수 있을 것이다.
+    
+        if (prevQuery.includes(currentQuery)) {
+          // 이전에 가지고 있던 쿼리가, 타겟의 쿼리를 가지고 있다면 (한번 더 눌렀다면)
+          // 현재 누른 타겟의 쿼리는 제거해주자.
+          const newQuery = prevQuery.filter((query) => query !== currentQuery);
+          setSearchParams({
+            tag: newQuery,
+          });
+        } else {
+          // 아니라면, 쿼리를 추가해주자.
+          setSearchParams({
+            tag: [...prevQuery, currentQuery],
+          });
+        }
+    }
+
+    let [searchParams, setSearchParams] = useSearchParams();
+    
+    const tagHandleCheck = (e) => {
+        const currentQuery = e.target.dataset.query.toString();
+        const prevQuery = searchParams.getAll('tag');
+    
+        if (prevQuery.includes(currentQuery)) {
+          const newQuery = prevQuery.filter((query) => query !== currentQuery);
+          setSearchParams({
+            tag: newQuery,
+          });
+        } else {
+          setSearchParams({
+            tag: [...prevQuery, currentQuery],
+          });
+        }
+    }
+
+    const handleEvalCheck = (e) => {
+        const currentQuery = e.target.dataset.query.toString();
+        const prevQuery = searchParams.getAll('evaluation');
+    
+        if (prevQuery.includes(currentQuery)) {
+          const newQuery = prevQuery.filter((query) => query !== currentQuery);
+          setSearchParams({
+            evaluation: newQuery,
+          });
+        } else {
+          setSearchParams({
+            evaluation: [...prevQuery, currentQuery],
+          });
+        }
     }
     
     
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'R', label: 'R' },
         { value: 'S', label: 'S' },
@@ -233,7 +286,8 @@ const Selector = ({ handleModal, theaterId }) => {
 
 
     const fetchTags = () => {
-        return axios.get(`${URI.BASE}/api/tags`)
+        //return axios.get(`${URI.BASE}/api/tags`)
+        return apis.getFetchTags()
       }
     
     const { status, data, error } = useQuery('/getTags', fetchTags,
@@ -243,12 +297,9 @@ const Selector = ({ handleModal, theaterId }) => {
         }
     )
 
-
     const wholeTagsArray = data?.data.tags;
 
-    /* console.log(wholeTagsArray) */
-
-    const [tags, setTags] = useState([]);
+    console.log()
 
     if(status === 'loading'){return <div className='popularBox'></div>}
     if(status === 'error'){return <div className='popularBox'><p>Error:{error.message}</p></div>}
@@ -257,18 +308,18 @@ const Selector = ({ handleModal, theaterId }) => {
     return (
         <div>
             <StFilterTopDiv>
-                <AutoComplete wholeTagsArray={wholeTagsArray} setTags={setTags} tags={tags}/>
+                <AutoComplete/>
                 <div>
                     <StCheckbox>
-                        <input type="checkbox" id='block' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
+                        <input type="checkbox" id='block' data-query='#시야방해있음' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
                         <label htmlFor="block">#시야방해있음</label>
-                        <input type="checkbox" id='operaGlass' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
+                        <input type="checkbox" id='operaGlass' data-query='#오페라글라스필수' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
                         <label htmlFor="operaGlass">#오페라글라스필수</label>
-                        {tags.map(tag => (
-                            <Fragment>
-                                <input type="checkbox" id={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={handleCheck}/>
-                                <label htmlFor={tag}>{tag}</label>
-                            </Fragment>
+                    {wholeTagsArray.map((tag, index) => (
+                        <Fragment key={index}>
+                        <input type="checkbox" id={tag} data-query={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={tagHandleCheck}/>
+                        <label htmlFor={tag}>{tag}</label>
+                        </Fragment>
                         ))}
                     </StCheckbox>
                 </div>
@@ -276,7 +327,7 @@ const Selector = ({ handleModal, theaterId }) => {
             <StFilterDiv className='bottom' style={{marginBottom:'50px'}}>
                 <div className='left'>
                     <Select placeholder='좌석등급' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={greadeOptions} onChange={setSelectGrade} value={selectGrade} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={gradeOptions} onChange={setSelectGrade} value={selectGrade} />
                     <Select placeholder='층' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={floorOptions}  onChange={setSelectFloor} value={selectFloor} />
                     <Select placeholder='구역' theme={(theme) => ({
@@ -290,7 +341,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <Search className='icon' onClick={ClickSeatSerch}/>
                 </div>
                 <div className='right'>
-                    <RadioSelector query={query} navigate={navigate} params ={params} handleCheck={handleCheck} createSearchParams={createSearchParams} />
+                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} createSearchParams={createSearchParams} />
                 </div>
             </StFilterDiv >
             <Review handleModal={handleModal} theaterId={theaterId}/>
@@ -389,23 +440,38 @@ const StFilterDiv = styled.div`
                 transform: rotate(180deg);
             }
         }
+    
         input[type="checkbox"]:checked + label, input[type="radio"]:checked + label {
             color: var(--white);
             font-weight: 500;
             img{
-                filter: none;
+                filter: invert(1);
+            }
+        }
+        input[type="radio"]:checked + label{
+            img{
+                filter:contrast(1)
             }
         }
     }
 `
-const StCheckbox =styled.div`
 
-label {
-    margin-right: 10px;
-    padding: 8px 15px;
-    border-radius:20px;
-    box-sizing: border-box;
-}
+const StCheckbox =styled.div`
+    width: 1400px;
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    div {
+        height: 100px;
+    }
+    label {
+        margin-right: 10px;
+        padding: 8px 15px;
+        border-radius:20px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
     input[type="checkbox"] {
         display:none;
     }

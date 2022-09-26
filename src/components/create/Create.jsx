@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
+import apis from "../../apis/apis";
 import axios from 'axios';
 import Select from 'react-select'
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import ImageAdd from './ImageAdd';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
 import 'react-toastify/dist/ReactToastify.css';
+import axiosApi from '../../apis/api';
 
 
 const Create = ({ create, SetCreate, theaterId }) => {
@@ -44,7 +46,8 @@ const Create = ({ create, SetCreate, theaterId }) => {
 
 
     const getSeat = async () => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
         for (var i in data) {
@@ -183,7 +186,7 @@ const Create = ({ create, SetCreate, theaterId }) => {
     }
     else{}
 
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
@@ -224,7 +227,9 @@ const Create = ({ create, SetCreate, theaterId }) => {
             const token = window.localStorage.getItem("accessToken")
             const jsonType = { "Content-Type": "application/json", "Authorization": token }
             const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-            const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType });
+            const multipartHeader = { headers: multipartType }
+            /* const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
+            const res1 = await apis.postImg(imgFormdata, multipartHeader)
             //이미지 
 
             const obj = {};
@@ -235,7 +240,9 @@ const Create = ({ create, SetCreate, theaterId }) => {
 
             const json = JSON.stringify(obj)
             console.log(json)
-            await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token });
+            const headers = { headers: jsonType, token }
+            /* await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token }); */
+            await apis.postReview(musicalId, json, headers)
             SetCreate(!create)
         } catch (err) {
             console.log(err)
@@ -251,7 +258,7 @@ const Create = ({ create, SetCreate, theaterId }) => {
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
                         render={({ field }) => <Select name='grade' placeholder='좌석등급' theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
-                        })} {...field} options={greadeOptions} />} />
+                        })} {...field} options={gradeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>

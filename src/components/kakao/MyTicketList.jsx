@@ -2,41 +2,33 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
+import apis from "../../apis/apis";
 
 const MyTicketList = ({ setEachMusicalId }) => {
-
-
-  const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
-
   const [data, setData] = useState();
 
-    
   const MyMusicalFind = async () => {
-    const response = await axios({
+    /* const response = await axios({
       method: "get",
       url: `${URI.BASE}/api/mypage/musicals`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
       }
-    });
-    setData(response.data)
-    // console.log(response.data)
+    }); */
+    const headers = { Authorization: localStorage.getItem("accessToken") };
+    const response = await apis.getMyMusicalFindList(headers);
+    setData(response.data);
   };
-
-
 
   useEffect(() => {
     MyMusicalFind();
   }, []);
 
-
   return (
     <div>
       <StH3>내가 관람한 공연</StH3>
       <StMyTicketList>
-        <MyTicket data={data} setEachMusicalId={setEachMusicalId}/>
+        <MyTicket data={data} setEachMusicalId={setEachMusicalId} />
       </StMyTicketList>
     </div>
   );

@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { toast } from 'react-toastify';
 
 const ModifyTag = ({ setTagList, tagList, data }) => {
     useEffect(()=>{
@@ -13,13 +14,26 @@ const ModifyTag = ({ setTagList, tagList, data }) => {
             }
         }
     },[])
-
+    var input = document.getElementById('tag'); 
     const handelKeyDown = (e) => {
         if (e.keyCode !== 32) return
+        
         const value = e.target.value
-        if (!value.trim()) return
-        setTagList([...tagList, value])
-        e.target.value = ''
+        const regex = /\s/gi
+        const tagValue = value.replace(regex, '')
+
+        if(tagList.includes(tagValue) === true){
+            toast.error("같은 태그는 입력할 수 없습니다.",{
+                autoClass: 3000,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "dark"
+            })
+            return
+        }
+
+        if (!tagValue.trim()) return
+        setTagList([...tagList, tagValue])
+        e.target.value = null
     }
     const removeTag = (index) => {
         setTagList(tagList.filter((el, i) => i !== index))
@@ -28,7 +42,7 @@ const ModifyTag = ({ setTagList, tagList, data }) => {
         <div>
             <h4>태그 입력</h4>
             <StTagDiv>
-                <input onKeyDown={handelKeyDown} type="text" placeholder='스페이스바를 눌러 태그를 입력하세요.' />
+                <input onKeyDown={handelKeyDown} id="tag" type="text" placeholder='스페이스바를 눌러 태그를 입력하세요.' />
             </StTagDiv>
             <StTagDiv>
                 {tagList.map((tag, index) => (

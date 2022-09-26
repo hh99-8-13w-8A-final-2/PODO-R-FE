@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import apis from "../../apis/apis";
 import kakao_login from "../../assets/img/kakao_login.svg";
 import twitter_login from "../../assets/img/twitter_login.svg";
 import logo_fill from "../../assets/img/logo_fill.svg";
@@ -16,7 +17,8 @@ const OAuth = () => {
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
   async function twitterLogin() {
-    const response = await axios.get(`${URI.BASE}/api/twitter/login`);
+    //const response = await axios.get(`${URI.BASE}/api/twitter/login`);
+    const response = await apis.getTwitterLogin()
     window.location.replace(response.data);
   }
 

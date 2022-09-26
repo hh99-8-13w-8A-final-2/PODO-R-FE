@@ -9,6 +9,7 @@ import Modal from '../assets/modal/Modal';
 import ReviewDetail from '../components/review/ReviewDetail';
 import Create from '../components/create/Create';
 import axios from 'axios';
+import apis from '../apis/apis';
 
 
 const ReviewPage = () => {
@@ -30,7 +31,8 @@ const ReviewPage = () => {
   
     });
     const getData = async() =>{
-        const res = await axios.get(`${URI.BASE}/api/musicals/${musical}`)
+        //const res = await axios.get(`${URI.BASE}/api/musicals/${musical}`)
+        const res = await apis.getMusicalData(musical)
         setMusicals(res.data)
      }
 

@@ -2,6 +2,7 @@ import React  from 'react';
 import styled from 'styled-components';
 import LiveReview from './LiveReview';
 import axios from 'axios';
+import apis from '../../apis/apis';
 import { useQuery } from "react-query"
 
 const URI = {
@@ -9,7 +10,8 @@ const URI = {
   }
 
 const fetchLiveReviews = () => {
-    return axios.get(`${URI.BASE}/api/reviews/live`)
+    //return axios.get(`${URI.BASE}/api/reviews/live`)
+    return apis.getLiveReviews()
   }
 
 const LiveReviewList = () => {

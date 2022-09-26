@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import apis from '../../../apis/apis';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/free-regular-svg-icons';
@@ -10,8 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const ModifyImageAdd = ({ data, URI, imgUrls }) => {
     const files = []    
     const [showImages, setShowImages] = useState(data.data.imgurls); // 이미지 프리뷰
-    console.log(imgUrls)
-    const handleAddImages = async (event) => {
+
+    const handleAddImages =  (event) => {
         const imgFiles = event.target.files    
 
         if (imgFiles.length > 4 - imgUrls.length){
@@ -25,7 +26,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         console.log(imgFiles.length)
         for (var i = 0; i < imgFiles.length; i++){
             files.push(imgFiles[i])
-            console.log(imgFiles[i])
         }
 
         console.log("files : " , ...files)
@@ -35,29 +35,44 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         for(var i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
-        for (let value of formData.values()) {
+         for (let value of formData.values()) {
             console.log(value);
         }
-
         const token = window.localStorage.getItem("accessToken")
-        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-        const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType })
-        const img = res.data.imageUrl
-        console.log(img)
-         for (var i in img) {
-            imgUrls.push(res.data.imageUrl[i])
-        } 
-        setShowImages([...showImages])
+        const multipartType = { "Content-Type": "multipart/form-data" }
+        /* const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType }) */
+        apis.postModifyImg(formData, multipartType)
+        
+        .then((res)=>{
+            console.log(res)
+            const img = res.data.imageUrl
+            console.log(img)
+             for (var i in img) {
+                imgUrls.push(res.data.imageUrl[i])
+            } 
+            setShowImages([...imgUrls])
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+       /*  try{
+            const res = apis.postModifyImg(formData, multipartType)
+            console.log(res)
+        } catch(err) {
+            console.log(err)
+        } */
+       
+       
     };
     const handleDeleteImage = (id) => {
-        console.log(id)
         imgUrls.splice(id,1)
-        setShowImages([...showImages])
+        setShowImages([...imgUrls])
     };
+
 
     return (
         <StaddImageDiv>
-            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span> 사진 추가 <span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
+            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span>사진 추가<span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
             <div className='image'>
                 <label htmlFor="input-file" className='imageAdd' onChange={handleAddImages}>
                     <input type="file" id="input-file" accept="image/png, image/jpeg" name='imgUrl' multiple style={{ display: 'none' }} />

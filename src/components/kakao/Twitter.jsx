@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import apis from "../../apis/apis";
 import { login } from "../../redux/modules/userSlice";
 
 const Twitter = () => {
@@ -20,10 +21,11 @@ const Twitter = () => {
 
   const TwitterLogin = async () => {
     try {
-      const response = await axios.get(
+      /* const response = await axios.get(
         `${URI.BASE}/api/oauth/twitter?oauth_token=${oauth_token}&oauth_verifier=${oauth_verifier}`
-      );
+      ); */
       //console.log(response);
+      const response = await apis.getTwitter(oauth_token, oauth_verifier)
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers[`refresh-token`];
       const nickname = response.data.nickname;

@@ -3,8 +3,6 @@ import Layout from "./Layout";
 import styled from "styled-components";
 import logo from "../../assets/img/logo.svg";
 import { useNavigate } from "react-router-dom";
-import user from "../../assets/img/user.svg";
-import loginIcon from "../../assets/img/login.svg";
 import KakaoLogin from "../kakao/KakaoLogIn";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import { useSelector } from "react-redux";

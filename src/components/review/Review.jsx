@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import axios from 'axios'
+import apis from '../../apis/apis';
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ReactComponent as Gap } from '../../assets/img/gap.svg'
@@ -21,7 +22,9 @@ const fetchReviews = async (pageParam, musicalId) => {
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
-    const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
+    /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
+    const res = await apis.getReview(musicalId, pageParam, headers)
+    console.log(res)
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
@@ -175,9 +178,9 @@ const Review = ({ handleModal }) => {
 export default Review;
 
 const StWrap = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    row-gap: 10px;
 `
 
 const StReviewDiv = styled.div`
@@ -186,6 +189,8 @@ const StReviewDiv = styled.div`
     border-radius: 10px;
     margin-bottom: 40px;
     cursor: pointer;
+    align-self: center;
+    justify-self: center;
 `
 
 const StThumbDiv = styled.div`

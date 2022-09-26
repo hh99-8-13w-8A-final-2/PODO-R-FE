@@ -3,7 +3,9 @@ import { useForm, Controller, set } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
+import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios';
+import apis from '../../../apis/apis';
 import Select from 'react-select'
 import styled from 'styled-components';
 import ModifyTag from './ModifyTag';
@@ -37,12 +39,14 @@ const Modify = ({ data, setModify }) => {
             floor: '1F'
         }
     });
+    
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
     //console.log(data)
     const getSeat = async () => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
         console.log(imgUrls)
@@ -187,13 +191,51 @@ const Modify = ({ data, setModify }) => {
     }
     else {}
 
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
         { value: 'S', label: 'S' },
         { value: 'A', label: 'A ' }
     ]
+
+    const postModifyedReviews = async(json) => {
+        const token = window.localStorage.getItem("accessToken")
+        const jsonType = { "Content-Type": "application/json", "Authorization": token }
+        /* await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token }) */
+        await apis.putModify(musicalId, data, json ,jsonType)
+        .then(
+            (response)=>{
+                console.log(response)
+                setModify(false)
+            }
+        )
+        .catch(
+            (err) => {
+                if(err.response){
+                    console.log (err)
+                    let data = err.response.data;
+                    toast.error(data, {
+                        autoClose: 3000,
+                        position: toast.POSITION.TOP_CENTER,
+                        theme: "dark"
+                    })
+                }   
+            }
+        )
+    }
+
+    const queryClient = useQueryClient()
+    const modifyMutation = useMutation(postModifyedReviews, {
+        onSuccess: () => {
+            queryClient.invalidateQueries("/ReviewDetail")
+            queryClient.invalidateQueries("reviews")
+        }
+    })
+
+    console.log(queryClient)
+    
+
 
     const onSubmit = async () => {
        
@@ -204,11 +246,7 @@ const Modify = ({ data, setModify }) => {
                 theme: "dark"
             })
         }
-/*         const imgFormdata = new FormData();
-        for (let i = 0; i < imgfiles.length; i++) {
-            imgFormdata.append('image', imgfiles[i])
-        } */
-        console.log(imgUrls)
+        console.log('제출 : ',  tagList)
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
@@ -233,28 +271,20 @@ const Modify = ({ data, setModify }) => {
         }else{formdata.set('operaGlass', operaGlass1)}
 
         
-        try {
-            const token = window.localStorage.getItem("accessToken")
-            const jsonType = { "Content-Type": "application/json", "Authorization": token }
-     /*        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-            const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
-            //이미지 
+        const token = window.localStorage.getItem("accessToken")
+        const jsonType = { "Content-Type": "application/json", "Authorization": token }
 
-            const obj = {};
-            formdata.forEach(function (value, key) {
-                obj[key] = value;
-            })
-            obj.imgUrls = imgUrls
 
-            const json = JSON.stringify(obj)
-            console.log(json)
-            await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token });
-            setModify(false)
-        } catch (err) {
-            console.log(err)
-        }
+        const obj = {};
+        formdata.forEach(function (value, key) {
+            obj[key] = value;
+        })
+        obj.imgUrls = imgUrls
+
+        const json = JSON.stringify(obj)
+        console.log(json)
+        modifyMutation.mutate(json)
         
-
         /* for (let key of imgFormdata.keys()) {
             console.log(key);
         }
@@ -266,7 +296,8 @@ const Modify = ({ data, setModify }) => {
         }
         for (let value of formdata.keys()) {
             console.log(value);
-        } 
+        }
+        
     }
 
     
@@ -280,7 +311,7 @@ const Modify = ({ data, setModify }) => {
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
                         render={({ field }) => <Select name='grade' placeholder='좌석등급' theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: '#f7edff', primary: '#dcb1ff' },
-                        })} {...field} options={greadeOptions} />} />
+                        })} {...field} options={gradeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>

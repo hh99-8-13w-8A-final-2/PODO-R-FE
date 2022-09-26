@@ -17,7 +17,11 @@ const UserProfile = () => {
   const [newNickName, setNewNickName] = useState();
   const [signupModalOn, setSignupModalOn] = useState(false);
   const [imagePreview, setImagePreview] = useState();
-  console.log(newNickName);
+
+  const [nameMessage, setNameMessage] = useState("");
+  const [isName, setIsName] = useState(false);
+
+  // const [submitDisabled, setSubmitDisabled] = useState(true);
 
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
@@ -36,6 +40,13 @@ const UserProfile = () => {
 
   const onChangeHandler = (e) => {
     setNewNickName(e.target.value);
+    if (e.target.value.length < 2 || e.target.value.length > 8) {
+      setNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
+      setIsName(false);
+    } else {
+      setNameMessage("올바른 형식입니다.");
+      setIsName(true);
+    }
   };
 
   const profileImageUpload = async () => {
@@ -57,14 +68,14 @@ const UserProfile = () => {
   };
 
   const profileUpdate = async (img) => {
-    if (
-      newNickName === undefined ||
-      newNickName.length < 2 ||
-      newNickName.length > 7
-    ) {
-      console.log(newNickName);
-      return alert("닉네임은 2글자 이상 8글자 이하입니다.");
-    }
+    // if (
+    //   newNickName === undefined ||
+    //   newNickName.length < 2 ||
+    //   newNickName.length > 7
+    // ) {
+    //   console.log(newNickName);
+    //   return alert("닉네임은 2글자 이상 8글자 이하입니다.");
+    // }
     const data = {
       nickname: newNickName,
       profilePic: img,
@@ -81,7 +92,7 @@ const UserProfile = () => {
     console.log(response);
     localStorage.setItem("nickname", response.data.nickname);
     localStorage.setItem("profilePic", response.data.profilePic);
-    // window.location.reload()
+    window.location.reload();
   };
 
   const onSubmitHandler = (e) => {
@@ -99,6 +110,10 @@ const UserProfile = () => {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [imageUrl]);
+  // 버튼온
+  // useEffect(() => {
+  //   setSubmitDisabled(setNewNickName === "");
+  // }, [setNewNickName]);
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -108,7 +123,7 @@ const UserProfile = () => {
           <StUserNickName>
             <div>{nickname}</div>
             <StPencil onClick={handleModal}>
-              <img src={pencil} />
+              <img style={{marginLeft:"5px"}} src={pencil} />
             </StPencil>
           </StUserNickName>
           <ModalPortal>
@@ -132,26 +147,37 @@ const UserProfile = () => {
                       </div>
                     ) : (
                       <div>
-                        <StLabel imgUrl={imagePreview}>
+                        <StLabel2 imgUrl={imagePreview}>
                           <input type="file" {...register("imgUrl")} />
-                        </StLabel>
+                        </StLabel2>
                       </div>
                     )}
                   </div>
 
-                  <StInputDiv>
-                    
-                    <input
-                      name="nickname"
+                  <StNickName>
+                    <div className="nickInput">
+                      <p>닉네임</p>
+                      <input
+                      text="이름"
                       type="text"
                       onChange={onChangeHandler}
                       placeholder={nickname}
-                      // {...register("nickname")}
                     />
-                    <span>닉네임</span>
-                  </StInputDiv>
+                    </div>
+                    <div className="validity">
+                      {nickname.length > 0 && (
+                        <span
+                          className={`message ${isName ? "success" : "error"}`}
+                        >
+                          {nameMessage}
+                        </span>
+                      )}
+                    </div>
+                  </StNickName>
 
-                  <StButton onClick={onSubmitHandler}>저장</StButton>
+                  <StButton disabled={!isName} onClick={onSubmitHandler}>
+                    저장
+                  </StButton>
                 </StProfileBox>
               </Modal>
             )}
@@ -164,15 +190,24 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-const StInputDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const StNickName = styled.p`
   width: 100%;
-  input {
-    background-color: var(--gray-1);
+  .nickInput {
+    display: flex;
+    align-items: center;
+    p {
+      margin-right: 10px;
+    }
+    input {
+      width: 300px;
+      background-color: var(--gray-4);
+    }
+  }
+  .validity {
+    margin-top: 10px;
   }
 `;
+
 const StUserProfile = styled.div`
   width: 100%;
   height: 200px;
@@ -200,7 +235,8 @@ const StLabel = styled.label`
   margin: 0px 70px 50px 70px;
   border-radius: 50px;
   border: 1px solid var(--gray-1);
-  background:linear-gradient(0deg, #111111ae 100%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
+  background: linear-gradient(0deg, #111111ae 100%, rgba(0, 0, 0, 0) 100%),
+    ${(props) => `url(${props.imgUrl})`};
   background-position: center;
   background-size: cover;
   cursor: pointer;
@@ -212,11 +248,35 @@ const StLabel = styled.label`
     width: 100%;
     font-size: 50px;
     color: var(--gray-1);
-    display:flex;
+    display: flex;
     align-content: center;
     justify-content: center;
     align-items: center;
-  } 
+  }
+`;
+const StLabel2 = styled.label`
+  height: 100px;
+  width: 100px;
+  margin: 0px 70px 50px 70px;
+  border-radius: 50px;
+  border: 1px solid var(--gray-1);
+  background: ${(props) => `url(${props.imgUrl})`};
+  background-position: center;
+  background-size: cover;
+  cursor: pointer;
+  display: flex;
+  input {
+    display: none;
+  }
+  span {
+    width: 100%;
+    font-size: 50px;
+    color: var(--gray-1);
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const StUserNickName = styled.div`
@@ -229,7 +289,7 @@ const StModalSpan = styled.span`
 `;
 
 const StProfileBox = styled.div`
-  padding: 80px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
   align-content: center;
@@ -239,7 +299,7 @@ const StProfileBox = styled.div`
 
 const StPencil = styled.div`
   height: 20px;
-  width: 20px;
+  width: 24px;
   cursor: pointer;
 `;
 const StButton = styled.button`
@@ -255,6 +315,10 @@ const StButton = styled.button`
     background-color: var(--black);
     color: var(--white);
     border-color: var(--black);
+  }
+  &:disabled {
+    background-color: var(--gray-2);
+    cursor: default;
   }
 `;
 
