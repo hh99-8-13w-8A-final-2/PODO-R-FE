@@ -4,6 +4,7 @@ import { useForm, Controller  } from "react-hook-form";
 import styled from 'styled-components';
 import axios from 'axios';
 import {useLocation} from "react-router-dom";
+import apis from '../../apis/apis';
 const SelectSeat = () => {
 
     let location = useLocation();
@@ -33,7 +34,8 @@ const SelectSeat = () => {
       }
     
     const getSeat = async() => {
-        const res = await axios.get(`${URI.BASE}/${musicalId}/seats`)
+        //const res = await axios.get(`${URI.BASE}/${musicalId}/seats`)
+        const res = await apis.getSeatMusical(musicalId)
         const data = res.data // 전체 좌석정보
         
         setData(data)

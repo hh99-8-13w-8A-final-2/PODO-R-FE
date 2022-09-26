@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from 'react-query'
 import axios from 'axios';
+import apis from '../../../apis/apis';
 import Select from 'react-select'
 import styled from 'styled-components';
 import ModifyTag from './ModifyTag';
@@ -44,7 +45,8 @@ const Modify = ({ data, setModify }) => {
       }
     //console.log(data)
     const getSeat = async () => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
         console.log(imgUrls)
@@ -200,15 +202,18 @@ const Modify = ({ data, setModify }) => {
     const postModifyedReviews = async(json) => {
         const token = window.localStorage.getItem("accessToken")
         const jsonType = { "Content-Type": "application/json", "Authorization": token }
-        await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token })
+        /* await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token }) */
+        await apis.putModify(musicalId, data, json ,jsonType)
         .then(
             (response)=>{
+                console.log(response)
                 setModify(false)
             }
         )
         .catch(
             (err) => {
                 if(err.response){
+                    console.log (err)
                     let data = err.response.data;
                     toast.error(data, {
                         autoClose: 3000,

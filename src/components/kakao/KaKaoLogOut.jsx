@@ -5,6 +5,7 @@ import { logout } from "../../redux/modules/userSlice";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import axios from "axios";
+import apis from "../../apis/apis";
 import logoutIcon from "../../assets/img/logout.svg";
 import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
@@ -26,20 +27,27 @@ const KaKaoLogOut = () => {
   console.log(isLogin);
 
   const onLogoutHandler = () => {
-    axios({
+   /*  axios({
       method: "post",
       url: `${URI.BASE}/api/member/logout`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
         "Refresh-Token": localStorage.getItem("refreshToken"),
       },
-    });
+    }); */
+    const headers = {
+      Authorization: localStorage.getItem("accessToken"),
+      "Refresh-Token": localStorage.getItem("refreshToken"),
+    }
+    apis.postLogout(headers)
+    
     dispatch(logout());
-    localStorage.removeItem("accessToken");
+    /* localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userId");
     localStorage.removeItem("nickname");
-    localStorage.removeItem("profilePic");
+    localStorage.removeItem("profilePic"); */
+    window.localStorage.clear()
     navigate("/");
   };
 

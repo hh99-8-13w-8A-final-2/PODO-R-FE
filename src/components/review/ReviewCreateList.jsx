@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useInfiniteQuery } from "react-query";
 import { useMutation, useQueryClient } from "react-query"
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as TextIcon } from '../../assets/img/textIcon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import apis from '../../apis/apis';
 import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import { useInView } from "react-intersection-observer";
@@ -16,8 +16,8 @@ const URI = {
   }
 
 const getComments = async (reviewId, pageParam) => {
-    const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`);
-
+    /* const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`); */
+    const response = await apis.getComment(reviewId, pageParam)
     const data = response.data.content;
     const pageData = response.data.totalPages;
     const total = response.data.totalElements
@@ -36,7 +36,8 @@ const postModifyedComment = async (new_comment) => {
         Authorization: `${Authorization}`,
     }
     const { modifyId, content } = new_comment
-    const { data } = await axios.put(`${URI.BASE}/api/comments/${modifyId}`, content, { headers: headers })
+    /* const { data } = await axios.put(`${URI.BASE}/api/comments/${modifyId}`, content, { headers: headers }) */
+    const { data } = await apis.putModifyedComment(modifyId, content, headers)
     return data
 }
 
@@ -46,7 +47,8 @@ const deleteComment = async (commentId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.delete(`${URI.BASE}/api/comments/${commentId}`, { headers: headers })
+    /* const response = await axios.delete(`${URI.BASE}/api/comments/${commentId}`, { headers: headers }) */
+    const response = await apis.deleteComment(commentId, headers)
     return response
 }
 

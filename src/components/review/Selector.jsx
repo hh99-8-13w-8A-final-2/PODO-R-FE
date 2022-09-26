@@ -12,6 +12,7 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
+import apis from '../../apis/apis';
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
@@ -26,7 +27,9 @@ const getTags = async (pageParam, musicalId) => {
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
-    const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers});
+    
+    /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
+    const res = await apis.getTags(musicalId, pageParam, headers);
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
@@ -59,7 +62,9 @@ const Selector = ({ handleModal, theaterId }) => {
     const [seatNumber, setSeatNumber] =useState();//입력한 좌석
 
     const getSeat = async() => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        if(theaterId === undefined){return}
+        /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         console.log(theaterId)
         setData(data)
@@ -281,7 +286,8 @@ const Selector = ({ handleModal, theaterId }) => {
 
 
     const fetchTags = () => {
-        return axios.get(`${URI.BASE}/api/tags`)
+        //return axios.get(`${URI.BASE}/api/tags`)
+        return apis.getFetchTags()
       }
     
     const { status, data, error } = useQuery('/getTags', fetchTags,

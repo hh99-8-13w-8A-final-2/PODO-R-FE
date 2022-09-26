@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
 import logo_footer from '../../assets/img/logo_footer.svg'
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
     const yelim = "https://github.com/97yelim"

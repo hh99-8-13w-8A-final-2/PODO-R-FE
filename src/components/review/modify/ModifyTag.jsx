@@ -14,9 +14,7 @@ const ModifyTag = ({ setTagList, tagList, data }) => {
             }
         }
     },[])
-    console.log(tagList)
     var input = document.getElementById('tag'); 
-    console.log(input)
     const handelKeyDown = (e) => {
         if (e.keyCode !== 32) return
         
@@ -36,7 +34,6 @@ const ModifyTag = ({ setTagList, tagList, data }) => {
         if (!tagValue.trim()) return
         setTagList([...tagList, tagValue])
         e.target.value = null
-        console.log(tagList)
     }
     const removeTag = (index) => {
         setTagList(tagList.filter((el, i) => i !== index))

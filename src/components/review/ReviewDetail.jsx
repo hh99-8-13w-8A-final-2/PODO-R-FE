@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import apis from '../../apis/apis';
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
@@ -26,7 +27,8 @@ const fetchReviewDetail = (musicalId, reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    return axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    return apis.getReviewDetail(musicalId, reviewsId)
+    /* axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers }) */
 }
 
 const deleteReviews = async (deleteId) => {
@@ -36,7 +38,8 @@ const deleteReviews = async (deleteId) => {
         Authorization: `${Authorization}`,
     }
     const { musicalId, reviewsId } = deleteId
-    const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    /* const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers }) */
+    const response = await apis.deleteReview(musicalId, reviewsId, headers)
     return response
 }
 
@@ -46,8 +49,8 @@ const likeReviews = async (reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers })
-    return response
+    /* const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers }) */
+    const response = await apis.postLike(reviewsId, headers)
 }
 
 const unLikeReviews = async (reviewsId) => {
@@ -56,8 +59,9 @@ const unLikeReviews = async (reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers })
-    return response
+    /* const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers }) */
+    const response = await apis.deleteLike(reviewsId, headers)
+    
 }
 
 const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
