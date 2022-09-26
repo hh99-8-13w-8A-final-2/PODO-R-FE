@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Buffer } from "buffer";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import Modal from "../../assets/modal/Modal";
@@ -11,7 +10,6 @@ import pencil from "../../assets/img/pencil.svg";
 
 const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
-  const userId = localStorage.getItem("userId");
   const nickname = localStorage.getItem("nickname");
 
   const [newNickName, setNewNickName] = useState();
@@ -20,8 +18,7 @@ const UserProfile = () => {
 
   const [nameMessage, setNameMessage] = useState("");
   const [isName, setIsName] = useState(false);
-
-  // const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [user, setUser] = useState();
 
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
@@ -68,14 +65,6 @@ const UserProfile = () => {
   };
 
   const profileUpdate = async (img) => {
-    // if (
-    //   newNickName === undefined ||
-    //   newNickName.length < 2 ||
-    //   newNickName.length > 7
-    // ) {
-    //   console.log(newNickName);
-    //   return alert("닉네임은 2글자 이상 8글자 이하입니다.");
-    // }
     const data = {
       nickname: newNickName,
       profilePic: img,
@@ -92,7 +81,7 @@ const UserProfile = () => {
     console.log(response);
     localStorage.setItem("nickname", response.data.nickname);
     localStorage.setItem("profilePic", response.data.profilePic);
-    window.location.reload();
+    setUser({ ...user });
   };
 
   const onSubmitHandler = (e) => {
@@ -139,7 +128,6 @@ const UserProfile = () => {
                           <input type="file" {...register("imgUrl")} />
                           <span>+</span>
                         </StLabel>
-                        {/* <StModalSpan>사진변경</StModalSpan> */}
                       </div>
                     ) : (
                       <div>
@@ -222,7 +210,6 @@ const StThumb = styled.div`
   background: ${(props) => `url(${props.imgUrl})`};
   background-position: center;
   background-size: cover;
-  /* background-color: red; */
 `;
 
 const StLabel = styled.label`
@@ -280,10 +267,6 @@ const StUserNickName = styled.div`
   color: white;
 `;
 
-const StModalSpan = styled.span`
-  color: var(--maincolor-1);
-`;
-
 const StProfileBox = styled.div`
   padding: 50px;
   display: flex;
@@ -317,21 +300,6 @@ const StButton = styled.button`
     cursor: default;
   }
 `;
-
-// const StDiv = styled.div`
-//     width: 200px;
-//     height: 300px;
-//     background:linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: flex-end;
-//     align-items: center;
-//     box-sizing: border-box;
-//     position: relative;
-//     padding: 10px;
-//     line-height: 20px;
-//     cursor: pointer;
-// `
 
 const StExit = styled.div`
   display: flex;

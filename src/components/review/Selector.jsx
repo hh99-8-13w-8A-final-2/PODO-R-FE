@@ -3,42 +3,14 @@ import Select from 'react-select'
 import styled from 'styled-components';
 import Review from '../../components/review/Review';
 import { ReactComponent as Search } from '../../assets/img/search.svg'
-import { useSelector } from "react-redux";
 
-import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
-import axios from 'axios';
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
 import apis from '../../apis/apis';
-
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-} 
-
-const getTags = async (pageParam, musicalId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
-    
-    /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
-    const res = await apis.getTags(musicalId, pageParam, headers);
-    const data = res.data.content;
-    // 서버에서 가져올 데이터 페이지의 전체 길이
-    const pageData = res.data.totalPages;
-    console.log(res.data)
-    return {
-        data,
-        pageData,
-    }
-}
 
 
 const Selector = ({ handleModal, theaterId }) => {
@@ -47,6 +19,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
+    console.log(query)
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1,setData1] =useState([]); //1층 섹션, row 정보
     const [Data2,setData2] =useState([]); //2층 섹션, row 정보
@@ -203,91 +176,191 @@ const Selector = ({ handleModal, theaterId }) => {
         navigate(location)
         // 좌석 초기화
     }
+    let [searchParams, setSearchParams] = useSearchParams();
     
     const ClickSeatSerch = () =>{
         const grade = selectGrade.value
+        const floor = selectFloor.value
         const section = selectSection.value
         const row = selectRow.value
-        if(seatNumber !== undefined){
-            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:`${seatNumber}` })
-            navigate({pathname:"", search:`?${param}`})
-        }else{
-            const param = createSearchParams({...query, grade :`${grade}`, section: `${section}`, row:`${row}`, seat:'0' })
-            navigate({pathname:"", search:`?${param}`})
+        const seat = seatNumber
+
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerySearch = searchParams.getAll('search');
+        if(grade === '0') {
+            return
+        }
+        if(grade === '0' && section === '100' && floor >= '1') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                floor : `${floor}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            return
+        }
+
+        if(grade === '0' && section === '100' && floor >= '1') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                floor : `${floor}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            return
+        }
+
+        if(grade === '0' && floor >= '1' && row === '0') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                floor : `${floor}`,
+                section: `${section}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            return
+        }
+
+        if(grade === '0' && floor >= '1' && seat === undefined) {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            return
+        }
+
+        if(grade === '0' && floor >= '1' && seat !== undefined) {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+                seat:`${seat}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            return
+        }
+
+        if(grade === '0' && floor >= '1' && seat === '') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            return
+        }
+
+        if (floor === '0') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                grade :`${grade}`,
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+              return
+        }
+
+        if (section === '100') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                grade :`${grade}`,
+                floor : `${floor}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+              return
+        }
+
+        if (row === '0') {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+              return
+        }
+        if (seat !== undefined){
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+                seat:`${seat}`
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+              return
+        }
+        if (seat === undefined){
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+              return
+        }
+        if (seat === ''){
+            setSearchParams({
+                tag: [...prevQueryTag],
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
+                grade :`${grade}`,
+                floor : `${floor}`,
+                section: `${section}`,
+                row:`${row}`,
+              });
+              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+              return
         }
         
-        
     }
 
-    const handleCheck  = (e) =>{
-        const currentQuery = e.target.dataset.query.toString();
-        // 현재 누른 타켓의 query
-        const prevQuery = searchParams.getAll('tag');
-        // 이전에 가지고 있던 query를 불러오기
-        // 여러개가 될 수 있어, getAll 메서드를 사용했다.
-        // 하나라면, get을 사용할 수 있을 것이다.
-    
-        if (prevQuery.includes(currentQuery)) {
-          // 이전에 가지고 있던 쿼리가, 타겟의 쿼리를 가지고 있다면 (한번 더 눌렀다면)
-          // 현재 누른 타겟의 쿼리는 제거해주자.
-          const newQuery = prevQuery.filter((query) => query !== currentQuery);
-          setSearchParams({
-            tag: newQuery,
-          });
-        } else {
-          // 아니라면, 쿼리를 추가해주자.
-          setSearchParams({
-            tag: [...prevQuery, currentQuery],
-          });
-        }
-    }
-
-    let [searchParams, setSearchParams] = useSearchParams();
-    
-    const tagHandleCheck = (e) => {
-        const currentQuery = e.target.dataset.query.toString();
-        const prevQuery = searchParams.getAll('tag');
-    
-        if (prevQuery.includes(currentQuery)) {
-          const newQuery = prevQuery.filter((query) => query !== currentQuery);
-          setSearchParams({
-            tag: newQuery,
-          });
-        } else {
-          setSearchParams({
-            tag: [...prevQuery, currentQuery],
-          });
-        }
-    }
-
-    const handleEvalCheck = (e) => {
-        const currentQuery = e.target.dataset.query.toString();
-        const prevQuery = searchParams.getAll('evaluation');
-    
-        if (prevQuery.includes(currentQuery)) {
-          const newQuery = prevQuery.filter((query) => query !== currentQuery);
-          setSearchParams({
-            evaluation: newQuery,
-          });
-        } else {
-          setSearchParams({
-            evaluation: [...prevQuery, currentQuery],
-          });
-        }
-    }
-    
-    
-    const gradeOptions = [
-        { value: 'VIP', label: 'VIP' },
-        { value: 'R', label: 'R' },
-        { value: 'S', label: 'S' },
-        { value: 'A', label: 'A ' }
-      ]
-
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
     const fetchTags = () => {
         //return axios.get(`${URI.BASE}/api/tags`)
-        return apis.getFetchTags()
+        return apis.getFetchTags(musicalId)
       }
     
     const { status, data, error } = useQuery('/getTags', fetchTags,
@@ -296,10 +369,202 @@ const Selector = ({ handleModal, theaterId }) => {
             refetchOnWindowFocus: false,
         }
     )
-
+    
+    const [tagUrl, setTagUrl] = useState('');
     const wholeTagsArray = data?.data.tags;
+    const [isTagCheck, setIsTagCheck] = useState(Array(15).fill(false))
+    const [isEvalCheck, setIsEvalCheck] = useState(Array(4).fill(false))
+    let update = require('immutability-helper');
 
-    console.log()
+    const handleCheck  = (e) =>{
+        const key = parseInt(e.target.alt)
+        let newData = update(isTagCheck, {
+            $splice: [[key, 1, !isTagCheck[key]]]
+        })
+        setIsTagCheck(newData)
+        sessionStorage.setItem('tagCheck', newData)
+        const currentQuery = e.target.dataset.query.toString();
+        // 현재 누른 타켓의 query
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerygrade = searchParams.getAll('grade')
+        const prevQueryfloor = searchParams.getAll('floor')
+        const prevQuerysection = searchParams.getAll('section')
+        const prevQueryrow = searchParams.getAll('row')
+        const prevQueryseat = searchParams.getAll('seat')
+        const prevQuerySearch = searchParams.getAll('search');
+        // 이전에 가지고 있던 query를 불러오기
+        // 여러개가 될 수 있어, getAll 메서드를 사용했다.
+        // 하나라면, get을 사용할 수 있을 것이다.
+    
+        if (prevQueryTag.includes(currentQuery)) {
+          // 이전에 가지고 있던 쿼리가, 타겟의 쿼리를 가지고 있다면 (한번 더 눌렀다면)
+          // 현재 누른 타겟의 쿼리는 제거해주자.
+          const newQuery = prevQueryTag.filter((query) => query !== currentQuery);
+          setSearchParams({
+            evaluation: [...prevQueryEval],
+            sort: [...prevQuerySort],
+            grade: [...prevQuerygrade],
+            floor: [...prevQueryfloor],
+            section: [...prevQuerysection],
+            row: [...prevQueryrow],
+            seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
+            tag: newQuery, 
+          });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        } else {
+          // 아니라면, 쿼리를 추가해주자.
+          setSearchParams({
+            evaluation: [...prevQueryEval],
+            sort: [...prevQuerySort],
+            grade: [...prevQuerygrade],
+            floor: [...prevQueryfloor],
+            section: [...prevQuerysection],
+            row: [...prevQueryrow],
+            seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
+            tag: [...prevQueryTag, currentQuery]
+          });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+    }
+
+
+    const handleEvalCheck = (e) => {
+        const key = parseInt(e.target.alt)
+        let newData = update(isEvalCheck, {
+            $splice: [[key, 1, !isEvalCheck[key]]]
+        })
+        setIsEvalCheck(newData)
+        sessionStorage.setItem('evalCheck', newData)
+        const currentQuery = e.target.dataset.query.toString();
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerygrade = searchParams.getAll('grade')
+        const prevQueryfloor = searchParams.getAll('floor')
+        const prevQuerysection = searchParams.getAll('section')
+        const prevQueryrow = searchParams.getAll('row')
+        const prevQueryseat = searchParams.getAll('seat')
+        const prevQuerySearch = searchParams.getAll('search');
+    
+        if (prevQueryEval.includes(currentQuery)) {
+          const newQuery = prevQueryEval.filter((query) => query !== currentQuery);
+          setSearchParams({
+            tag: [...prevQueryTag],
+            sort: [...prevQuerySort],
+            grade: [...prevQuerygrade],
+            floor: [...prevQueryfloor],
+            section: [...prevQuerysection],
+            row: [...prevQueryrow],
+            seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
+            evaluation: newQuery
+          });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        } else {
+          setSearchParams({
+            tag: [...prevQueryTag],
+            sort: [...prevQuerySort],
+            grade: [...prevQuerygrade],
+            floor: [...prevQueryfloor],
+            section: [...prevQuerysection],
+            row: [...prevQueryrow],
+            seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
+            evaluation: [...prevQueryEval, currentQuery]
+          });
+          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        }
+    }
+
+    const [isOrderCheck, setIsOrderCheck] = useState(Array(2).fill(false))
+
+    const handleOrderCheck  = (e) =>{
+        const key = parseInt(e.target.alt)
+        let newData = update(isOrderCheck, {
+            $splice: [[key, 1, !isOrderCheck[key]]]
+        })
+        setIsOrderCheck(newData)
+        sessionStorage.setItem('orderCheck', newData)
+        const currentQuery = e.target.dataset.query.toString();
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerygrade = searchParams.getAll('grade')
+        const prevQueryfloor = searchParams.getAll('floor')
+        const prevQuerysection = searchParams.getAll('section')
+        const prevQueryrow = searchParams.getAll('row')
+        const prevQueryseat = searchParams.getAll('seat')
+        const prevQuerySearch = searchParams.getAll('search');
+
+        if (prevQuerySort.includes(currentQuery)) {
+            const newQuery = prevQuerySort.filter((query) => query !== currentQuery);
+            setSearchParams({
+                tag: [...prevQueryTag],
+                eval: [...prevQueryEval],
+                grade: [...prevQuerygrade],
+                floor: [...prevQueryfloor],
+                section: [...prevQuerysection],
+                row: [...prevQueryrow],
+                seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
+                sort: newQuery
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+          } else {
+            setSearchParams({
+                tag: [...prevQueryTag],
+                eval: [...prevQueryEval],
+                grade: [...prevQuerygrade],
+                floor: [...prevQueryfloor],
+                section: [...prevQuerysection],
+                row: [...prevQueryrow],
+                seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
+                sort: [...prevQuerySort, currentQuery]
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+          }
+    }
+
+    
+    const gradeOptions = [
+        { value: 'VIP', label: 'VIP' },
+        { value: 'OP', label: 'OP' },
+        { value: 'R', label: 'R' },
+        { value: 'S', label: 'S' },
+        { value: 'A', label: 'A ' }
+    ]
+
+    useEffect(() => {
+        if(window.location.href.split('?').splice(1,1).toString() === '') {
+            setTagUrl('')
+        }else {
+            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            let checking = sessionStorage.getItem('tagCheck')
+            if(typeof(checking) === 'string') {
+                let checkingBool = (checking.split(',')).map(check => JSON.parse(check))
+                setIsTagCheck(checkingBool)
+            }
+
+            let evalChecking = sessionStorage.getItem('evalCheck')
+            if(typeof(evalChecking) === 'string') {
+                let evalCheckingBool = (evalChecking.split(',')).map(check => JSON.parse(check))
+                setIsEvalCheck(evalCheckingBool)
+            }
+            let orderChecking = sessionStorage.getItem('orderCheck')
+            if(typeof(orderChecking) === 'string') {
+                let orderCheckingBool = (orderChecking.split(',')).map(check => JSON.parse(check))
+                setIsOrderCheck(orderCheckingBool)
+            }
+            sessionStorage.clear()
+        }
+    },[]) 
+
+
 
     if(status === 'loading'){return <div className='popularBox'></div>}
     if(status === 'error'){return <div className='popularBox'><p>Error:{error.message}</p></div>}
@@ -308,17 +573,13 @@ const Selector = ({ handleModal, theaterId }) => {
     return (
         <div>
             <StFilterTopDiv>
-                <AutoComplete/>
+                <AutoComplete setTagUrl={setTagUrl} setSearchParams={setSearchParams} searchParams={searchParams}/>
                 <div>
                     <StCheckbox>
-                        <input type="checkbox" id='block' data-query='#시야방해있음' name='block' defaultChecked={params.get("block"==="1")} onChange={handleCheck}/>
-                        <label htmlFor="block">#시야방해있음</label>
-                        <input type="checkbox" id='operaGlass' data-query='#오페라글라스필수' name='operaGlass' defaultChecked={params.get("operaGlass"==="1")} onChange={handleCheck}/>
-                        <label htmlFor="operaGlass">#오페라글라스필수</label>
                     {wholeTagsArray.map((tag, index) => (
-                        <Fragment key={index}>
-                        <input type="checkbox" id={tag} data-query={tag} name={tag} defaultChecked={params.get({tag}==="1")} onChange={tagHandleCheck}/>
-                        <label htmlFor={tag}>{tag}</label>
+                        <Fragment key={tag}>
+                            <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) =>handleCheck(e)} defaultChecked={isTagCheck[index]}/>
+                            <label htmlFor={tag}>{tag}</label>
                         </Fragment>
                         ))}
                     </StCheckbox>
@@ -341,10 +602,10 @@ const Selector = ({ handleModal, theaterId }) => {
                     <Search className='icon' onClick={ClickSeatSerch}/>
                 </div>
                 <div className='right'>
-                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} createSearchParams={createSearchParams} />
+                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck}/>
                 </div>
             </StFilterDiv >
-            <Review handleModal={handleModal} theaterId={theaterId}/>
+            <Review handleModal={handleModal} theaterId={theaterId} tagUrl={tagUrl}/>
         </div>
     );
 };
@@ -368,6 +629,9 @@ const StFilterDiv = styled.div`
     align-items: center;
     >div{
         margin: 20px 0 10px;
+    }
+    .icon {
+        cursor: pointer;
     }
     .serach{
         display: flex;
@@ -462,6 +726,7 @@ const StCheckbox =styled.div`
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     div {
         height: 100px;
     }

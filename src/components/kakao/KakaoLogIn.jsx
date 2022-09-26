@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
 import OAuth from "./Oauth";
 import { useSelector } from "react-redux";
-import loginIcon from '../../assets/img/login.svg'
+import loginIcon from "../../assets/img/login.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
   const isLogin = useSelector((state) => state.user.isLogin);
-  //console.log(isLogin)
 
   const handleModal = () => {
     setSignupModalOn(!signupModalOn);
@@ -24,7 +22,7 @@ const KakaoLogin = () => {
         <div></div>
       ) : (
         <div onClick={handleModal}>
-          <StLoginIcon loginIcon={loginIcon}/>
+          <StLoginIcon loginIcon={loginIcon} />
           <StLoginTxt>로그인</StLoginTxt>
         </div>
       )}
@@ -34,7 +32,7 @@ const KakaoLogin = () => {
           <Modal onClose={handleModal}>
             <StLoginBox>
               <button onClick={handleModal}>
-                <FontAwesomeIcon icon={faXmark}/>
+                <FontAwesomeIcon icon={faXmark} />
               </button>
             </StLoginBox>
             <OAuth />
@@ -67,15 +65,15 @@ const StContentbox = styled.div`
 `;
 
 const StLoginIcon = styled.div`
-    width: 20px;
-    height: 16px;
-    align-items: center;
-    background: ${props => `url(${props.loginIcon})`} no-repeat;
-    cursor: pointer;
-`
+  width: 20px;
+  height: 16px;
+  align-items: center;
+  background: ${(props) => `url(${props.loginIcon})`} no-repeat;
+  cursor: pointer;
+`;
 const StLoginTxt = styled.span`
-    cursor: pointer;
-`
+  cursor: pointer;
+`;
 
 const StLoginBox = styled.div`
   display: flex;

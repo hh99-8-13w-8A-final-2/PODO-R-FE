@@ -8,13 +8,6 @@ const MyTicketList = ({ setEachMusicalId }) => {
   const [data, setData] = useState();
 
   const MyMusicalFind = async () => {
-    /* const response = await axios({
-      method: "get",
-      url: `${URI.BASE}/api/mypage/musicals`,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
-      }
-    }); */
     const headers = { Authorization: localStorage.getItem("accessToken") };
     const response = await apis.getMyMusicalFindList(headers);
     setData(response.data);

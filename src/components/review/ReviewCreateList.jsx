@@ -11,10 +11,6 @@ import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import { useInView } from "react-intersection-observer";
 
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
-
 const getComments = async (reviewId, pageParam) => {
     /* const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`); */
     const response = await apis.getComment(reviewId, pageParam)
@@ -30,26 +26,13 @@ const getComments = async (reviewId, pageParam) => {
 }
 
 const postModifyedComment = async (new_comment) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
     const { modifyId, content } = new_comment
-    /* const { data } = await axios.put(`${URI.BASE}/api/comments/${modifyId}`, content, { headers: headers }) */
-    const { data } = await apis.putModifyedComment(modifyId, content, headers)
-    return data
+    return await apis.putModifyedComment(modifyId, content)
+
 }
 
 const deleteComment = async (commentId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    /* const response = await axios.delete(`${URI.BASE}/api/comments/${commentId}`, { headers: headers }) */
-    const response = await apis.deleteComment(commentId, headers)
-    return response
+    return await apis.deleteComment(commentId)
 }
 
 
@@ -185,12 +168,12 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                                             currentYear - createYear === 0 &&
                                                             currentMonth - createMonth === 0 &&
                                                             currentDate - createDate > 6 &&
-                                                            <span>{(currentDate - createDate) / 7}주일 전</span>
+                                                            <span>{parseInt((currentDate - createDate) / 7)}주일 전</span>
                                                         }
                                                         {
                                                             currentYear - createYear === 0 &&
                                                             currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate > 0 &&
+                                                            currentDate - createDate > 0 && currentDate - createDate < 7 &&
                                                             <span>{(currentDate - createDate)}일 전</span>
                                                         }
                                                         {

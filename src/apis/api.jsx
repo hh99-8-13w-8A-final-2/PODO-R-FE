@@ -21,7 +21,7 @@ import axios, { AxiosInstance } from 'axios';
 //리이슈 관련 인터셉터 설정
 axiosApi.interceptors.request.use(
   async config => {
-
+    
     const token = window.localStorage.getItem("accessToken")
     if(token){
       console.log(config)
@@ -47,11 +47,11 @@ axiosApi.interceptors.response.use(
       const reissue = {"Refresh-Token" : refreshToken}
 
       const res = await axios.post(`${URI.baseURL}/api/reissue`,{} ,{headers : reissue})
-        /* .catch((err)=>{
+        .catch((err)=>{
           localStorage.clear();
           alert(err.response.data)
           window.location.replace("/")
-        }) */
+        }) 
         localStorage.setItem("accessToken", res.headers.authorization);
         localStorage.setItem("refreshToken", res.headers[`refresh-token`]);
         

@@ -19,7 +19,10 @@ const LiveReview = ({ status, reviewList, error }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-
+    console.log(reviewList?.data)
+    const clickHandler = () => {
+        
+    }
     return (
         <div
         onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
@@ -37,7 +40,7 @@ const LiveReview = ({ status, reviewList, error }) => {
         >
             <StFlowBox>
                 {reviewList?.data.map((review, index) => (
-                    <SwiperSlide key={index}>
+                    <SwiperSlide key={index} onClick={clickHandler}>
                         <StReviewBox imgUrl={review.imgUrl}>
                                 <StH3>{review.floor} {review.section !== '0' && review.section + '구역'} {review.row}열 {review.seat}</StH3>
                                 <StIconDiv>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
 import apis from '../../apis/apis';
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import ReviewDetailSlide from './ReviewDetailSlide';
@@ -15,53 +14,22 @@ import ReviewModify from './ReviewModify';
 import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { useEffect } from 'react';
-
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
     return apis.getReviewDetail(musicalId, reviewsId)
-    /* axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers }) */
 }
 
 const deleteReviews = async (deleteId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
     const { musicalId, reviewsId } = deleteId
-    /* const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers }) */
-    const response = await apis.deleteReview(musicalId, reviewsId, headers)
-    return response
+    return await apis.deleteReview(musicalId, reviewsId)
 }
 
 const likeReviews = async (reviewsId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    /* const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers }) */
-    const response = await apis.postLike(reviewsId, headers)
+    return await apis.postLike(reviewsId)
 }
 
 const unLikeReviews = async (reviewsId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    /* const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers }) */
-    const response = await apis.deleteLike(reviewsId, headers)
-    
+    return await apis.deleteLike(reviewsId)
 }
 
 const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {

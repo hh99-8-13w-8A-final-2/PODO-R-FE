@@ -1,16 +1,10 @@
 import React  from 'react';
 import styled from 'styled-components';
 import LiveReview from './LiveReview';
-import axios from 'axios';
 import apis from '../../apis/apis';
 import { useQuery } from "react-query"
 
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
-
 const fetchLiveReviews = () => {
-    //return axios.get(`${URI.BASE}/api/reviews/live`)
     return apis.getLiveReviews()
   }
 

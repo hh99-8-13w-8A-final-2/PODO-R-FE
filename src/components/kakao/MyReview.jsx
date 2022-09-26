@@ -23,15 +23,6 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
     if(inView) fetchNextPage2();
   }, [inView]);
 
-  // const reviewSelector = selector({
-  //   key: "data",
-  //   get:({ get }) => {
-  //     const data = get(infoReviewState)
-  //     console.log(data)
-  //   }
-  // })
-
-
   return (
     <div>
       {singleData === undefined || singleData.pages[0].data === undefined ? (

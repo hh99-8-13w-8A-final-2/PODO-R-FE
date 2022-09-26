@@ -38,10 +38,8 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
          for (let value of formData.values()) {
             console.log(value);
         }
-        const token = window.localStorage.getItem("accessToken")
-        const multipartType = { "Content-Type": "multipart/form-data" }
         /* const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType }) */
-        apis.postModifyImg(formData, multipartType)
+        apis.postModifyImg(formData)
         
         .then((res)=>{
             console.log(res)

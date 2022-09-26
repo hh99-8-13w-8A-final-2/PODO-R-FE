@@ -2,27 +2,28 @@ import React from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
-
-
 const MyTicket = ({ data, setEachMusicalId }) => {
-
-
   const setMusicalIdHandler = (musicalId) => {
-    setEachMusicalId(musicalId)
-  }
+    setEachMusicalId(musicalId);
+  };
 
   return (
     <StMyTicket>
       {data?.content.map((ticket) => (
-        <StTicket key={ticket.musicalId} onClick={()=>setMusicalIdHandler(ticket.musicalId)}>
-            <StDiv>
-              <input type="radio" name="musicalBox" id = {ticket.musicalId} />
-              <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
-                <StH3>{ticket.musicalName}</StH3>
-                <StDiv1>{ticket.musicalRegion}</StDiv1>
-                <StDiv2>{ticket.openDate} ~ {ticket.closeDate}</StDiv2>
-              </StLabel>
-            </StDiv>
+        <StTicket
+          key={ticket.musicalId}
+          onClick={() => setMusicalIdHandler(ticket.musicalId)}
+        >
+          <StDiv>
+            <input type="radio" name="musicalBox" id={ticket.musicalId} />
+            <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
+              <StH3>{ticket.musicalName}</StH3>
+              <StDiv1>{ticket.musicalRegion}</StDiv1>
+              <StDiv2>
+                {ticket.openDate} ~ {ticket.closeDate}
+              </StDiv2>
+            </StLabel>
+          </StDiv>
         </StTicket>
       ))}
     </StMyTicket>
@@ -49,17 +50,15 @@ const StTicket = styled.div`
 
 const StDiv = styled.div`
   box-sizing: border-box;
-  input{
+  input {
     display: none;
   }
-  input[type="radio"]:checked + label{
+  input[type="radio"]:checked + label {
     border: 3px solid var(--maincolor-1);
   }
-`
+`;
 
 const StLabel = styled.label`
-  //input{display:none}
-  
   width: 190px;
   height: 190px;
   background: linear-gradient(
@@ -84,7 +83,7 @@ const StH3 = styled.h3`
   font-size: 17px;
   color: var(--white);
   width: 180px;
-  line-height: 1.0;
+  line-height: 1;
   height: 1.8em;
   display: inline-block;
   white-space: normal;
@@ -95,7 +94,6 @@ const StH3 = styled.h3`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-  /* margin: 0px 0px 20px 0px; */
 `;
 
 const StDiv1 = styled.div`
@@ -105,7 +103,6 @@ const StDiv1 = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* margin: 0px 0px 20px 20px; */
 `;
 
 const StDiv2 = styled.div`
@@ -115,5 +112,4 @@ const StDiv2 = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* margin: 0px 0px 20px 20px; */
 `;

@@ -1,19 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import MyReview from "./MyReview";
 import axios from "axios";
 import apis from "../../apis/apis";
-import { useState } from "react";
 import { useInfiniteQuery } from "react-query";
-import { useInView } from "react-intersection-observer";
 
 const myFetchReviews = async (pageParam, userId) => {
   const headers = {
     Authorization: localStorage.getItem("accessToken"),
   };
   const response = await apis.getMyReviewFind(headers);
-  // setData(response.data);
-
   const data = response.data.content;
   const pageData = response.data.totalPages;
   const total = response.data.totalElements;

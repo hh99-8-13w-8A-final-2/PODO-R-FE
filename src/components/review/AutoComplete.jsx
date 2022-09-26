@@ -1,35 +1,44 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Search } from '../../assets/img/search.svg'
+import { useQuery, useMutation, useQueryClient } from "react-query"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import apis from '../../apis/apis';
 
+const getResentsSearch = () => {
+  return apis.getResentsSearchList()
+}
 
-const AutoComplete = () => {
-  const wholeTagsArray = [
-    "123",
-    "456"
-  ]
+const deleteResentsSearch = async (dropDownItem) => {
+  await apis.deleteResentsSearchList(dropDownItem)
+}
+
+const postSearch = async (inputValue) => {
+  await apis.postSearchCont(inputValue)
+}
+
+const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
+
+  const { data } = useQuery('recents/search', getResentsSearch,
+    {
+      refetchOnWindowFocus: false,
+    }
+  )
 
   const [inputValue, setInputValue] = useState('')
   const [isHaveInputValue, setIsHaveInputValue] = useState(false)
-  const [dropDownList, setDropDownList] = useState(wholeTagsArray)
   const [dropDownItemIndex, setDropDownItemIndex] = useState(-1)
-
-
-  const showDropDownList = () => {
-    if (inputValue === '') {
-      setIsHaveInputValue(false)
-      setDropDownList([])
-    } else {
-      const choosenTextList = wholeTagsArray.filter(textItem =>
-        textItem.includes(inputValue)
-      )
-      setDropDownList(choosenTextList)
-    }
-  }
+  const dropDownList = data?.data.recents;
 
   const changeInputValue = event => {
-    setInputValue(event.target.value)
-    setIsHaveInputValue(true)
+    if(event.target.value === '') {
+      setInputValue(event.target.value)
+      setIsHaveInputValue(false)
+    } else {
+      setInputValue(event.target.value)
+      setIsHaveInputValue(true)
+    }
   }
 
   const clickDropDownItem = clickedItem => {
@@ -56,16 +65,51 @@ const AutoComplete = () => {
     }
   }
 
-  const inputValueHandler = () => {
-    if(dropDownList.includes(inputValue)) {
-      setInputValue('')
+  const queryClient = useQueryClient()
+
+  const deleteMutation = useMutation((dropDownItem) => deleteResentsSearch(dropDownItem), {
+    onSuccess: () => {
+        queryClient.invalidateQueries("recents/search")
     }
-    else {
-      return
+  })
+  const postMutation = useMutation((inputValue) => postSearch(inputValue), {
+    onSuccess: () => {
+        queryClient.invalidateQueries("recents/search")
     }
+    })
+
+  const deleteHandler = (dropDownItem, e) => {
+    e.stopPropagation();
+    deleteMutation.mutate(dropDownItem)
   }
 
-  useEffect(showDropDownList, [inputValue])
+  const inputValueHandler = () => {
+    const prevQueryEval = searchParams.getAll('evaluation');
+    const prevQueryTag = searchParams.getAll('tag');
+    const prevQuerySort = searchParams.getAll('sort');
+    const prevQuerygrade = searchParams.getAll('grade')
+    const prevQueryfloor = searchParams.getAll('floor')
+    const prevQuerysection = searchParams.getAll('section')
+    const prevQueryrow = searchParams.getAll('row')
+    const prevQueryseat = searchParams.getAll('seat')
+
+    setSearchParams({
+      tag: [...prevQueryTag],
+      sort: [...prevQuerySort],
+      grade: [...prevQuerygrade],
+      floor: [...prevQueryfloor],
+      section: [...prevQuerysection],
+      row: [...prevQueryrow],
+      seat: [...prevQueryseat],
+      evaluation: [...prevQueryEval],
+      search: inputValue
+    });
+    setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+    setInputValue('')
+    setIsHaveInputValue(false)
+    console.log(inputValue)
+    postMutation.mutate(inputValue)
+  }
 
   return (
     <WholeBox>
@@ -76,12 +120,12 @@ const AutoComplete = () => {
           onChange={changeInputValue}
           onKeyUp={handleDropDownKey}
         />
-        <SearchButton onClick={inputValueHandler}><Search/></SearchButton>
+        <SearchButton onClick={inputValueHandler}><Search /></SearchButton>
       </InputBox>
-      {isHaveInputValue && (
+      {inputValue !== '' && isHaveInputValue &&
         <DropDownBox>
-          {dropDownList.length === 0 && (
-            <DropDownItem>해당하는 단어가 없습니다</DropDownItem>
+          {dropDownList.length === 0  && (
+            <DropDownItem>최근 검색내역이 없습니다.</DropDownItem>
           )}
           {dropDownList.map((dropDownItem, dropDownIndex) => {
             return (
@@ -94,13 +138,16 @@ const AutoComplete = () => {
                 }
               >
                 {dropDownItem}
+                <button onClick={(e) => deleteHandler(dropDownItem, e)}>
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
               </DropDownItem>
             )
           })}
         </DropDownBox>
-      )}
+      }
     </WholeBox>
-    
+
   )
 }
 
@@ -165,9 +212,26 @@ const DropDownBox = styled.ul`
 
 const DropDownItem = styled.li`
   padding: 0 16px;
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s;
   &.selected {
     color: var(--maincolor-1);
+  }
+  button {
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1.0em;
+    color: var(--gray-2);
+    transition: all 0.3s;
+    cursor: pointer;
+    margin-left: 10px;
+    background: none;
+    &:hover {
+      color: var(--maincolor-1);
+    }
   }
 `
 

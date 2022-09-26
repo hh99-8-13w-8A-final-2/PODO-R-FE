@@ -224,12 +224,8 @@ const Create = ({ create, SetCreate, theaterId }) => {
             console.log(value);
         }
         try {
-            const token = window.localStorage.getItem("accessToken")
-            const jsonType = { "Content-Type": "application/json", "Authorization": token }
-            const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-            const multipartHeader = { headers: multipartType }
             /* const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
-            const res1 = await apis.postImg(imgFormdata, multipartHeader)
+            const res1 = await apis.postImg(imgFormdata)
             //이미지 
 
             const obj = {};
@@ -240,9 +236,8 @@ const Create = ({ create, SetCreate, theaterId }) => {
 
             const json = JSON.stringify(obj)
             console.log(json)
-            const headers = { headers: jsonType, token }
             /* await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token }); */
-            await apis.postReview(musicalId, json, headers)
+            await apis.postReview(musicalId, json)
             SetCreate(!create)
         } catch (err) {
             console.log(err)
