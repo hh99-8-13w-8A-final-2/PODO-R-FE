@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Search } from '../../assets/img/search.svg'
 import { useQuery } from "react-query"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios'
 
 const URI = {
@@ -27,6 +29,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
   console.log(data)
   const wholeTagsArray = [
     "123",
+    "153",
     "456",
     "asd"
   ]
@@ -76,6 +79,10 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
         setDropDownItemIndex(-1)
       }
     }
+  }
+
+  const deleteHandler = () => {
+
   }
 
   const inputValueHandler = () => {
@@ -132,6 +139,9 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
                 }
               >
                 {dropDownItem}
+                <button onClick={deleteHandler}>
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
               </DropDownItem>
             )
           })}
@@ -203,9 +213,26 @@ const DropDownBox = styled.ul`
 
 const DropDownItem = styled.li`
   padding: 0 16px;
-
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s;
   &.selected {
     color: var(--maincolor-1);
+  }
+  button {
+    border: none;
+    border-radius: 10px;
+    background-color: var(--white);
+    font-size: 1.0em;
+    color: var(--gray-2);
+    transition: all 0.3s;
+    cursor: pointer;
+    margin-left: 10px;
+    background: none;
+    &:hover {
+      color: var(--maincolor-1);
+    }
   }
 `
 
