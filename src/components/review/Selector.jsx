@@ -562,7 +562,8 @@ const Selector = ({ handleModal, theaterId }) => {
             }
             sessionStorage.clear()
         }
-    },[]) 
+    },[])
+    
 
 
 

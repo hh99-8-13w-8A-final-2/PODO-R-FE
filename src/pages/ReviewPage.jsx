@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { __getmusicalData } from '../redux/modules/musicalSlice';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Selector from '../components/review/Selector';
 import CreateBtn from '../components/common/CreateBtn'
 import Portal from '../assets/modal/Portal'
 import Modal from '../assets/modal/Modal';
 import ReviewDetail from '../components/review/ReviewDetail';
 import Create from '../components/create/Create';
-import axios from 'axios';
 import apis from '../apis/apis';
 
 
@@ -27,9 +26,7 @@ const ReviewPage = () => {
     const [reviewsId, SetReviewsId ] = useState('');
     const [musicalId, SetMusicalId ] = useState('');
     const [create, SetCreate] = useState(false)
-    const [musicals, setMusicals] = useState({
-  
-    });
+    const [musicals, setMusicals] = useState({});
     const getData = async() =>{
         //const res = await axios.get(`${URI.BASE}/api/musicals/${musical}`)
         const res = await apis.getMusicalData(musical)
@@ -60,7 +57,7 @@ const ReviewPage = () => {
 
     return (
         <>
-            {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicals.theaterId} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} /> }
+            {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicals.theaterId} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} />}
             <CreateBtn onClickHandler={onClickHandler}/>
             <Portal>
                 {modalOn && 
