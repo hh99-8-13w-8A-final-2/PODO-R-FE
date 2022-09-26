@@ -4,6 +4,7 @@ import Layout from './Layout';
 import info from '../../assets/img/info.svg'
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import apis from '../../apis/apis';
 import ModalPortal from '../../assets/modal/Portal';
 import Modal from "../../assets/modal/Modal";
 import TheaterInfo from './TheaterInfo';
@@ -23,7 +24,9 @@ const HeaderBottom = () => {
         theaterId: ''
     });
     const getTitle = async() =>{
-       const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}`)
+       //const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}`)
+       const res = await apis.getMusicalId(musicalId)
+       console.log(res)
        setMusicals(res.data)
     }
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyTicket from "./MyTicket";
 import axios from "axios";
+import apis from "../../apis/apis";
 
 const MyTicketList = ({ setMyReviewData }) => {
 
@@ -14,13 +15,15 @@ const MyTicketList = ({ setMyReviewData }) => {
 
     
   const MyMusicalFind = async () => {
-    const response = await axios({
+    /* const response = await axios({
       method: "get",
       url: `${URI.BASE}/api/mypage/musicals`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
       }
-    });
+    }); */
+    const headers = {Authorization: localStorage.getItem("accessToken"),}
+    const response = await apis.getMyMusicalFindList(headers)
     setData(response.data)
   };
 
@@ -28,13 +31,15 @@ const MyTicketList = ({ setMyReviewData }) => {
 
   const GetMyReview = (getMusicalId) => {
     const MyDetailReview = async () => {
-      const response2 = await axios({
+      /* const response2 = await axios({
         method: "get",
         url: `${URI.BASE}/api/mypage/${getMusicalId}/reviews`,
         headers: {
           Authorization: localStorage.getItem("accessToken"),
         },
-      });
+      }); */
+      const headers = {Authorization: localStorage.getItem("accessToken"),}
+      const response2 = await apis.getMyDetailReview(getMusicalId, headers)
       setMyReviewData(response2.data)
     };
     MyDetailReview()

@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import apis from "../../apis/apis";
+//import axios from "axios";
 import { login } from "../../redux/modules/userSlice";
 
 const Kakao = () => {
 
-  const URI = {
+ const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
   };
   
@@ -16,9 +17,10 @@ const Kakao = () => {
 
   const kakaoLogin = async () => {
     try {
-      const response = await axios.get(
+      /* const response = await axios.get(
         `${URI.BASE}/api/oauth/kakao?code=${code}`
-      );
+      );  */
+      const response = await apis.getKakao(code);
       //console.log(response);
       const accessToken = response.headers.authorization;
       const refreshToken = response.headers[`refresh-token`];

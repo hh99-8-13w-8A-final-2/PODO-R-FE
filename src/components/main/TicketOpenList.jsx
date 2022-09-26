@@ -4,13 +4,15 @@ import Ticket from './Ticket';
 import TickeTicketListt from './TicketList';
 import axios from 'axios';
 import { useQuery } from "react-query"
+import apis from '../../apis/apis';
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
   }
 
 const fetchOpenMusical = () => {
-    return axios.get(`${URI.BASE}/api/musicals/open`)
+    //return axios.get(`${URI.BASE}/api/musicals/open`)
+    return apis.getOpenMusical()
   }
 
 const TicketOpenList = () => {

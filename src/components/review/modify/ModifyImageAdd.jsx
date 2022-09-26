@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import apis from '../../../apis/apis';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/free-regular-svg-icons';
@@ -11,7 +12,7 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
     const files = []    
     const [showImages, setShowImages] = useState(data.data.imgurls); // 이미지 프리뷰
 
-    const handleAddImages = async (event) => {
+    const handleAddImages =  (event) => {
         const imgFiles = event.target.files    
 
         if (imgFiles.length > 4 - imgUrls.length){
@@ -34,19 +35,34 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         for(var i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
-        /* for (let value of formData.values()) {
+         for (let value of formData.values()) {
             console.log(value);
-        } */
-
+        }
         const token = window.localStorage.getItem("accessToken")
-        const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-        const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType })
-        const img = res.data.imageUrl
-        console.log(img)
-         for (var i in img) {
-            imgUrls.push(res.data.imageUrl[i])
-        } 
-        setShowImages([...imgUrls])
+        const multipartType = { "Content-Type": "multipart/form-data" }
+        /* const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType }) */
+        apis.postModifyImg(formData, multipartType)
+        
+        .then((res)=>{
+            console.log(res)
+            const img = res.data.imageUrl
+            console.log(img)
+             for (var i in img) {
+                imgUrls.push(res.data.imageUrl[i])
+            } 
+            setShowImages([...imgUrls])
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+       /*  try{
+            const res = apis.postModifyImg(formData, multipartType)
+            console.log(res)
+        } catch(err) {
+            console.log(err)
+        } */
+       
+       
     };
     const handleDeleteImage = (id) => {
         imgUrls.splice(id,1)
