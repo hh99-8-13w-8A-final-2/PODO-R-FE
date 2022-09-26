@@ -5,7 +5,7 @@ import sound from '../../assets/img/sound.svg'
 import light from '../../assets/img/light.svg'
 import up_small from '../../assets/img/up_small.svg'
 
-const RadioSelector = ({query, navigate, params, handleEvalCheck, createSearchParams, isEvalCheck, isOrderCheck, handleOrderCheck}) => {
+const RadioSelector = ({handleEvalCheck, isEvalCheck, isOrderCheck, handleOrderCheck}) => {
      
    
     

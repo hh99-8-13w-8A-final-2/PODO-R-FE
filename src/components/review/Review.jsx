@@ -13,7 +13,6 @@ import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import { useInView } from "react-intersection-observer";
 
 const fetchReviews = async (pageParam, musicalId, tagUrl) => {
-    console.log(tagUrl)
     const Authorization = localStorage.getItem('accessToken');
     const headers = {
         'Content-Type': 'application/json',

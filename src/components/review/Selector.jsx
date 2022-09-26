@@ -5,14 +5,13 @@ import Review from '../../components/review/Review';
 import { ReactComponent as Search } from '../../assets/img/search.svg'
 import { useSelector } from "react-redux";
 
-import { useNavigate, useSearchParams, createSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
-import update from 'immutability-helper'
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
@@ -191,11 +190,16 @@ const Selector = ({ handleModal, theaterId }) => {
         const prevQueryTag = searchParams.getAll('tag');
         const prevQueryEval = searchParams.getAll('evaluation');
         const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerySearch = searchParams.getAll('search');
+        if(grade === '0') {
+            return
+        }
         if(grade === '0' && section === '100' && floor >= '1') {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 floor : `${floor}`
               });
               setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -207,6 +211,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 floor : `${floor}`
               });
               setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -218,6 +223,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 floor : `${floor}`,
                 section: `${section}`
               });
@@ -230,6 +236,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 floor : `${floor}`,
                 section: `${section}`,
                 row:`${row}`
@@ -243,6 +250,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 floor : `${floor}`,
                 section: `${section}`,
                 row:`${row}`,
@@ -257,6 +265,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 floor : `${floor}`,
                 section: `${section}`,
                 row:`${row}`
@@ -270,6 +279,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 grade :`${grade}`,
               });
               setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -281,6 +291,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 grade :`${grade}`,
                 floor : `${floor}`
               });
@@ -293,6 +304,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 grade :`${grade}`,
                 floor : `${floor}`,
                 section: `${section}`
@@ -305,6 +317,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 grade :`${grade}`,
                 floor : `${floor}`,
                 section: `${section}`,
@@ -319,6 +332,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 grade :`${grade}`,
                 floor : `${floor}`,
                 section: `${section}`,
@@ -332,6 +346,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
+                search: [...prevQuerySearch],
                 grade :`${grade}`,
                 floor : `${floor}`,
                 section: `${section}`,
@@ -379,6 +394,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const prevQuerysection = searchParams.getAll('section')
         const prevQueryrow = searchParams.getAll('row')
         const prevQueryseat = searchParams.getAll('seat')
+        const prevQuerySearch = searchParams.getAll('search');
         // 이전에 가지고 있던 query를 불러오기
         // 여러개가 될 수 있어, getAll 메서드를 사용했다.
         // 하나라면, get을 사용할 수 있을 것이다.
@@ -395,6 +411,7 @@ const Selector = ({ handleModal, theaterId }) => {
             section: [...prevQuerysection],
             row: [...prevQueryrow],
             seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
             tag: newQuery, 
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -408,6 +425,7 @@ const Selector = ({ handleModal, theaterId }) => {
             section: [...prevQuerysection],
             row: [...prevQueryrow],
             seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
             tag: [...prevQueryTag, currentQuery]
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -431,6 +449,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const prevQuerysection = searchParams.getAll('section')
         const prevQueryrow = searchParams.getAll('row')
         const prevQueryseat = searchParams.getAll('seat')
+        const prevQuerySearch = searchParams.getAll('search');
     
         if (prevQueryEval.includes(currentQuery)) {
           const newQuery = prevQueryEval.filter((query) => query !== currentQuery);
@@ -442,6 +461,7 @@ const Selector = ({ handleModal, theaterId }) => {
             section: [...prevQuerysection],
             row: [...prevQueryrow],
             seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
             evaluation: newQuery
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -454,6 +474,7 @@ const Selector = ({ handleModal, theaterId }) => {
             section: [...prevQuerysection],
             row: [...prevQueryrow],
             seat: [...prevQueryseat],
+            search: [...prevQuerySearch],
             evaluation: [...prevQueryEval, currentQuery]
           });
           setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -478,6 +499,7 @@ const Selector = ({ handleModal, theaterId }) => {
         const prevQuerysection = searchParams.getAll('section')
         const prevQueryrow = searchParams.getAll('row')
         const prevQueryseat = searchParams.getAll('seat')
+        const prevQuerySearch = searchParams.getAll('search');
 
         if (prevQuerySort.includes(currentQuery)) {
             const newQuery = prevQuerySort.filter((query) => query !== currentQuery);
@@ -489,6 +511,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 section: [...prevQuerysection],
                 row: [...prevQueryrow],
                 seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
                 sort: newQuery
             });
             setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -501,6 +524,7 @@ const Selector = ({ handleModal, theaterId }) => {
                 section: [...prevQuerysection],
                 row: [...prevQueryrow],
                 seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
                 sort: [...prevQuerySort, currentQuery]
             });
             setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
@@ -550,7 +574,7 @@ const Selector = ({ handleModal, theaterId }) => {
     return (
         <div>
             <StFilterTopDiv>
-                <AutoComplete/>
+                <AutoComplete setTagUrl={setTagUrl} setSearchParams={setSearchParams} searchParams={searchParams}/>
                 <div>
                     <StCheckbox>
                     {wholeTagsArray.map((tag, index) => (
@@ -579,7 +603,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <Search className='icon' onClick={ClickSeatSerch}/>
                 </div>
                 <div className='right'>
-                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} createSearchParams={createSearchParams} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck}/>
+                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck}/>
                 </div>
             </StFilterDiv >
             <Review handleModal={handleModal} theaterId={theaterId} tagUrl={tagUrl}/>

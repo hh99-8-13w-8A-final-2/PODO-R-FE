@@ -1,12 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Search } from '../../assets/img/search.svg'
+import { useQuery } from "react-query"
+import axios from 'axios'
 
+const URI = {
+  BASE: process.env.REACT_APP_BASE_URI
+};
 
-const AutoComplete = () => {
+const getResentsSearch = () => {
+  const Authorization = localStorage.getItem('accessToken');
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: `${Authorization}`,
+  }
+  return axios.get(`${URI.BASE}/api/recents/search`, { headers: headers })
+}
+
+const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
+
+  const { data } = useQuery('resents/search', getResentsSearch,
+    {
+      refetchOnWindowFocus: false,
+    }
+  )
+  console.log(data)
   const wholeTagsArray = [
     "123",
-    "456"
+    "456",
+    "asd"
   ]
 
   const [inputValue, setInputValue] = useState('')
@@ -57,12 +79,28 @@ const AutoComplete = () => {
   }
 
   const inputValueHandler = () => {
-    if(dropDownList.includes(inputValue)) {
-      setInputValue('')
-    }
-    else {
-      return
-    }
+    const prevQueryEval = searchParams.getAll('evaluation');
+    const prevQueryTag = searchParams.getAll('tag');
+    const prevQuerySort = searchParams.getAll('sort');
+    const prevQuerygrade = searchParams.getAll('grade')
+    const prevQueryfloor = searchParams.getAll('floor')
+    const prevQuerysection = searchParams.getAll('section')
+    const prevQueryrow = searchParams.getAll('row')
+    const prevQueryseat = searchParams.getAll('seat')
+
+    setSearchParams({
+      tag: [...prevQueryTag],
+      sort: [...prevQuerySort],
+      grade: [...prevQuerygrade],
+      floor: [...prevQueryfloor],
+      section: [...prevQuerysection],
+      row: [...prevQueryrow],
+      seat: [...prevQueryseat],
+      evaluation: [...prevQueryEval],
+      search: inputValue
+    });
+    setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+    setInputValue('')
   }
 
   useEffect(showDropDownList, [inputValue])
@@ -76,7 +114,7 @@ const AutoComplete = () => {
           onChange={changeInputValue}
           onKeyUp={handleDropDownKey}
         />
-        <SearchButton onClick={inputValueHandler}><Search/></SearchButton>
+        <SearchButton onClick={inputValueHandler}><Search /></SearchButton>
       </InputBox>
       {isHaveInputValue && (
         <DropDownBox>
@@ -100,7 +138,7 @@ const AutoComplete = () => {
         </DropDownBox>
       )}
     </WholeBox>
-    
+
   )
 }
 
