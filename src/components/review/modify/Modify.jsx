@@ -200,10 +200,7 @@ const Modify = ({ data, setModify }) => {
     ]
 
     const postModifyedReviews = async(json) => {
-        const token = window.localStorage.getItem("accessToken")
-        const jsonType = { "Content-Type": "application/json", "Authorization": token }
-        /* await axios.put(`${URI.BASE}/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType, token }) */
-        await apis.putModify(musicalId, data, json ,jsonType)
+        await apis.putModify(musicalId, data, json)
         .then(
             (response)=>{
                 console.log(response)

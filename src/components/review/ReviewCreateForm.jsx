@@ -2,23 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "react-query"
-import axios from 'axios';
 import apis from '../../apis/apis';
 import { toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 
 const postComment = async(new_comment) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
     const { reviewId, content } = new_comment
     /* const {data} = await axios.post(`${URI.BASE}/api/comments?reviewId=${reviewId}`, content, {headers: headers}) */
-    const { data } = await apis.postComment(reviewId, content, headers)
+    const { data } = await apis.postComment(reviewId, content)
     console.log(data)
     return data
   }

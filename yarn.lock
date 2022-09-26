@@ -5514,6 +5514,11 @@
   "resolved" "https://registry.npmjs.org/immer/-/immer-9.0.15.tgz"
   "version" "9.0.15"
 
+"immutability-helper@^3.1.1":
+  "integrity" "sha512-Q0QaXjPjwIju/28TsugCHNEASwoCcJSyJV3uO1sOIQGI0jKgm9f41Lvz0DZj3n46cNCyAZTsEYoY4C2bVRUzyQ=="
+  "resolved" "https://registry.npmjs.org/immutability-helper/-/immutability-helper-3.1.1.tgz"
+  "version" "3.1.1"
+
 "immutable@^4.0.0":
   "integrity" "sha512-oNkuqVTA8jqG1Q6c+UglTOD1xhC1BtjKI7XkCXRkZHrN5m18/XsnUp8Q89GkQO/z+0WjonSvl0FLhDYftp46nQ=="
   "resolved" "https://registry.npmjs.org/immutable/-/immutable-4.1.0.tgz"
