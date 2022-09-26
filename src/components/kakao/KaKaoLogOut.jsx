@@ -22,8 +22,7 @@ const KaKaoLogOut = () => {
   const onLogoutHandler = async () => {
     try {
       await apis.postLogout();
-    }
-    finally {
+    } finally {
       dispatch(logout());
       localStorage.clear();
       navigate("/");
