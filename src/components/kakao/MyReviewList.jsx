@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import MyReview from "./MyReview";
 import axios from "axios";
+import apis from "../../apis/apis";
 import { useState } from "react";
 
 const MyReviewList = ({ myReviewData, handleModal }) => {
@@ -13,13 +14,17 @@ const MyReviewList = ({ myReviewData, handleModal }) => {
   const [data, setData] = useState();
 
   const MyReviewFind = async () => {
-    const response = await axios({
+    /* const response = await axios({
       method: "get",
       url: `${URI.BASE}/api/mypage/reviews`,
       headers: {
         Authorization: localStorage.getItem("accessToken"),
       },
-    });
+    }); */
+    const headers = {
+      Authorization: localStorage.getItem("accessToken"),
+    }
+    const response = await apis.getMyReviewFind(headers)
     setData(response.data);
   };
 

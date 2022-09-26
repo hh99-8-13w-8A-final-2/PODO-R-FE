@@ -12,10 +12,34 @@ import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
+import apis from '../../apis/apis';
 
 const URI = {
     BASE : process.env.REACT_APP_BASE_URI
 } 
+
+const getTags = async (pageParam, musicalId) => {
+    const Authorization = localStorage.getItem('accessToken');
+    const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `${Authorization}`,
+    }
+    const URI = {
+        BASE : process.env.REACT_APP_BASE_URI
+      }
+    
+    /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
+    const res = await apis.getTags(musicalId, pageParam, headers);
+    const data = res.data.content;
+    // 서버에서 가져올 데이터 페이지의 전체 길이
+    const pageData = res.data.totalPages;
+    console.log(res.data)
+    return {
+        data,
+        pageData,
+    }
+}
+
 
 const Selector = ({ handleModal, theaterId }) => {
     //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
@@ -39,7 +63,9 @@ const Selector = ({ handleModal, theaterId }) => {
     const [seatNumber, setSeatNumber] =useState();//입력한 좌석
 
     const getSeat = async() => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        if(theaterId === undefined){return}
+        /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         console.log(theaterId)
         setData(data)
@@ -361,7 +387,8 @@ const Selector = ({ handleModal, theaterId }) => {
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
     const fetchTags = () => {
-        return axios.get(`${URI.BASE}/api/tags/popular?musicalId=${musicalId}`)
+        //return axios.get(`${URI.BASE}/api/tags`)
+        return apis.getFetchTags(musicalId)
       }
     
     const { status, data, error } = useQuery('/getTags', fetchTags,
@@ -705,11 +732,17 @@ const StFilterDiv = styled.div`
                 transform: rotate(180deg);
             }
         }
+    
         input[type="checkbox"]:checked + label, input[type="radio"]:checked + label {
             color: var(--white);
             font-weight: 500;
             img{
-                filter: none;
+                filter: invert(1);
+            }
+        }
+        input[type="radio"]:checked + label{
+            img{
+                filter:contrast(1)
             }
         }
     }

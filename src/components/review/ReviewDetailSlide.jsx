@@ -119,6 +119,7 @@ const StContentDiv = styled.div`
     }
     p {
         text-align: left;
+        line-height: 24px;
         color: var(--gray-1);
     }
     @media screen and (max-width: 763px) {

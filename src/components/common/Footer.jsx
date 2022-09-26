@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Layout from './Layout';
 import logo_footer from '../../assets/img/logo_footer.svg'
-import { Link } from 'react-router-dom';
 
 const Footer = () => {
     const yelim = "https://github.com/97yelim"
@@ -54,8 +53,10 @@ const StFooterUl = styled.ul`
     padding: 40px 20px;
     li {
         margin-left: 10px;
+        color: var(--gray-2);
         &.bold{
             font-weight: 700;
+            margin: 0 10px 0 40px;
         }
         &.name{
             cursor: pointer;

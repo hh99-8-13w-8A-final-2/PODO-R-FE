@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import apis from '../../apis/apis';
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
@@ -26,7 +27,8 @@ const fetchReviewDetail = (musicalId, reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    return axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    return apis.getReviewDetail(musicalId, reviewsId)
+    /* axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers }) */
 }
 
 const deleteReviews = async (deleteId) => {
@@ -36,7 +38,8 @@ const deleteReviews = async (deleteId) => {
         Authorization: `${Authorization}`,
     }
     const { musicalId, reviewsId } = deleteId
-    const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    /* const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers }) */
+    const response = await apis.deleteReview(musicalId, reviewsId, headers)
     return response
 }
 
@@ -46,8 +49,8 @@ const likeReviews = async (reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers })
-    return response
+    /* const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers }) */
+    const response = await apis.postLike(reviewsId, headers)
 }
 
 const unLikeReviews = async (reviewsId) => {
@@ -56,8 +59,9 @@ const unLikeReviews = async (reviewsId) => {
         'Content-Type': 'application/json',
         Authorization: `${Authorization}`,
     }
-    const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers })
-    return response
+    /* const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers }) */
+    const response = await apis.deleteLike(reviewsId, headers)
+    
 }
 
 const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
@@ -246,19 +250,20 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
                                         <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
                                     </StDetailHeaderBottom>
                                     <ReviewDetailEval data={data} />
-                                    <StP>
-                                        {data?.data.reviewContent}
-                                    </StP>
-
-                                    {data?.data.tags[0] !== '' &&
-                                        <StTagDiv>
-                                            {data?.data.operaGlass && <div>오페라글라스필수</div>}
-                                            {data?.data.block && <div>시야방해</div>}
-                                            {data?.data.tags.map((tag, index) => (
-                                                <div key={index}>{tag}</div>
-                                            ))}
-                                        </StTagDiv>
-                                    }
+                                    <StContents>
+                                        <StP>
+                                            {data?.data.reviewContent}
+                                        </StP>
+                                        {data?.data.tags[0] !== '' &&
+                                            <StTagDiv>
+                                                {data?.data.operaGlass && <div>오페라글라스필수</div>}
+                                                {data?.data.block && <div>시야방해</div>}
+                                                {data?.data.tags.map((tag, index) => (
+                                                    <div key={index}>{tag}</div>
+                                                ))}
+                                            </StTagDiv>
+                                        }
+                                    </StContents>
                                 </>
                             }
                             <StBottomCont>
@@ -466,20 +471,29 @@ const StScore = styled.div`
     font-size: 40px;
 `
 
+const StContents = styled.div`
+    height: 400px;
+    overflow: auto;
+`
+
 const StP = styled.p`
     margin-top: 40px;
     margin-bottom: 40px;
     text-align: start;
-    max-height: 300px;
-    line-height: 20px;
+    line-height: 24px;
 `
 const StTagDiv = styled.div`
     display: flex;
+    flex-wrap:wrap;
+
     div {
         border: 1px solid var(--gray-1);
         padding: 6px 16px; 
         border-radius: 20px;
-        margin-right: 10px;
+        margin: 4px 5px 0 0;
+    }
+    div::before{
+        content: '#';
     }
 `
 
@@ -491,7 +505,7 @@ const StBottomCont = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid var(--gray-1);
+    border-top: 1px solid #eee;
     @media screen and (max-width: 763px) {
         width: 500px;
     }
