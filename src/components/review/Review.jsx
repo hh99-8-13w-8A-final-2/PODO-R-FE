@@ -23,7 +23,7 @@ const fetchReviews = async (pageParam, musicalId) => {
         BASE : process.env.REACT_APP_BASE_URI
       }
     /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
-    const res = await apis.getReview(musicalId, pageParam, headers)
+    const res = await apis.getReview(musicalId, pageParam)
     console.log(res)
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이

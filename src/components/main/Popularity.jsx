@@ -10,7 +10,8 @@ const URI = {
   };
 
   const fetchPopularMusical = () => {
-    return axios.get(`${URI.BASE}/api/musicals/popular`)
+    //return axios.get(`${URI.BASE}/api/musicals/popular`)
+    return apis.getPopularMusical()
   }
 
 const Popularity = () => {
