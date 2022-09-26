@@ -8,6 +8,8 @@ import { ReactComponent as Sound } from "../../assets/img/sound.svg";
 import { ReactComponent as Light } from "../../assets/img/light.svg";
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { selector } from "recoil";
+import { infoReviewState } from "../../pages/MyPage";
 
 const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNextPage, fetchNextPage2, isFetchingNextPage2}) => {
 
@@ -20,6 +22,15 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
   useEffect(() => {
     if(inView) fetchNextPage2();
   }, [inView]);
+
+  // const reviewSelector = selector({
+  //   key: "data",
+  //   get:({ get }) => {
+  //     const data = get(infoReviewState)
+  //     console.log(data)
+  //   }
+  // })
+
 
   return (
     <div>

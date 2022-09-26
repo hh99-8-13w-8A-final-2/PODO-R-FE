@@ -7,6 +7,7 @@ import Modal from "../assets/modal/Modal";
 import ReviewDetail from "../components/review/ReviewDetail";
 import axios from "axios";
 import { useInfiniteQuery } from "react-query";
+import { RecoilRoot, atom, useRecoilValue, useRecoilState } from "recoil";
 
 const MyDetailReviews = async (eachMusicalId, pageParam) => {
   if (eachMusicalId === "") {
@@ -85,13 +86,14 @@ const MyPage = () => {
   console.log(reviewsId)
   console.log(musicalId)
 
+  // const singleData = useRecoilValue(data)
+
+  // const [text, setText] = useRecoilState(infoReviewState)
+  
+
   return (
     <>
-<<<<<<< HEAD
-      <Header />
-      <MyPageBottom />
-      <Layout>
-        <UserProfile />
+      <UserProfile />
         <MyTicketList setEachMusicalId={setEachMusicalId} />
         <MyReviewList
           singleData={singleData}
@@ -99,13 +101,6 @@ const MyPage = () => {
           fetchNextPage2={fetchNextPage2}
           isFetchingNextPage2={isFetchingNextPage2}
         />
-      </Layout>
-      <Footer />
-=======
-      <UserProfile />
-      <MyTicketList setMyReviewData={setMyReviewData}/>
-      <MyReviewList myReviewData={myReviewData} handleModal={handleModal}/>
->>>>>>> upstream/dev
       <Portal>
         {modalOn && (
           <Modal onClose={modalclose} modalOn={modalOn}>
@@ -122,3 +117,9 @@ const MyPage = () => {
 };
 
 export default MyPage;
+
+// export const infoReviewState = atom({
+//   key: "data",
+//   default: "0"
+// })
+
