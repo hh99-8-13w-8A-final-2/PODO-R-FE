@@ -21,10 +21,10 @@ const MyReviewList = ({ myReviewData, handleModal }) => {
         Authorization: localStorage.getItem("accessToken"),
       },
     }); */
-    const headers = {
+    /* const headers = {
       Authorization: localStorage.getItem("accessToken"),
-    }
-    const response = await apis.getMyReviewFind(headers)
+    } */
+    const response = await apis.getMyReviewFind()
     setData(response.data);
   };
 

@@ -13,6 +13,7 @@ const apis = {
     getLiveReviews : () => baseApi.get(`/api/reviews/live`),
     getFetchNotice : (pageNumber) => baseApi.get(`/api/notices?size=4&page=${pageNumber}`),
     getPopularMusical : () => baseApi.get(`/api/musicals/popular`),
+    getNoticeContents: (noticeId) => baseApi.get(`/api/notices/${noticeId}`),
     //마이페이지
     getMyReviewFind : () => axiosApi.get(`/api/mypage/reviews`),
     getMyMusicalFindList : () => axiosApi.get(`/api/mypage/musicals`),

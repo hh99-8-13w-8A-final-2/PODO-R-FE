@@ -22,8 +22,8 @@ const MyTicketList = ({ setMyReviewData }) => {
         Authorization: localStorage.getItem("accessToken"),
       }
     }); */
-    const headers = {Authorization: localStorage.getItem("accessToken"),}
-    const response = await apis.getMyMusicalFindList(headers)
+    
+    const response = await apis.getMyMusicalFindList()
     setData(response.data)
   };
 
@@ -39,7 +39,7 @@ const MyTicketList = ({ setMyReviewData }) => {
         },
       }); */
       const headers = {Authorization: localStorage.getItem("accessToken"),}
-      const response2 = await apis.getMyDetailReview(getMusicalId, headers)
+      const response2 = await apis.getMyDetailReview(getMusicalId)
       setMyReviewData(response2.data)
     };
     MyDetailReview()

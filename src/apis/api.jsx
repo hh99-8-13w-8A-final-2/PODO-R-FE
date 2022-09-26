@@ -47,11 +47,11 @@ axiosApi.interceptors.response.use(
       const reissue = {"Refresh-Token" : refreshToken}
 
       const res = await axios.post(`${URI.baseURL}/api/reissue`,{} ,{headers : reissue})
-        /* .catch((err)=>{
+        .catch((err)=>{
           localStorage.clear();
           alert(err.response.data)
           window.location.replace("/")
-        }) */
+        }) 
         localStorage.setItem("accessToken", res.headers.authorization);
         localStorage.setItem("refreshToken", res.headers[`refresh-token`]);
         
