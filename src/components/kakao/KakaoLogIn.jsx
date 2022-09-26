@@ -31,7 +31,7 @@ const KakaoLogin = () => {
 
       <ModalPortal>
         {signupModalOn && (
-          <Modal>
+          <Modal onClose={handleModal}>
             <StLoginBox>
               <button onClick={handleModal}>
                 <FontAwesomeIcon icon={faXmark}/>

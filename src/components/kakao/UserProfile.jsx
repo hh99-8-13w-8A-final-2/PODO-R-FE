@@ -110,10 +110,6 @@ const UserProfile = () => {
       setImagePreview(URL.createObjectURL(file));
     }
   }, [imageUrl]);
-  // 버튼온
-  // useEffect(() => {
-  //   setSubmitDisabled(setNewNickName === "");
-  // }, [setNewNickName]);
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -123,12 +119,12 @@ const UserProfile = () => {
           <StUserNickName>
             <div>{nickname}</div>
             <StPencil onClick={handleModal}>
-              <img style={{marginLeft:"5px"}} src={pencil} />
+              <img style={{ marginLeft: "5px" }} src={pencil} />
             </StPencil>
           </StUserNickName>
           <ModalPortal>
             {signupModalOn && (
-              <Modal>
+              <Modal onClose={handleModal}>
                 <StExit>
                   <div>정보수정</div>
                   <button onClick={handleModal}>
@@ -158,11 +154,11 @@ const UserProfile = () => {
                     <div className="nickInput">
                       <p>닉네임</p>
                       <input
-                      text="이름"
-                      type="text"
-                      onChange={onChangeHandler}
-                      placeholder={nickname}
-                    />
+                        text="이름"
+                        type="text"
+                        onChange={onChangeHandler}
+                        placeholder={nickname}
+                      />
                     </div>
                     <div className="validity">
                       {nickname.length > 0 && (
@@ -190,7 +186,7 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-const StNickName = styled.p`
+const StNickName = styled.div`
   width: 100%;
   .nickInput {
     display: flex;
