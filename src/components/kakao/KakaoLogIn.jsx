@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
 import OAuth from "./Oauth";

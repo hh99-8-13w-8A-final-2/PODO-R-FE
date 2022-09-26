@@ -21,7 +21,7 @@ import axios, { AxiosInstance } from 'axios';
 //리이슈 관련 인터셉터 설정
 axiosApi.interceptors.request.use(
   async config => {
-
+    
     const token = window.localStorage.getItem("accessToken")
     if(token){
       console.log(config)

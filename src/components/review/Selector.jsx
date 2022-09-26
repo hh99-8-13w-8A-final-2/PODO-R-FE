@@ -3,42 +3,14 @@ import Select from 'react-select'
 import styled from 'styled-components';
 import Review from '../../components/review/Review';
 import { ReactComponent as Search } from '../../assets/img/search.svg'
-import { useSelector } from "react-redux";
 
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
-import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import RadioSelector from './RadioSelector';
 import AutoComplete from './AutoComplete';
 import { useQuery } from "react-query"
 import apis from '../../apis/apis';
-
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-} 
-
-const getTags = async (pageParam, musicalId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
-    
-    /* const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews?size=15&page=${pageParam}`,{headers: headers}); */
-    const res = await apis.getTags(musicalId, pageParam, headers);
-    const data = res.data.content;
-    // 서버에서 가져올 데이터 페이지의 전체 길이
-    const pageData = res.data.totalPages;
-    console.log(res.data)
-    return {
-        data,
-        pageData,
-    }
-}
 
 
 const Selector = ({ handleModal, theaterId }) => {
@@ -606,7 +578,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <StCheckbox>
                     {wholeTagsArray.map((tag, index) => (
                         <Fragment key={tag}>
-                            <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) =>handleCheck(e)} checked={isTagCheck[index]}/>
+                            <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) =>handleCheck(e)} defaultChecked={isTagCheck[index]}/>
                             <label htmlFor={tag}>{tag}</label>
                         </Fragment>
                         ))}

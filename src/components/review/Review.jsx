@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
-import axios from 'axios'
 import apis from '../../apis/apis';
 import { Fragment } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -14,17 +13,10 @@ import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import { useInView } from "react-intersection-observer";
 
 const fetchReviews = async (pageParam, musicalId, tagUrl) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const res = await apis.getReview(musicalId, pageParam, headers, tagUrl)
-    console.log(res)
+    const res = await apis.getReview(musicalId, pageParam, tagUrl)
     const data = res.data.content;
     // 서버에서 가져올 데이터 페이지의 전체 길이
     const pageData = res.data.totalPages;
-    console.log(res.data)
     return {
         data,
         pageData,
@@ -32,7 +24,7 @@ const fetchReviews = async (pageParam, musicalId, tagUrl) => {
 }
 
 
-const Review = ({ handleModal, isTagClick, tagUrl }) => {
+const Review = ({ handleModal, tagUrl }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다. 
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
