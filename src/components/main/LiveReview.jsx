@@ -10,19 +10,20 @@ import { ReactComponent as Gap } from '../../assets/img/gap.svg'
 import { ReactComponent as View } from '../../assets/img/view.svg'
 import { ReactComponent as Sound } from '../../assets/img/sound.svg'
 import { ReactComponent as Light } from '../../assets/img/light.svg'
+import { useLocation } from 'react-router-dom';
 
-
-const LiveReview = ({ status, reviewList, error }) => {
+const LiveReview = ({ status, reviewList, error, handleModal }) => {
     const swiperRef = useRef(null)
-    
+    let location = useLocation();
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
+    console.log(window.location.path)
+    if (window.location.path === `/musicals/${musicalId}/reviews`) return null;
     // 데이터를 서버에서 성공적으로 가져올 수 있는지 확인
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
     console.log(reviewList?.data)
-    const clickHandler = () => {
-        
-    }
+
     return (
         <div
         onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
@@ -39,27 +40,27 @@ const LiveReview = ({ status, reviewList, error }) => {
             }}
         >
             <StFlowBox>
-                {reviewList?.data.map((review, index) => (
-                    <SwiperSlide key={index} onClick={clickHandler}>
-                        <StReviewBox imgUrl={review.imgUrl}>
-                                <StH3>{review.floor} {review.section !== '0' && review.section + '구역'} {review.row}열 {review.seat}</StH3>
-                                <StIconDiv>
-                                    {review.reviewScore === 10 && <StPerfectDiv><Perfect/><span>모든게완-벽</span></StPerfectDiv>}
-                                    {review.evaluation.gap === 3 && review.reviewScore < 10 ? <div><Gap fill='#fff' /><span>단차좋음</span></div> : null}
-                                    {review.evaluation.sight === 3 && review.reviewScore < 10 ? <div><View fill='#fff' /><span>시야좋음</span></div> : null}
-                                    {review.evaluation.sound === 3 && review.reviewScore < 10 ? <div><Sound fill='#fff' /><span>음향좋음</span></div> : null}
-                                    {review.evaluation.light === 3 && review.reviewScore < 10 ? <div><Light fill='#fff' /><span>조명좋음</span></div> : null}
-                                    {
-                                    review.evaluation.gap < 3 && 
-                                    review.evaluation.sight < 3 &&
-                                    review.evaluation.sound < 3 &&
-                                    review.evaluation.light < 3 &&
-                                        <StNotGoodDiv><NotGodd/><span>정말별로</span></StNotGoodDiv>
-                                    }
-                                </StIconDiv>  
-                                <StDiv>{review.reviewScore}</StDiv>
-                        </StReviewBox>
-                    </SwiperSlide>
+                {reviewList?.data.map((review) => (
+                        <SwiperSlide key={review.reviewId} onClick={() => handleModal(review.reviewId, review.musicalId)}>
+                            <StReviewBox imgUrl={review.imgUrl}>
+                                    <StH3>{review.floor} {review.section !== '0' && review.section + '구역'} {review.row}열 {review.seat}</StH3>
+                                    <StIconDiv>
+                                        {review.reviewScore === 10 && <StPerfectDiv><Perfect/><span>모든게완-벽</span></StPerfectDiv>}
+                                        {review.evaluation.gap === 3 && review.reviewScore < 10 ? <div><Gap fill='#fff' /><span>단차좋음</span></div> : null}
+                                        {review.evaluation.sight === 3 && review.reviewScore < 10 ? <div><View fill='#fff' /><span>시야좋음</span></div> : null}
+                                        {review.evaluation.sound === 3 && review.reviewScore < 10 ? <div><Sound fill='#fff' /><span>음향좋음</span></div> : null}
+                                        {review.evaluation.light === 3 && review.reviewScore < 10 ? <div><Light fill='#fff' /><span>조명좋음</span></div> : null}
+                                        {
+                                        review.evaluation.gap < 3 && 
+                                        review.evaluation.sight < 3 &&
+                                        review.evaluation.sound < 3 &&
+                                        review.evaluation.light < 3 &&
+                                            <StNotGoodDiv><NotGodd/><span>정말별로</span></StNotGoodDiv>
+                                        }
+                                    </StIconDiv>  
+                                    <StDiv>{review.reviewScore}</StDiv>
+                            </StReviewBox>
+                        </SwiperSlide>
                 ))}
             </StFlowBox>
         </Swiper>
