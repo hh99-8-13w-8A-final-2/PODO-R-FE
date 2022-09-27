@@ -64,6 +64,7 @@ text-align: left;
         }
         .content{
             line-height: 22px;
+            white-space: pre-line;
         }
     }
 `
