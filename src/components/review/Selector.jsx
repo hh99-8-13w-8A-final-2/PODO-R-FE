@@ -19,7 +19,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
-    console.log(query)
+  
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1,setData1] =useState([]); //1층 섹션, row 정보
     const [Data2,setData2] =useState([]); //2층 섹션, row 정보
@@ -39,7 +39,7 @@ const Selector = ({ handleModal, theaterId }) => {
         /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
-        console.log(theaterId)
+  
         setData(data)
         for(var i in data){
             if(i === '0'){

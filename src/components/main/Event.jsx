@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import event from '../../assets/img/event.png'
 
 const Event = () => {
+    const eventLink = "https://forms.gle/CRbxHXdK6mc259568"
     return (
         <div>
             <StDiv>
                 <h3>이벤트</h3>
             </StDiv>
-            <StEventBanner event={event}></StEventBanner>
+            <StEventBanner event={event} onClick={()=>{window.open(eventLink)}}></StEventBanner>
         </div>
     );
 };
@@ -34,6 +35,8 @@ const StEventBanner = styled.div`
     background: ${props => `url(${props.event})`};
     background-size: cover;
     background-position: center;
+    border-radius:10px;
+    cursor: pointer;
 `
 
 export default Event;

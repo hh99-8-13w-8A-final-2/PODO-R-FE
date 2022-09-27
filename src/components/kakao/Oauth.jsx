@@ -21,7 +21,7 @@ const OAuth = () => {
     window.location.replace(response.data);
   }
 
-  console.log(KAKAO_AUTH_URL);
+
   return (
     <StLoginLink>
       <img src={logo_fill} />

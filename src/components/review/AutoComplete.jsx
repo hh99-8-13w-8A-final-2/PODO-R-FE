@@ -107,7 +107,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
     setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
     setInputValue('')
     setIsHaveInputValue(false)
-    console.log(inputValue)
+
     postMutation.mutate(inputValue)
   }
 

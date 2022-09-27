@@ -16,13 +16,13 @@ const LiveReview = ({ status, reviewList, error, handleModal }) => {
     const swiperRef = useRef(null)
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
-    console.log(window.location.path)
+
     if (window.location.path === `/musicals/${musicalId}/reviews`) return null;
     // 데이터를 서버에서 성공적으로 가져올 수 있는지 확인
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-    console.log(reviewList?.data)
+
 
     return (
         <div
@@ -80,10 +80,10 @@ const StReviewBox = styled.div`
     align-items: center;
     justify-content: space-evenly;
     display: flex;
-    cursor: pointer;
     position: relative; 
     width: 200px;
     height: 200px;
+    cursor: pointer;
     border-radius: 100px;
     border: none;
     background-blend-mode: multiply;

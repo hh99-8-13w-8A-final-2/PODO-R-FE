@@ -28,7 +28,7 @@ const UserProfile = () => {
     mode: "onChange",
   });
   const imageUrl = watch("imgUrl");
-  console.log(imageUrl);
+
 
   const handleModal = (e) => {
     e.preventDefault();
@@ -78,7 +78,7 @@ const UserProfile = () => {
       },
       data: JSON.stringify(data),
     });
-    console.log(response);
+
     localStorage.setItem("nickname", response.data.nickname);
     localStorage.setItem("profilePic", response.data.profilePic);
     setUser({ ...user });

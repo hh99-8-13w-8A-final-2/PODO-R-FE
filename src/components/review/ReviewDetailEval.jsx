@@ -22,7 +22,7 @@ const ReviewDetailEval = ({ data }) => {
                 <span>시야</span>
                 <div>
                     {data?.data.evaluation.sight === 1 && <><div><View fill='#aaa'/><span style={{color:'var(--gray-2)'}}>나쁨</span></div></>}
-                    {data?.data.evaluation.sight === 2 && <><div><View fill='#aaa'/><span style={{color:'var(--gray-2)'}}>나쁨</span></div></>}
+                    {data?.data.evaluation.sight === 2 && <><div><View fill='#aaa'/><span style={{color:'var(--gray-2)'}}>보통</span></div></>}
                     {data?.data.evaluation.sight === 3 && <><div><View fill='var(--maincolor-1)'/><span style={{color:'var(--maincolor-1)'}}>좋음</span></div></>}
                 </div>
             </StDiv>
@@ -30,7 +30,7 @@ const ReviewDetailEval = ({ data }) => {
                 <span>음향</span>
                 <div>
                     {data?.data.evaluation.sound === 1 && <><div><Sound fill='#aaa'/><span style={{color:'var(--gray-2)'}}>나쁨</span></div></>}
-                    {data?.data.evaluation.sound === 2 && <><div><Sound fill='#aaa'/><span style={{color:'var(--gray-2)'}}>나쁨</span></div></>}
+                    {data?.data.evaluation.sound === 2 && <><div><Sound fill='#aaa'/><span style={{color:'var(--gray-2)'}}>보통</span></div></>}
                     {data?.data.evaluation.sound === 3 && <><div><Sound fill='var(--maincolor-1)'/><span style={{color:'var(--maincolor-1)'}}>좋음</span></div></>}
                 </div>
             </StDiv>
@@ -38,7 +38,7 @@ const ReviewDetailEval = ({ data }) => {
                 <span>조명</span>
                 <div>
                     {data?.data.evaluation.light === 1 && <><div><Light fill='#aaa'/><span style={{color:'var(--gray-2)'}}>나쁨</span></div></>}
-                    {data?.data.evaluation.light === 2 && <><div><Light fill='#aaa'/><span style={{color:'var(--gray-2)'}}>나쁨</span></div></>}
+                    {data?.data.evaluation.light === 2 && <><div><Light fill='#aaa'/><span style={{color:'var(--gray-2)'}}>보통</span></div></>}
                     {data?.data.evaluation.light === 3 && <><div><Light fill='var(--maincolor-1)'/><span style={{color:'var(--maincolor-1)'}}>좋음</span></div></>}
                 </div>
             </StDiv>
