@@ -17,7 +17,7 @@ const Notice = ({isloading, isError, error, data }) => {
     const handleModal = (event) =>{
         setIsModal(!isModal)
         setTargetNoticeId(event.target.id)
-        console.log(targetNoticeId)
+
     }
 
     return (

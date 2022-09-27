@@ -24,20 +24,17 @@ axiosApi.interceptors.request.use(
     
     const token = window.localStorage.getItem("accessToken")
     if(token){
-      console.log(config)
       config.headers.Authorization = token
     }
     return config;
   },
   function(err) {
-    console.log(err)
     return Promise.reject(err);
   }
 )
 axiosApi.interceptors.response.use(
   response => {
-    console.log(response)
-    console.log(response.data.imageUrl)
+
     return response;
   },
    async (error) => {

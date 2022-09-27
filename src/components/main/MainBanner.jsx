@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import styled from 'styled-components';
 import bnr from '../../assets/img/bnr.webp'
 import bnr2 from '../../assets/img/bnr2.webp'
+import bnr3 from '../../assets/img/bnr3.webp'
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -18,6 +19,9 @@ SwiperCore.use([Navigation, Pagination, Autoplay])
 
 const MainBanner = () => {
     const swiperRef = useRef(null)
+    const eventLink1 = "https://forms.gle/RxDB2sa2ejAnDQpT7"
+    const eventLink2 = "https://forms.gle/CRbxHXdK6mc259568"
+    
 
     return (
         <StMainBaanerSction
@@ -34,7 +38,25 @@ const MainBanner = () => {
                 delay: 12000, 
                 }}
                 loop={true}
-        >
+            >
+            <SwiperSlide>
+                <StMainBanner bnr={bnr2}  onClick={()=>{window.open(eventLink1)}}>
+                    <div>
+                        <p>포도알 서비스 런칭 기념 이벤트</p>
+                        <p>설문조사 참여하고 선물 받아가세요!</p>
+                        <p className='button'>설문조사 하러가기</p>
+                    </div>    
+                </StMainBanner>
+            </SwiperSlide>
+            <SwiperSlide>
+                <StMainBanner bnr={bnr3} onClick={()=>{window.open(eventLink2)}}>
+                    <div>
+                        <p>혹시 개발자도 찾지 못한 버그를 찾으셨나요?</p>
+                        <p>리포트를 쓰고 선물 받아가세요!</p>
+                        <p className='button'>리포트 쓰러가기</p>
+                    </div>    
+                </StMainBanner>
+            </SwiperSlide>
             <SwiperSlide>
                 <Link to={'/guide'}>
                     <StMainBanner bnr={bnr}>
@@ -45,15 +67,6 @@ const MainBanner = () => {
                         </div>    
                     </StMainBanner>
                 </Link>
-            </SwiperSlide>
-            <SwiperSlide>
-                <StMainBanner bnr={bnr2}>
-                    <div>
-                        <p>포도알 서비스 런칭 기념 이벤트</p>
-                        <p>설문조사 참여하고 선물 받아가세요!</p>
-                        <p className='button'>설문조사 하러가기</p>
-                    </div>    
-                </StMainBanner>
             </SwiperSlide>
         </Swiper>
         </StMainBaanerSction>
@@ -80,6 +93,7 @@ const StMainBanner = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     div {
         /* position: absolute;
         top: 50%;
