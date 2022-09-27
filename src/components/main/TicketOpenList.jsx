@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Ticket from './Ticket';
-import TickeTicketListt from './TicketList';
+import TicketList from './TicketList';
 import axios from 'axios';
 import { useQuery } from "react-query"
 import apis from '../../apis/apis';
@@ -15,14 +15,20 @@ const fetchOpenMusical = () => {
     return apis.getOpenMusical()
   }
 
+const fetchAllMusical = () => {
+    return apis.getAllMusical()
+}
+
 const TicketOpenList = () => {
 
-    const { status, data, error } = useQuery('/OpenMusical', fetchOpenMusical,
+    const { status, data ,  error } = useQuery('/OpenMusical', fetchOpenMusical,
         {
             staleTime: 1000,
             refetchOnWindowFocus: false,
         }
-    )
+    ) 
+
+    
 
     const [listAllOpen, setListAllOpen] = useState(false)
     const listToggle = ()=>{
@@ -38,7 +44,7 @@ const TicketOpenList = () => {
                 }
             </div>
             {
-                listAllOpen === false ? <TickeTicketListt status={status} data={data} error={error} /> :<Ticket status={status} data={data} error={error} />
+                listAllOpen === false ? <TicketList status={status} data={data} error={error} /> :<Ticket  />
             }
         </StDiv>
     );

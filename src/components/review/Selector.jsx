@@ -19,7 +19,7 @@ const Selector = ({ handleModal, theaterId }) => {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
-    console.log(query)
+  
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1,setData1] =useState([]); //1층 섹션, row 정보
     const [Data2,setData2] =useState([]); //2층 섹션, row 정보
@@ -39,7 +39,7 @@ const Selector = ({ handleModal, theaterId }) => {
         /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
-        console.log(theaterId)
+  
         setData(data)
         for(var i in data){
             if(i === '0'){
@@ -170,13 +170,13 @@ const Selector = ({ handleModal, theaterId }) => {
     const onClickReset = () => {
         setSelectGrade({value : '0', label:'좌석 등급'})
         setSelectFloor({value : '0', label:'층'})
-        setSelectSection({value : '0', label:'구역'}) 
+        setSelectSection({value : '100', label:'구역'}) 
         setSelectRow({value : '0', label: '열'}) 
-        setSeatNumber('0')
-        navigate(location)
+        setSeatNumber(undefined)
         // 좌석 초기화
     }
     let [searchParams, setSearchParams] = useSearchParams();
+    let musicalId = location.pathname.split('/').splice(2, 1).toString()
     
     const ClickSeatSerch = () =>{
         const grade = selectGrade.value
@@ -189,21 +189,11 @@ const Selector = ({ handleModal, theaterId }) => {
         const prevQueryEval = searchParams.getAll('evaluation');
         const prevQuerySort = searchParams.getAll('sort');
         const prevQuerySearch = searchParams.getAll('search');
-        if(grade === '0') {
+        if(grade === '0' && floor === '0' && section === '100' && row === '0' && seat === undefined) {
+            setTagUrl('')
+            navigate(`/musicals/${musicalId}/reviews`)
             return
         }
-        if(grade === '0' && section === '100' && floor >= '1') {
-            setSearchParams({
-                tag: [...prevQueryTag],
-                evaluation: [...prevQueryEval],
-                sort: [...prevQuerySort],
-                search: [...prevQuerySearch],
-                floor : `${floor}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-            return
-        }
-
         if(grade === '0' && section === '100' && floor >= '1') {
             setSearchParams({
                 tag: [...prevQueryTag],
@@ -355,8 +345,6 @@ const Selector = ({ handleModal, theaterId }) => {
         }
         
     }
-
-    let musicalId = location.pathname.split('/').splice(2, 1).toString()
 
     const fetchTags = () => {
         //return axios.get(`${URI.BASE}/api/tags`)
@@ -562,7 +550,8 @@ const Selector = ({ handleModal, theaterId }) => {
             }
             sessionStorage.clear()
         }
-    },[]) 
+    },[])
+    
 
 
 

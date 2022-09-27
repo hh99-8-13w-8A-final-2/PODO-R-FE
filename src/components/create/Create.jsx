@@ -11,8 +11,11 @@ import Tag from './Tag';
 import ImageAdd from './ImageAdd';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
+import Modal from '../../assets/modal/Modal';
+import ModalPortal from '../../assets/modal/Portal';
 import 'react-toastify/dist/ReactToastify.css';
-import axiosApi from '../../apis/api';
+import ModalSeat from '../common/ModalSeat';
+
 
 
 const Create = ({ create, SetCreate, theaterId }) => {
@@ -34,17 +37,18 @@ const Create = ({ create, SetCreate, theaterId }) => {
     const [selectFloor, setSelectFloor] = useState({ value: '0' }); //선택한 층
     const [selectSection, setSelectSection] = useState({ value: '0' }); //선택한 구역
     const [selectRow, setSelectRow] = useState({ value: '0' }); //선택한 열
-    const imgfiles = []; // 이미지 파일
+    const [imgfiles, setImgFiles] =useState([]); // 이미지 파일
+
+
     const { register, formState: { errors }, control, watch, handleSubmit } = useForm({
         defaultValues: {
             floor: '1F'
         }
     });
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
-
-
+    
+   
+    
+    
     const getSeat = async () => {
         //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const res = await apis.getSeat(theaterId)
@@ -196,7 +200,7 @@ const Create = ({ create, SetCreate, theaterId }) => {
 
     const onSubmit = async () => {
         //이미지 업로드 
-        console.log(imgfiles.length)
+
         if (imgfiles.length === 0) {
             toast.error("이미지 등록은 필수 입니다.", {
                 autoClose: 3000,
@@ -204,17 +208,13 @@ const Create = ({ create, SetCreate, theaterId }) => {
                 theme: "dark"
             })
         }
-        const imgFormdata = new FormData();
-        //imgFormdata.append('image',imgfiles)
-        for (let i = 0; i < imgfiles.length; i++) {
-            imgFormdata.append('image', imgfiles[i])
-        }
+        
         // 폼 데이터
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
 
-        for (let key of imgFormdata.keys()) {
+        /* for (let key of imgFormdata.keys()) {
             console.log(key);
         }
         for (let value of imgFormdata.values()) {
@@ -222,21 +222,17 @@ const Create = ({ create, SetCreate, theaterId }) => {
         }
         for (let value of formdata.values()) {
             console.log(value);
-        }
+        } */
         try {
-            /* const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType }); */
-            const res1 = await apis.postImg(imgFormdata)
-            //이미지 
-
             const obj = {};
             formdata.forEach(function (value, key) {
                 obj[key] = value;
             })
-            obj.imgUrls = res1.data.imageUrl
+            obj.imgUrls = imgfiles
 
             const json = JSON.stringify(obj)
-            console.log(json)
-            /* await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token }); */
+
+
             await apis.postReview(musicalId, json)
             SetCreate(!create)
         } catch (err) {
@@ -247,7 +243,8 @@ const Create = ({ create, SetCreate, theaterId }) => {
 
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
-            <h4><span style={{ color: 'var(--error)' }}>*</span> 좌석정보</h4>
+            <h4 className='seat'><span style={{ color: 'var(--error)' }}>*</span> 좌석정보 </h4> 
+           
             <StTopSelectDiv>
                 <div>
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
@@ -285,11 +282,15 @@ const Create = ({ create, SetCreate, theaterId }) => {
             </StTopSelectDiv>
             <RadioSelect />
             <CheckboxSelect />
-            <div>
-                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.'></textarea>
+            <div className='textarea'>
+                <h4> <span style={{ color: 'var(--error)' }}>*</span> 리뷰 내용   <p>500자 까지 입력이 가능합니다.</p></h4>
+              
+                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' {...register("reviewContent", { maxLength: {value: 500, message: "500자 이하이어야 합니다."}})}>
+                </textarea>
+                <p className='error'>{errors.reviewContent && errors.reviewContent?.message}</p>
             </div>
             <Tag setTagList={setTagList} tagList={tagList} />
-            <ImageAdd imgfiles={imgfiles} />
+            <ImageAdd imgfiles={imgfiles} setImgFiles={setImgFiles}/>
             <div className='button'>
                 <button type='submit' >등록</button>
             </div>
@@ -308,6 +309,17 @@ margin: 0 auto;
         font-size: 18px;
         margin: 40px 0 20px;
     }
+    .seat .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 14px;
+        background-color: var(--maincolor-1);
+        color: var(--white);
+        margin-left: 20px;
+        cursor: pointer;
+    }
     textarea{
         width: 100%;
         height: 250px;
@@ -322,7 +334,14 @@ margin: 0 auto;
             width: 100%;
         }
     }
-    
+    .textarea{
+        h4>p {
+            display: inline-block;
+            color: var(--gray-2);
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
     .button{
         text-align: center;
         button{

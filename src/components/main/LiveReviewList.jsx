@@ -8,7 +8,7 @@ const fetchLiveReviews = () => {
     return apis.getLiveReviews()
   }
 
-const LiveReviewList = () => {
+const LiveReviewList = ({handleModal}) => {
 
     const { status, data, error } = useQuery(
         '/LiveReviewList', 
@@ -25,7 +25,7 @@ const LiveReviewList = () => {
     return (
         <StReviewBox>
             <StH3>LivePodo</StH3>
-            <LiveReview status={status} reviewList={data} error={error}/>
+            <LiveReview status={status} reviewList={data} error={error} handleModal={handleModal}/>
         </StReviewBox>
     );
 };

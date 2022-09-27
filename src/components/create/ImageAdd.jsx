@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
+import apis from '../../apis/apis';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ImageAdd = ({ imgfiles }) => {
+const ImageAdd = ({ imgfiles, setImgFiles }) => {
+    const files = []
     const [showImages, setShowImages] = useState([]); // 이미지 프리뷰
+
     const handleAddImages = (event) => {
         const imageLists = event.target.files;
         let imageUrlLists = [...showImages];
-
-        for (let i = 0; i < imageLists.length; i++) {
-            const currentImageUrl = URL.createObjectURL(imageLists[i]);
-            imageUrlLists.push(currentImageUrl);
-            imgfiles.push(imageLists[i]);
-            //setImgUrls([...imageLists])
-        }
 
         if (imageUrlLists.length > 4) {
             imageUrlLists = imageUrlLists.slice(0, 4);
@@ -29,10 +25,35 @@ const ImageAdd = ({ imgfiles }) => {
             })
         }
 
+        for(let i = 0; i<imageLists.length; i++){
+            files.push(imageLists[i])
+        }
+
+        const imgFormdata = new FormData()
+        for(let i = 0; i<files.length; i++){
+            imgFormdata.append('image', files[i])
+        }
+
+
+        apis.postImg(imgFormdata)
+        .then((res) => {
+            const img = res.data.imageUrl
+
+            setImgFiles((prev)=>{return [...prev, ...img]})
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+        
+        for (let i = 0; i < imageLists.length; i++) {
+            const currentImageUrl = URL.createObjectURL(imageLists[i]);
+            imageUrlLists.push(currentImageUrl);
+        }
+
         setShowImages(imageUrlLists);
-        //console.log(imageUrlLists)
 
     };
+
     const handleDeleteImage = (id) => {
         setShowImages(showImages.filter((_, index) => index !== id));
         const saveImgfiles = imgfiles.filter((_, index) => index !== id);
@@ -41,7 +62,7 @@ const ImageAdd = ({ imgfiles }) => {
 
     return (
         <StaddImageDiv>
-            <h4><span style={{ color: 'var(--error)' }}>*</span> 사진 추가 <span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
+            <h4><span style={{ color: 'var(--error)' }}>*</span> 사진 추가 <p> 사진은 최대 4장까지 등록 가능합니다.</p></h4>
             <div className='image'>
                 <label htmlFor="input-file" className='imageAdd' onChange={handleAddImages}>
                     <input type="file" id="input-file" accept="image/png, image/jpeg" name='imgUrls' multiple style={{ display: 'none' }} />
@@ -60,7 +81,7 @@ const ImageAdd = ({ imgfiles }) => {
 export default ImageAdd;
 
 const StaddImageDiv = styled.div`
-    h4>span {font-weight:500; font-size: 16px}
+    h4>p {font-weight:500; font-size: 16px; display:inline-block}
     .image{
         display: flex;
     }

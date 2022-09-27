@@ -12,7 +12,7 @@ const NoticContents = ({onClose, noticeId}) => {
         const res = await apis.getNoticeContents(noticeId)
         setData(res.data)
     }
-    console.log(data)
+
     useEffect(()=>{
         getData()
     },[noticeId])
@@ -34,7 +34,7 @@ const NoticContents = ({onClose, noticeId}) => {
                     <p>{data?.title}</p>
                     <span>{data?.createdAt.slice(0,10)}</span>
                 </div>
-                {data?.content}
+                <div className='content'>{data?.content}</div>
             </div>
         </StInfoDiv>
     );
@@ -62,7 +62,9 @@ text-align: left;
                 font-weight: bold;
             }
         }
-        
+        .content{
+            line-height: 22px;
+        }
     }
 `
 const StLoginBox = styled.div`

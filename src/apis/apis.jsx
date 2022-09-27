@@ -23,6 +23,7 @@ const apis = {
     postImg : (imgFormdata) => axiosApi.post(`/api/image/upload`, imgFormdata, {headers: multipartType}) ,
     postReview : (musicalId, json) => axiosApi.post(`/api/musicals/${musicalId}/reviews`, json , { headers: jsonType}),
     getOpenMusical : () => baseApi.get(`/api/musicals/open`),
+    getAllMusical : () => baseApi.get(`/api/musicals/all`),
     //리뷰 페이지 
     getSeat:(theaterId) => baseApi.get(`/api/theaters/${theaterId}/seats`),
     getMusicalId : (musicalId) => baseApi.get(`/api/musicals/${musicalId}`),
