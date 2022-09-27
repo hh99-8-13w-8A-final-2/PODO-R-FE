@@ -37,7 +37,7 @@ const UserProfile = () => {
 
   const onChangeHandler = (e) => {
     setNewNickName(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 8) {
+    if (e.target.value.length < 2 || e.target.value.length > 8 || newNickName.trim() === ' ') {
       setNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
       setIsName(false);
     } else {
