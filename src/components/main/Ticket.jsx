@@ -16,7 +16,7 @@ const Ticket = () => {
         }
     )
 
-    console.log(data)
+
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
     
