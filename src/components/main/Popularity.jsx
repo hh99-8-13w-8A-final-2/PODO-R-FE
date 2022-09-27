@@ -1,4 +1,3 @@
-import axios from 'axios';
 import apis from '../../apis/apis';
 import React from 'react';
 import { Link } from 'react-router-dom';

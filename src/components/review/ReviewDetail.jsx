@@ -14,6 +14,7 @@ import ReviewModify from './ReviewModify';
 import { ToastContainer, toast } from 'react-toastify';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { Link } from 'react-router-dom';
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
     return apis.getReviewDetail(musicalId, reviewsId)
@@ -235,14 +236,16 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
                                 </>
                             }
                             <StBottomCont>
-                                <StBottomLeftDiv>
-                                    <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
-                                    <StDl>
-                                        <dt>{data?.data.musical.musicalName}</dt>
-                                        <dd>{data?.data.musical.theaterName}</dd>
-                                        <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
-                                    </StDl>
-                                </StBottomLeftDiv>
+                                <Link to={`/musicals/${musicalId}/reviews`}>
+                                    <StBottomLeftDiv>
+                                        <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
+                                        <StDl>
+                                            <dt>{data?.data.musical.musicalName}</dt>
+                                            <dd>{data?.data.musical.theaterName}</dd>
+                                            <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
+                                        </StDl>
+                                    </StBottomLeftDiv>
+                                </Link>
                                 <StBottomRightDiv>
                                     <div onClick={() => likeHandler()}>{data?.data.heartChecked ? <Like fill='#BB63FF' /> : <Like fill='#000' />}<span>{data?.data.heartCount}</span></div>
                                     <div onClick={() => setIsClick(true)}><Comment fill='#000' /><span>{data?.data.commentCount}</span></div>
@@ -498,6 +501,7 @@ const StDl = styled.dl`
         text-overflow: ellipsis;
         text-align: left;
         margin-bottom: 4px;
+        color: var(--gray-3);
     }
     dd {
         font-size: 10px;
