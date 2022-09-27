@@ -12,8 +12,10 @@ import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import ReviewCreate from './ReviewCreate';
 import ReviewModify from './ReviewModify';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.minimal.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
+import { Link } from 'react-router-dom';
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
     return apis.getReviewDetail(musicalId, reviewsId)
@@ -99,22 +101,28 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
 
     const likeHandler = () => {
         if (!userId) {
-            toast.success("로그인 해주세요", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER
+            toast.error("로그인 해주세요", {
+                icon: "🙏",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored"
             })
         }
         else if (!data?.data.heartChecked) {
             likeReview.mutate(reviewsId)
-            toast.success("좋아요 +1 ~!", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER
+            toast.info("좋아요😍", {
+                icon: "💖",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored"
             })
         } else {
             unLikeReview.mutate(reviewsId)
-            toast.success("좋아요 취소 ㅜㅜ", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER
+            toast.info("좋아요 취소😖", {
+                icon: "💔",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "dark"
             })
         }
     }
@@ -235,14 +243,16 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
                                 </>
                             }
                             <StBottomCont>
-                                <StBottomLeftDiv>
-                                    <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
-                                    <StDl>
-                                        <dt>{data?.data.musical.musicalName}</dt>
-                                        <dd>{data?.data.musical.theaterName}</dd>
-                                        <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
-                                    </StDl>
-                                </StBottomLeftDiv>
+                                <Link to={`/musicals/${musicalId}/reviews`}>
+                                    <StBottomLeftDiv>
+                                        <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
+                                        <StDl>
+                                            <dt>{data?.data.musical.musicalName}</dt>
+                                            <dd>{data?.data.musical.theaterName}</dd>
+                                            <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
+                                        </StDl>
+                                    </StBottomLeftDiv>
+                                </Link>
                                 <StBottomRightDiv>
                                     <div onClick={() => likeHandler()}>{data?.data.heartChecked ? <Like fill='#BB63FF' /> : <Like fill='#000' />}<span>{data?.data.heartCount}</span></div>
                                     <div onClick={() => setIsClick(true)}><Comment fill='#000' /><span>{data?.data.commentCount}</span></div>
@@ -498,6 +508,7 @@ const StDl = styled.dl`
         text-overflow: ellipsis;
         text-align: left;
         margin-bottom: 4px;
+        color: var(--gray-3);
     }
     dd {
         font-size: 10px;

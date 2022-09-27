@@ -39,8 +39,10 @@ const ReviewCreateForm = ({ reviewId }) => {
         mutate(new_comment)
 
         toast.success("댓글이 등록되었습니다", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_RIGHT
+            icon: "✍️",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+            theme: "colored"
         })
    
         reset({ comment: " " })

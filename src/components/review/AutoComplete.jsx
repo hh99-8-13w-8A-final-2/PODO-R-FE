@@ -125,7 +125,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
       {inputValue !== '' && isHaveInputValue &&
         <DropDownBox>
           {dropDownList.length === 0  && (
-            <DropDownItem>최근 검색내역이 없습니다.</DropDownItem>
+            <DropDownItem><span>최근 검색내역이 없습니다.</span></DropDownItem>
           )}
           {dropDownList.map((dropDownItem, dropDownIndex) => {
             return (
@@ -216,6 +216,9 @@ const DropDownItem = styled.li`
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s;
+  span {
+    color: var(--gray-2);
+  }
   &.selected {
     color: var(--maincolor-1);
   }
