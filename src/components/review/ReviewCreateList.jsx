@@ -111,8 +111,9 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
         }
         modifyMutation.mutate(modify_comment)
         toast.success("수정이 완료되었습니다", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_RIGHT
+            icon:"🔨",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
         })
         setToggle(!toggle)
         reset({ modify: "" })
@@ -121,8 +122,10 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     const deleteHandler = (commentId) => {
         deleteMutation.mutate(commentId)
         toast.success("댓글 삭제되었습니다", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_RIGHT
+            icon:"✂️",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+            theme:"dark"
         })
     }
 
