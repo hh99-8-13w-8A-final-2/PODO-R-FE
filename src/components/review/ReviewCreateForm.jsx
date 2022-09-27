@@ -20,6 +20,7 @@ const ReviewCreateForm = ({ reviewId }) => {
     const isBlank = (value) => (
         value.replace(black_pattern, '') === "" ? false : true
     )
+    const userId = parseInt(localStorage.getItem('userId'))
 
     const queryClient = useQueryClient()
     const { mutate } = useMutation(postComment, {
@@ -36,14 +37,23 @@ const ReviewCreateForm = ({ reviewId }) => {
             content: data.comment,
             reviewId: reviewId,
         }
-        mutate(new_comment)
+        if (!userId) {
+            toast.error("로그인 해주세요", {
+                icon: "🙏",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored"
+            })
+        }else {
+            mutate(new_comment)
 
-        toast.success("댓글이 등록되었습니다", {
-            icon: "✍️",
-            autoClose: 500,
-            position: toast.POSITION.TOP_RIGHT,
-            theme: "colored"
-        })
+            toast.success("댓글이 등록되었습니다", {
+                icon: "✍️",
+                autoClose: 500,
+                position: toast.POSITION.TOP_RIGHT,
+                theme: "colored"
+            })
+        }
    
         reset({ comment: " " })
     }
