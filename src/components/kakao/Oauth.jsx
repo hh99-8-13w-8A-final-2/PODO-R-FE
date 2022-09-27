@@ -17,12 +17,11 @@ const OAuth = () => {
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
   async function twitterLogin() {
-    //const response = await axios.get(`${URI.BASE}/api/twitter/login`);
-    const response = await apis.getTwitterLogin()
+    const response = await apis.getTwitterLogin();
     window.location.replace(response.data);
   }
 
-  console.log(KAKAO_AUTH_URL);
+
   return (
     <StLoginLink>
       <img src={logo_fill} />

@@ -23,16 +23,13 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
             })
             return
         }
-        console.log(imgFiles.length)
-        for (var i = 0; i < imgFiles.length; i++){
+        for (let i = 0; i < imgFiles.length; i++){
             files.push(imgFiles[i])
         }
 
-        console.log("files : " , ...files)
-        console.log("files : " , files)
-        console.log("files : " , files.length)
+
         const formData = new FormData()
-        for(var i = 0; i < files.length ; i++ ){
+        for(let i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
          for (let value of formData.values()) {
@@ -42,10 +39,8 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         apis.postModifyImg(formData)
         
         .then((res)=>{
-            console.log(res)
             const img = res.data.imageUrl
-            console.log(img)
-             for (var i in img) {
+             for (let i in img) {
                 imgUrls.push(res.data.imageUrl[i])
             } 
             setShowImages([...imgUrls])

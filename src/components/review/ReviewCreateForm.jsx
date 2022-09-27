@@ -10,7 +10,7 @@ const postComment = async(new_comment) => {
     const { reviewId, content } = new_comment
     /* const {data} = await axios.post(`${URI.BASE}/api/comments?reviewId=${reviewId}`, content, {headers: headers}) */
     const { data } = await apis.postComment(reviewId, content)
-    console.log(data)
+
     return data
   }
 

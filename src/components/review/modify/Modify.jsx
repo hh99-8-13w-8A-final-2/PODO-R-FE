@@ -14,7 +14,7 @@ import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
 const Modify = ({ data, setModify }) => {
-    console.log(data.data)
+
     let location = useLocation();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
@@ -49,7 +49,7 @@ const Modify = ({ data, setModify }) => {
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
-        console.log(imgUrls)
+
         for (var i in data) {
             if (i === '0') {
                 const data = res.data[i].sections
@@ -203,7 +203,6 @@ const Modify = ({ data, setModify }) => {
         await apis.putModify(musicalId, data, json)
         .then(
             (response)=>{
-                console.log(response)
                 setModify(false)
             }
         )
@@ -243,7 +242,6 @@ const Modify = ({ data, setModify }) => {
                 theme: "dark"
             })
         }
-        console.log('제출 : ',  tagList)
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
@@ -279,7 +277,6 @@ const Modify = ({ data, setModify }) => {
         obj.imgUrls = imgUrls
 
         const json = JSON.stringify(obj)
-        console.log(json)
         modifyMutation.mutate(json)
         
         /* for (let key of imgFormdata.keys()) {

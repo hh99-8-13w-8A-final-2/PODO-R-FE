@@ -8,6 +8,7 @@ import apis from '../../apis/apis';
 import ModalPortal from '../../assets/modal/Portal';
 import Modal from "../../assets/modal/Modal";
 import TheaterInfo from './TheaterInfo';
+import ModalSeat from './ModalSeat';
 
 
 const HeaderBottom = () => {
@@ -18,6 +19,7 @@ const HeaderBottom = () => {
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2,1).toString()
     const [theaterModal, setTheaterModal] = useState(false)
+    const [theaterSeatModal, setTheaterSeatModal] = useState(false)
     const [musicals, setMusicals] = useState({
         musicalName: '',
         theaterName: '',
@@ -26,7 +28,7 @@ const HeaderBottom = () => {
     const getTitle = async() =>{
        //const res = await axios.get(`${URI.BASE}/api/musicals/${musicalId}`)
        const res = await apis.getMusicalId(musicalId)
-       console.log(res)
+
        setMusicals(res.data)
     }
 
@@ -38,18 +40,28 @@ const HeaderBottom = () => {
     const handleModal = () =>{
         setTheaterModal(!theaterModal)
     }
+    const handleSeatModal = () =>{
+        setTheaterSeatModal(!theaterSeatModal)
+    }
+
 
     return (
         <StHeaderBottom>    
             <Layout>
                 <StHeaderBottomCont>
-                     <span className='title'>{musicals.musicalName}</span> <span className='theater'>{musicals.theaterName}<img src={info} alt="" className='icon' onClick={handleModal} /> </span> 
+                     <span className='title'>{musicals.musicalName}</span> <span className='theater'>{musicals.theaterName}<img src={info} alt="" className='icon' onClick={handleModal} /> <span className='btn' onClick={handleSeatModal}>좌석 확인하기</span></span> 
+                     
                 </StHeaderBottomCont>
 
                 <ModalPortal>
                     {theaterModal && (
                         <Modal  onClose ={handleModal} theaterModal={theaterModal} >
                             <TheaterInfo onClose ={handleModal} theaterId={musicals.theaterId}/>
+                        </Modal>
+                    )}
+                    {theaterSeatModal && (
+                        <Modal onClose ={handleSeatModal} >
+                            <ModalSeat onClose ={handleSeatModal} theaterId={musicals.theaterId}/>
                         </Modal>
                     )}
                 </ModalPortal>
@@ -88,6 +100,17 @@ const StHeaderBottomCont = styled.div`
             margin-left: 10px;
             cursor: pointer;
         }
+    }
+    .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 14px;
+        background-color: var(--maincolor-1);
+        color: var(--white);
+        margin-left: 20px;
+        cursor: pointer;
     }
 `
 
