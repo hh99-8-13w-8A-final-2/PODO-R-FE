@@ -1,23 +1,19 @@
 import axios from 'axios';
 import { useInfiniteQuery } from "react-query";
 import { useMutation, useQueryClient } from "react-query"
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as TextIcon } from '../../assets/img/textIcon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import apis from '../../apis/apis';
 import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import { useInView } from "react-intersection-observer";
 
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
-
 const getComments = async (reviewId, pageParam) => {
-    const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`);
-    console.log(response.data)
+    /* const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`); */
+    const response = await apis.getComment(reviewId, pageParam)
     const data = response.data.content;
     const pageData = response.data.totalPages;
     const total = response.data.totalElements
@@ -30,24 +26,13 @@ const getComments = async (reviewId, pageParam) => {
 }
 
 const postModifyedComment = async (new_comment) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
     const { modifyId, content } = new_comment
-    const { data } = await axios.put(`${URI.BASE}/api/comments/${modifyId}`, content, { headers: headers })
-    return data
+    return await apis.putModifyedComment(modifyId, content)
+
 }
 
 const deleteComment = async (commentId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const response = await axios.delete(`${URI.BASE}/api/comments/${commentId}`, { headers: headers })
-    return response
+    return await apis.deleteComment(commentId)
 }
 
 
@@ -83,7 +68,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             }
         )
 
-        console.log(data)
+        
 
     useEffect(() => {
         if (inView) fetchNextPage();
@@ -126,8 +111,9 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
         }
         modifyMutation.mutate(modify_comment)
         toast.success("수정이 완료되었습니다", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_RIGHT
+            icon:"🔨",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
         })
         setToggle(!toggle)
         reset({ modify: "" })
@@ -136,8 +122,10 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     const deleteHandler = (commentId) => {
         deleteMutation.mutate(commentId)
         toast.success("댓글 삭제되었습니다", {
-            autoClose: 3000,
-            position: toast.POSITION.TOP_RIGHT
+            icon:"✂️",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+            theme:"dark"
         })
     }
 
@@ -183,12 +171,12 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                                             currentYear - createYear === 0 &&
                                                             currentMonth - createMonth === 0 &&
                                                             currentDate - createDate > 6 &&
-                                                            <span>{(currentDate - createDate) / 7}주일 전</span>
+                                                            <span>{parseInt((currentDate - createDate) / 7)}주일 전</span>
                                                         }
                                                         {
                                                             currentYear - createYear === 0 &&
                                                             currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate > 0 &&
+                                                            currentDate - createDate > 0 && currentDate - createDate < 7 &&
                                                             <span>{(currentDate - createDate)}일 전</span>
                                                         }
                                                         {

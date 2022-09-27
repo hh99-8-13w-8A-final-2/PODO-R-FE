@@ -9,7 +9,6 @@ import styled from 'styled-components';
 
 const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, nickname }) => {
     const swiperRef = useRef(null)
-    console.log(data)
 
     return (
         <StSlideDiv>
@@ -120,6 +119,7 @@ const StContentDiv = styled.div`
     }
     p {
         text-align: left;
+        line-height: 24px;
         color: var(--gray-1);
     }
     @media screen and (max-width: 763px) {

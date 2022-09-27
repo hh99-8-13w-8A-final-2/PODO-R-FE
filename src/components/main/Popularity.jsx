@@ -1,4 +1,4 @@
-import axios from 'axios';
+import apis from '../../apis/apis';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,12 +9,14 @@ const URI = {
   };
 
   const fetchPopularMusical = () => {
-    return axios.get(`${URI.BASE}/api/musicals/popular`)
+    //return axios.get(`${URI.BASE}/api/musicals/popular`)
+    return apis.getPopularMusical()
   }
 
 const Popularity = () => {
     const { status, data, error } = useQuery('/PopularMusical', fetchPopularMusical,
         {
+            staleTime: 1000,
             refetchOnWindowFocus: false,
         }
     )

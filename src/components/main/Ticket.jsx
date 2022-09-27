@@ -1,10 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'
+import apis from '../../apis/apis';
+import { useQuery } from "react-query"
 
+const fetchAllMusical = () => {
+    return apis.getAllMusical()
+}
 
+const Ticket = () => {
+    const { status, data, error } = useQuery('/AllMusical', fetchAllMusical,
+        {
+            staleTime: 1000,
+            refetchOnWindowFocus: false,
+        }
+    )
 
-const Ticket = ({status, data, error }) => {
 
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }

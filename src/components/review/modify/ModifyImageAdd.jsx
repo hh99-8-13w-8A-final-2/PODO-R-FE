@@ -1,50 +1,74 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
+import apis from '../../../apis/apis';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImages } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ModifyImageAdd = ({ imgfiles }) => {
-    const [showImages, setShowImages] = useState([]); // 이미지 프리뷰
-    const handleAddImages = (event) => {
-        const imageLists = event.target.files;
-        let imageUrlLists = [...showImages];
+const ModifyImageAdd = ({ data, URI, imgUrls }) => {
+    const files = []    
+    const [showImages, setShowImages] = useState(data.data.imgurls); // 이미지 프리뷰
 
-        for (let i = 0; i < imageLists.length; i++) {
-            const currentImageUrl = URL.createObjectURL(imageLists[i]);
-            imageUrlLists.push(currentImageUrl);
-            imgfiles.push(imageLists[i]);
-            //setImgUrls([...imageLists])
-        }
+    const handleAddImages =  (event) => {
+        const imgFiles = event.target.files    
 
-        if (imageUrlLists.length > 4) {
-            imageUrlLists = imageUrlLists.slice(0, 4);
-            imgfiles = imgfiles.slice(0, 4);
+        if (imgFiles.length > 4 - imgUrls.length){
             toast.error("4장까지 등록이 가능합니다.", {
                 autoClose: 3000,
                 position: toast.POSITION.TOP_CENTER,
                 theme: "dark"
             })
+            return
+        }
+        for (let i = 0; i < imgFiles.length; i++){
+            files.push(imgFiles[i])
         }
 
-        setShowImages(imageUrlLists);
-        //console.log(imageUrlLists)
 
+        const formData = new FormData()
+        for(let i = 0; i < files.length ; i++ ){
+            formData.append('image', files[i])
+        }
+         for (let value of formData.values()) {
+            console.log(value);
+        }
+        /* const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType }) */
+        apis.postModifyImg(formData)
+        
+        .then((res)=>{
+            const img = res.data.imageUrl
+             for (let i in img) {
+                imgUrls.push(res.data.imageUrl[i])
+            } 
+            setShowImages([...imgUrls])
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+       /*  try{
+            const res = apis.postModifyImg(formData, multipartType)
+            console.log(res)
+        } catch(err) {
+            console.log(err)
+        } */
+       
+       
     };
     const handleDeleteImage = (id) => {
-        setShowImages(showImages.filter((_, index) => index !== id));
-        const saveImgfiles = imgfiles.filter((_, index) => index !== id);
-        imgfiles.splice(0, imgfiles.length, ...saveImgfiles)
+        imgUrls.splice(id,1)
+        setShowImages([...imgUrls])
     };
+
 
     return (
         <StaddImageDiv>
-            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span> 사진 추가 <span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
+            <h4><span style={{ color: 'var(--error)', fontWeight: '700' }}>*</span>사진 추가<span> 사진은 최대 4장까지 등록 가능합니다.</span></h4>
             <div className='image'>
                 <label htmlFor="input-file" className='imageAdd' onChange={handleAddImages}>
-                    <input type="file" id="input-file" accept="image/png, image/jpeg" name='imgUrls' multiple style={{ display: 'none' }} />
+                    <input type="file" id="input-file" accept="image/png, image/jpeg" name='imgUrl' multiple style={{ display: 'none' }} />
                     <span><FontAwesomeIcon icon={faImages}></FontAwesomeIcon></span>
                 </label>
                 {showImages.map((image, id) => (

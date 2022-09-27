@@ -1,34 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
-const ModifyCheckboxSelect = ({ data, setBlock, setOperaGlass }) => {
-    const [operaGlass1, setOperaGlass1] = useState();
-    const [block1, setBlock1] = useState();
+const ModifyCheckboxSelect = ({ data, setBlock1, block1, setOperaGlass1, operaGlass1 }) => {
+    
     // checked={operaGlass1 === true}
     useEffect(() => {
-        setOperaGlass1(data.data.operaGlass)
-        setBlock1(data.data.block)
-        if(data.data.operaGlass === 'ture'){
-            setOperaGlass('on')
-        }
+        setOperaGlass1(data?.data.operaGlass)
+        setBlock1(data?.data.block)
     },[])
 
     const operaGlassChange = e => {
-        setOperaGlass1(current => !current);
-        setOperaGlass(e.target.value)
-        console.log(e.target.value)
+        if(operaGlass1 === 'on'){
+            setOperaGlass1(null)
+        }else{
+            setOperaGlass1(e.target.value)
+        }
     }
 
     const blockChange = e => {
-        setBlock1(current => !current);
-        setBlock(e.target.value)
+        if(block1 === true){
+            setBlock1(e.target.value)
+        }
+        if(block1 === 'on'){
+            setBlock1(null)
+        }else{
+            setBlock1(e.target.value)
+        }
     }
-
     return (
         <StCheckbox>
             <h4>추가선택</h4>
-            <input type="checkbox" id='block1' name='block1' onChange={blockChange}  />
+            <input type="checkbox" id='block1' name='block1' checked={block1} onChange={blockChange}/>
             <label htmlFor="block1">#시야방해있음</label>
             <input type="checkbox" id='operaGlass1' name='operaGlass1' checked={operaGlass1} onChange={operaGlassChange}/>
             <label htmlFor="operaGlass1">#오페라글라스필수</label>

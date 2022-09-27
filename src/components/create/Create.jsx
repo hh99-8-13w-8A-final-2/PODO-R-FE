@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
+import apis from "../../apis/apis";
 import axios from 'axios';
 import Select from 'react-select'
 import styled from 'styled-components';
@@ -10,12 +11,16 @@ import Tag from './Tag';
 import ImageAdd from './ImageAdd';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
+import Modal from '../../assets/modal/Modal';
+import ModalPortal from '../../assets/modal/Portal';
 import 'react-toastify/dist/ReactToastify.css';
+import ModalSeat from '../common/ModalSeat';
 
 
-const Create = ({ create, SetCreate }) => {
+
+const Create = ({ create, SetCreate, theaterId }) => {
     const navigate = useNavigate();
-    const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
+    //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
 
     /* let location = useLocation();
@@ -25,25 +30,28 @@ const Create = ({ create, SetCreate }) => {
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보
     const [Data2, setData2] = useState([]); //2층 섹션, row 정보
     const [Data3, setData3] = useState([]); //3층 섹션, row 정보
+    const [Data4, setData4] = useState([]); //4층 섹션, row 정보
     const floorOptions = []; //층 select에 넣어주는 값
     const sectionOptions = []; //구역 select에 넣어주는 값
     const rowOptions = []; //열 select에 넣어주는 값
     const [selectFloor, setSelectFloor] = useState({ value: '0' }); //선택한 층
     const [selectSection, setSelectSection] = useState({ value: '0' }); //선택한 구역
     const [selectRow, setSelectRow] = useState({ value: '0' }); //선택한 열
-    const imgfiles = []; // 이미지 파일
+    const [imgfiles, setImgFiles] =useState([]); // 이미지 파일
+
+
     const { register, formState: { errors }, control, watch, handleSubmit } = useForm({
         defaultValues: {
             floor: '1F'
         }
     });
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
-
-
+    
+   
+    
+    
     const getSeat = async () => {
-        const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
+        const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
         for (var i in data) {
@@ -54,9 +62,12 @@ const Create = ({ create, SetCreate }) => {
             } else if (i === '1') {
                 const data = res.data[i].sections
                 setData2(data)
-            } else {
+            } else if (i === '2'){
                 const data = res.data[i].sections
                 setData3(data)
+            }else{
+                const data = res.data[i].sections
+                setData4(data)
             }
         }
     };
@@ -110,10 +121,10 @@ const Create = ({ create, SetCreate }) => {
             }
         }
         if (watch("section") !== undefined) {
-            const rowdata = Data1.findIndex((e) => e.section === watch("section").value)
+            const rowdata = Data2.findIndex((e) => e.section === watch("section").value)
             if (rowdata !== -1) {
-                for (var rows in Data1[rowdata].rows) {
-                    const data1 = Data1[rowdata].rows[rows]
+                for (var rows in Data2[rowdata].rows) {
+                    const data1 = Data2[rowdata].rows[rows]
                     if (data1 === "0") {
                         rowOptions.push({ "value": "0", "label": "열 없음" })
                     } else {
@@ -126,7 +137,7 @@ const Create = ({ create, SetCreate }) => {
                 }
             }
         }
-    } else if (watch("floor").value === "3층") {
+    } else if (watch("floor").value === "3층" || "발코니") {
         for (var section in Data3) {
             const data1 = Data3[section]
             if (data1.section === "0") {
@@ -136,10 +147,10 @@ const Create = ({ create, SetCreate }) => {
             }
         }
         if (watch("section") !== undefined) {
-            const rowdata = Data1.findIndex((e) => e.section === watch("section").value)
+            const rowdata = Data3.findIndex((e) => e.section === watch("section").value)
             if (rowdata !== -1) {
-                for (var rows in Data1[rowdata].rows) {
-                    const data1 = Data1[rowdata].rows[rows]
+                for (var rows in Data3[rowdata].rows) {
+                    const data1 = Data3[rowdata].rows[rows]
                     if (data1 === "0") {
                         rowOptions.push({ "value": "0", "label": "열 없음" })
                     } else {
@@ -152,10 +163,34 @@ const Create = ({ create, SetCreate }) => {
                 }
             }
         }
+    }else if (selectFloor.value === "발코니"){
+        for (var section in Data4){
+            const data1 = Data4[section]
+            if(data1.section === "0"){
+                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
+            }else{
+                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            }
+        }
+        const rowdata = Data4.findIndex( (e) => e.section === selectSection.value)
+        if(rowdata !== -1){
+            for(var rows in Data4[rowdata].rows){
+                const data1 = Data4[rowdata].rows[rows]
+                if(data1 === "0"){
+                    rowOptions.push({"value" : "0" , "label":"열 없음"})
+                }else{
+                    if(Object.values(data1).length === 1){
+                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+                    }else{
+                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                    }
+                } 
+            }
+        }
     }
-    else { }
+    else{}
 
-    const greadeOptions = [
+    const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
         { value: 'R', label: 'R' },
@@ -165,7 +200,7 @@ const Create = ({ create, SetCreate }) => {
 
     const onSubmit = async () => {
         //이미지 업로드 
-        console.log(imgfiles.length)
+
         if (imgfiles.length === 0) {
             toast.error("이미지 등록은 필수 입니다.", {
                 autoClose: 3000,
@@ -173,17 +208,13 @@ const Create = ({ create, SetCreate }) => {
                 theme: "dark"
             })
         }
-        const imgFormdata = new FormData();
-        //imgFormdata.append('image',imgfiles)
-        for (let i = 0; i < imgfiles.length; i++) {
-            imgFormdata.append('image', imgfiles[i])
-        }
+        
         // 폼 데이터
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
 
-        for (let key of imgFormdata.keys()) {
+        /* for (let key of imgFormdata.keys()) {
             console.log(key);
         }
         for (let value of imgFormdata.values()) {
@@ -191,39 +222,42 @@ const Create = ({ create, SetCreate }) => {
         }
         for (let value of formdata.values()) {
             console.log(value);
-        }
+        } */
         try {
-            const token = window.localStorage.getItem("accessToken")
-            const jsonType = { "Content-Type": "application/json", "Authorization": token }
-            const multipartType = { "Content-Type": "multipart/form-data", "Authorization": token }
-            const res1 = await axios.post(`${URI.BASE}/api/image/upload`, imgFormdata, { headers: multipartType });
-            //이미지 
-
             const obj = {};
             formdata.forEach(function (value, key) {
                 obj[key] = value;
             })
-            obj.imgUrls = res1.data.imageUrl
+            obj.imgUrls = imgfiles
 
             const json = JSON.stringify(obj)
-            console.log(json)
-            await axios.post(`${URI.BASE}/api/musicals/${musicalId}/reviews`, json, { headers: jsonType, token });
+
+
+            await apis.postReview(musicalId, json)
             SetCreate(!create)
         } catch (err) {
-            console.log(err)
+            if(err.response){
+                let data = err.response.data;
+                toast.error(data, {
+                    autoClose: 3000,
+                    position: toast.POSITION.TOP_CENTER,
+                    theme: "dark"
+                })
+            }
         }
     }
 
 
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
-            <h4><span style={{ color: 'var(--error)' }}>*</span> 좌석정보</h4>
+            <h4 className='seat'><span style={{ color: 'var(--error)' }}>*</span> 좌석정보 </h4> 
+           
             <StTopSelectDiv>
                 <div>
                     <Controller name="grade" control={control} rules={{ required: "필수로 선택하셔야합니다." }}
                         render={({ field }) => <Select name='grade' placeholder='좌석등급' theme={(theme) => ({
                             ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
-                        })} {...field} options={greadeOptions} />} />
+                        })} {...field} options={gradeOptions} />} />
                     <p className='error'>{errors.grade && errors.grade?.message}</p>
                 </div>
                 <div>
@@ -255,11 +289,15 @@ const Create = ({ create, SetCreate }) => {
             </StTopSelectDiv>
             <RadioSelect />
             <CheckboxSelect />
-            <div>
-                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.'></textarea>
+            <div className='textarea'>
+                <h4> <span style={{ color: 'var(--error)' }}>*</span> 리뷰 내용   <p>500자 까지 입력이 가능합니다.</p></h4>
+              
+                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' {...register("reviewContent", { maxLength: {value: 500, message: "500자 이하이어야 합니다."}})}>
+                </textarea>
+                <p className='error'>{errors.reviewContent && errors.reviewContent?.message}</p>
             </div>
             <Tag setTagList={setTagList} tagList={tagList} />
-            <ImageAdd imgfiles={imgfiles} />
+            <ImageAdd imgfiles={imgfiles} setImgFiles={setImgFiles}/>
             <div className='button'>
                 <button type='submit' >등록</button>
             </div>
@@ -278,6 +316,17 @@ margin: 0 auto;
         font-size: 18px;
         margin: 40px 0 20px;
     }
+    .seat .btn {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+        font-size: 14px;
+        background-color: var(--maincolor-1);
+        color: var(--white);
+        margin-left: 20px;
+        cursor: pointer;
+    }
     textarea{
         width: 100%;
         height: 250px;
@@ -292,7 +341,14 @@ margin: 0 auto;
             width: 100%;
         }
     }
-    
+    .textarea{
+        h4>p {
+            display: inline-block;
+            color: var(--gray-2);
+            font-weight: 500;
+            font-size: 16px;
+        }
+    }
     .button{
         text-align: center;
         button{

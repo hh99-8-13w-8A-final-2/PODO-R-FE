@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import apis from '../../apis/apis';
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import ReviewDetailSlide from './ReviewDetailSlide';
 import ReviewDetailEval from './ReviewDetailEval';
@@ -12,55 +12,30 @@ import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import ReviewCreate from './ReviewCreate';
 import ReviewModify from './ReviewModify';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.minimal.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
+import { Link } from 'react-router-dom';
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    return axios.get(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
+    return apis.getReviewDetail(musicalId, reviewsId)
 }
 
 const deleteReviews = async (deleteId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
     const { musicalId, reviewsId } = deleteId
-    const response = await axios.delete(`${URI.BASE}/api/musicals/${musicalId}/reviews/${reviewsId}`, { headers: headers })
-    return response
+    return await apis.deleteReview(musicalId, reviewsId)
 }
 
 const likeReviews = async (reviewsId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const response = await axios.post(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, {}, { headers: headers })
-    return response
+    return await apis.postLike(reviewsId)
 }
 
 const unLikeReviews = async (reviewsId) => {
-    const Authorization = localStorage.getItem('accessToken');
-    const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `${Authorization}`,
-    }
-    const response = await axios.delete(`${URI.BASE}/api/hearts?reviewId=${reviewsId}`, { headers: headers })
-    return response
+    return await apis.deleteLike(reviewsId)
 }
 
 const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
-
+  
     let today = new Date();
     let currentYear = today.getFullYear(); // 년도
     let currentMonth = today.getMonth() + 1;  // 월
@@ -126,27 +101,33 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
 
     const likeHandler = () => {
         if (!userId) {
-            toast.success("로그인 해주세요", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER
+            toast.error("로그인 해주세요", {
+                icon: "🙏",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored"
             })
         }
         else if (!data?.data.heartChecked) {
             likeReview.mutate(reviewsId)
-            toast.success("좋아요 +1 ~!", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER
+            toast.info("좋아요😍", {
+                icon: "💖",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "colored"
             })
         } else {
             unLikeReview.mutate(reviewsId)
-            toast.success("좋아요 취소 ㅜㅜ", {
-                autoClose: 3000,
-                position: toast.POSITION.TOP_CENTER
+            toast.info("좋아요 취소😖", {
+                icon: "💔",
+                autoClose: 500,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "dark"
             })
         }
     }
 
-    console.log(data)
+
 
     const convertToDate = new Date(data?.data.createdAt);
     const createYear = convertToDate.getFullYear();
@@ -245,30 +226,33 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
                                         <StScoreDiv><StSpan>평점</StSpan><StScore>{data?.data.reviewScore}</StScore></StScoreDiv>
                                     </StDetailHeaderBottom>
                                     <ReviewDetailEval data={data} />
-                                    <StP>
-                                        {data?.data.reviewContent}
-                                    </StP>
-
-                                    {data?.data.tags[0] !== '' &&
-                                        <StTagDiv>
-                                            {data?.data.operaGlass && <div>오페라글라스필수</div>}
-                                            {data?.data.block && <div>시야방해</div>}
-                                            {data?.data.tags.map((tag, index) => (
-                                                <div key={index}>{tag}</div>
-                                            ))}
-                                        </StTagDiv>
-                                    }
+                                    <StContents>
+                                        <StP>
+                                            {data?.data.reviewContent}
+                                        </StP>
+                                        {data?.data.tags[0] !== '' &&
+                                            <StTagDiv>
+                                                {data?.data.operaGlass && <div>오페라글라스필수</div>}
+                                                {data?.data.block && <div>시야방해</div>}
+                                                {data?.data.tags.map((tag, index) => (
+                                                    <div key={index}>{tag}</div>
+                                                ))}
+                                            </StTagDiv>
+                                        }
+                                    </StContents>
                                 </>
                             }
                             <StBottomCont>
-                                <StBottomLeftDiv>
-                                    <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
-                                    <StDl>
-                                        <dt>{data?.data.musical.musicalName}</dt>
-                                        <dd>{data?.data.musical.theaterName}</dd>
-                                        <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
-                                    </StDl>
-                                </StBottomLeftDiv>
+                                <Link to={`/musicals/${musicalId}/reviews`}>
+                                    <StBottomLeftDiv>
+                                        <StThumbDiv imgUrl={data?.data.musical.musicalPoster}></StThumbDiv>
+                                        <StDl>
+                                            <dt>{data?.data.musical.musicalName}</dt>
+                                            <dd>{data?.data.musical.theaterName}</dd>
+                                            <dd>{data?.data.musical.openDate} ~ {data?.data.musical.closeDate}</dd>
+                                        </StDl>
+                                    </StBottomLeftDiv>
+                                </Link>
                                 <StBottomRightDiv>
                                     <div onClick={() => likeHandler()}>{data?.data.heartChecked ? <Like fill='#BB63FF' /> : <Like fill='#000' />}<span>{data?.data.heartCount}</span></div>
                                     <div onClick={() => setIsClick(true)}><Comment fill='#000' /><span>{data?.data.commentCount}</span></div>
@@ -465,19 +449,29 @@ const StScore = styled.div`
     font-size: 40px;
 `
 
+const StContents = styled.div`
+    height: 400px;
+    overflow: auto;
+`
+
 const StP = styled.p`
     margin-top: 40px;
     margin-bottom: 40px;
     text-align: start;
-    max-height: 300px;
+    line-height: 24px;
 `
 const StTagDiv = styled.div`
     display: flex;
+    flex-wrap:wrap;
+
     div {
         border: 1px solid var(--gray-1);
         padding: 6px 16px; 
         border-radius: 20px;
-        margin-right: 10px;
+        margin: 4px 5px 0 0;
+    }
+    div::before{
+        content: '#';
     }
 `
 
@@ -489,7 +483,7 @@ const StBottomCont = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 2px solid var(--gray-1);
+    border-top: 1px solid #eee;
     @media screen and (max-width: 763px) {
         width: 500px;
     }
@@ -514,6 +508,7 @@ const StDl = styled.dl`
         text-overflow: ellipsis;
         text-align: left;
         margin-bottom: 4px;
+        color: var(--gray-3);
     }
     dd {
         font-size: 10px;

@@ -1,24 +1,21 @@
 import React  from 'react';
 import styled from 'styled-components';
 import LiveReview from './LiveReview';
-import axios from 'axios';
+import apis from '../../apis/apis';
 import { useQuery } from "react-query"
 
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
-
 const fetchLiveReviews = () => {
-    return axios.get(`${URI.BASE}/api/reviews/live`)
+    return apis.getLiveReviews()
   }
 
-const LiveReviewList = () => {
+const LiveReviewList = ({handleModal}) => {
 
     const { status, data, error } = useQuery(
         '/LiveReviewList', 
         fetchLiveReviews,
         {
           // 1분마다 서버에서 새로운 데이터를 refetch 해온다.
+          staleTime: 1000,
           refetchInterval: 60000,
           refetchOnWindowFocus: false
         }
@@ -28,7 +25,7 @@ const LiveReviewList = () => {
     return (
         <StReviewBox>
             <StH3>LivePodo</StH3>
-            <LiveReview status={status} reviewList={data} error={error}/>
+            <LiveReview status={status} reviewList={data} error={error} handleModal={handleModal}/>
         </StReviewBox>
     );
 };

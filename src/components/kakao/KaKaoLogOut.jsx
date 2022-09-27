@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/modules/userSlice";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import axios from "axios";
+import apis from "../../apis/apis";
 import logoutIcon from "../../assets/img/logout.svg";
 import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
@@ -19,28 +19,14 @@ const KaKaoLogOut = () => {
     setSignupModalOn(!signupModalOn);
   };
 
-  const URI = {
-    BASE: process.env.REACT_APP_BASE_URI,
-  };
-
-  console.log(isLogin);
-
-  const onLogoutHandler = () => {
-    axios({
-      method: "post",
-      url: `${URI.BASE}/api/member/logout`,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
-        "Refresh-Token": localStorage.getItem("refreshToken"),
-      },
-    });
-    dispatch(logout());
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("nickname");
-    localStorage.removeItem("profilePic");
-    navigate("/");
+  const onLogoutHandler = async () => {
+    try {
+      await apis.postLogout();
+    } finally {
+      dispatch(logout());
+      localStorage.clear();
+      navigate("/");
+    }
   };
 
   return (
