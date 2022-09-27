@@ -236,7 +236,14 @@ const Create = ({ create, SetCreate, theaterId }) => {
             await apis.postReview(musicalId, json)
             SetCreate(!create)
         } catch (err) {
-            console.log(err)
+            if(err.response){
+                let data = err.response.data;
+                toast.error(data, {
+                    autoClose: 3000,
+                    position: toast.POSITION.TOP_CENTER,
+                    theme: "dark"
+                })
+            }
         }
     }
 
