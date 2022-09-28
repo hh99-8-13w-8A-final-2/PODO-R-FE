@@ -22,9 +22,9 @@ const RadioSelector = ({handleEvalCheck, isEvalCheck, isOrderCheck, handleOrderC
                 <label htmlFor="light"> <img src={light} alt="" /> 조명좋음</label>
             </div>
             <div>
-                <input type="radio" id='rank' alt='0' data-query='score,desc' onClick={(e) => handleOrderCheck(e)} defaultChecked={isOrderCheck[0]}/>
+                <input type="checkbox" id='rank' alt='0' data-query='score,desc' onChange={(e) => handleOrderCheck(e)} defaultChecked={isOrderCheck[0]}/>
                 <label htmlFor="rank"> <img src={up_small} alt="" className='up_small'/>평점좋은순</label>
-                <input type="radio" id='new' alt='1' data-query='createdAt,desc' onClick={(e) => handleOrderCheck(e)} defaultChecked={isOrderCheck[1]}/>
+                <input type="checkbox" id='new' alt='1' data-query='createdAt,desc' onChange={(e) => handleOrderCheck(e)} defaultChecked={isOrderCheck[1]}/>
                 <label htmlFor="new"> <img src={up_small} alt=""  className='up_small' />최신순</label>
             </div>  
         </>

@@ -24,7 +24,7 @@ const Header = () => {
     <StHeader>
       <Layout>
         <StHeaderCont>
-          {location.pathname !== '/' ? <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>돌아가기</p></div> : <div></div>}
+          {location.pathname !== '/' ? <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>메인으로가기</p></div> : <div></div>}
           <img src={logo} alt="" onClick={onClickHandler} />
           <div>
             {isLogin ? (

@@ -293,8 +293,17 @@ const Modify = ({ data, setModify }) => {
         }
         
     }
+    window.onload = function() {
+        const number = document.getElementById('seat');
+        number.onkeydown = function(e) {
+            if(!((e.keyCode > 95 && e.keyCode < 106)
+              || (e.keyCode > 47 && e.keyCode < 58) 
+              || e.keyCode === 8)) {
+                return false;
+            }
+        }
+    }
 
-    
     
     
     return (
@@ -330,7 +339,7 @@ const Modify = ({ data, setModify }) => {
                     <p className='error'>{errors.row && errors.row?.message}</p>
                 </div>
                 <div>
-                    <input type="number" defaultValue={data?.data.seat || ''} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
+                    <input type="number" name='seat' min='0' defaultValue={data?.data.seat} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
                     {errors.seat && errors.seat.type === "max" && <p className='error'> 300이하의 숫자로 입력해주세요. </p>}
                     {errors.seat && <p className='error'>필수로 입력하셔야합니다.</p>}
                 </div>

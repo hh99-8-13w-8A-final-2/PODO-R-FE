@@ -50,9 +50,7 @@ const HeaderBottom = () => {
             <Layout>
                 <StHeaderBottomCont>
                      <span className='title'>{musicals.musicalName}</span> <span className='theater'>{musicals.theaterName}<img src={info} alt="" className='icon' onClick={handleModal} /> <span className='btn' onClick={handleSeatModal}>좌석 확인하기</span></span> 
-                     
                 </StHeaderBottomCont>
-
                 <ModalPortal>
                     {theaterModal && (
                         <Modal  onClose ={handleModal} theaterModal={theaterModal} >
