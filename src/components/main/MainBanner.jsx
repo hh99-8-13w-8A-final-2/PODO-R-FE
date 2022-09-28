@@ -35,10 +35,21 @@ const MainBanner = () => {
                 modules={[Navigation, Pagination, Autoplay]}
                 pagination={{ clickable: true }}
                 autoplay={{
-                delay: 12000, 
+                delay: 3000, 
                 }}
                 loop={true}
             >
+            <SwiperSlide>
+                <Link to={'/guide'}>
+                    <StMainBanner bnr={bnr}>
+                        <div>
+                            <p>당신이 고민하는 그 자리</p>
+                            <p>포도알에서 좌석 리뷰를 확인해보세요!</p>
+                            <p className='button'>가이드 보러가기</p>
+                        </div>    
+                    </StMainBanner>
+                </Link>
+            </SwiperSlide>
             <SwiperSlide>
                 <StMainBanner bnr={bnr2}  onClick={()=>{window.open(eventLink1)}}>
                     <div>
@@ -56,17 +67,6 @@ const MainBanner = () => {
                         <p className='button'>리포트 쓰러가기</p>
                     </div>    
                 </StMainBanner>
-            </SwiperSlide>
-            <SwiperSlide>
-                <Link to={'/guide'}>
-                    <StMainBanner bnr={bnr}>
-                        <div>
-                            <p>당신이 고민하는 그 자리</p>
-                            <p>포도알에서 좌석 리뷰를 확인해보세요!</p>
-                            <p className='button'>가이드 보러가기</p>
-                        </div>    
-                    </StMainBanner>
-                </Link>
             </SwiperSlide>
         </Swiper>
         </StMainBaanerSction>

@@ -36,7 +36,7 @@ const GuidePage = () => {
                 <div className='section'>
                     <h1>명당을 고르는 가장 확실한 방법!</h1>
                     <p>포도알에만 있는 진짜 사진후기로 만나는 공연장별 좌석정보</p>
-                    <p>항목별 평가를 통한 단차, 시야, 음향, 정명 정보까지 제공합니다.</p>
+                    <p>항목별 평가를 통한 단차, 시야, 음향, 조명 정보까지 제공합니다.</p>
                     <img src={guide} alt="" />
                 </div>
                 <div className='section'>

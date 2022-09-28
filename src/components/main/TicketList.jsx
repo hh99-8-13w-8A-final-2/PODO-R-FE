@@ -17,11 +17,12 @@ const TicketList = ({status, data, error }) => {
         <Swiper
           slidesPerView={6}
           spaceBetween={30}
-          centeredSlides={true}
+          centeredSlides={false}
           pagination={{
             clickable: true,
           }}
-          initialSlide={2}
+          initialSlide={0}
+          
           //modules={[Pagination]}
           className="mySwiper"
         >

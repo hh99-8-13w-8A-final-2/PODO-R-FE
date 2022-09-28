@@ -198,6 +198,16 @@ const Create = ({ create, SetCreate, theaterId }) => {
         { value: 'A', label: 'A ' }
     ]
 
+    const number = document.getElementById('seat');
+    number.onkeydown = function(e) {
+        if(!((e.keyCode > 95 && e.keyCode < 106)
+          || (e.keyCode > 47 && e.keyCode < 58) 
+          || e.keyCode == 8)) {
+            return false;
+        }
+    }
+
+
     const onSubmit = async () => {
         //이미지 업로드 
 
@@ -208,6 +218,8 @@ const Create = ({ create, SetCreate, theaterId }) => {
                 theme: "dark"
             })
         }
+
+
         
         // 폼 데이터
         const form = document.getElementById('myForm');
@@ -282,7 +294,7 @@ const Create = ({ create, SetCreate, theaterId }) => {
                     <p className='error'>{errors.row && errors.row?.message}</p>
                 </div>
                 <div>
-                    <input type="number" placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
+                    <input type="number" id='seat' min="0" placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
                     {errors.seat && errors.seat.type === "max" && <p className='error'> 300이하의 숫자로 입력해주세요. </p>}
                     {errors.seat && <p className='error'>필수로 입력하셔야합니다.</p>}
                 </div>
@@ -335,6 +347,11 @@ margin: 0 auto;
     input {
         font-size: 16px;
     }
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button{
+        -webkit-appearance: none;
+        margin: 0;
+    }
     .file {
         margin-top: 10px;
         input{
@@ -365,6 +382,13 @@ margin: 0 auto;
                 color:var(--white);
                 border-color:var(--maincolor-1);
             }
+       }
+    }
+
+    @media (max-width: 767px) {
+        width: 100%;
+        h4{
+            margin: 50px 0 20px;
         }
     }
 `
@@ -393,5 +417,17 @@ const StTopSelectDiv = styled.div`
     }
     .css-1okebmr-indicatorSeparator{
         background-color: transparent;
+    }
+    @media (max-width: 767px) {
+        width: 100%;
+        flex-direction: column;
+        >div{
+            width: 100%;
+            padding: 3px 0;
+            z-index: auto;
+        }
+        >div:last-of-type>input{
+            width: 100%;
+        }
     }
 `

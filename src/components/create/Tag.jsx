@@ -3,12 +3,24 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { toast } from 'react-toastify';
 
 const Tag = ({ setTagList, tagList }) => {
     const handelKeyDown = (e) => {
         if (e.keyCode !== 32) return
         const value = e.target.value
+        const regex = /\s/gi
+        const tagValue = value.replace(regex, '')
+        
+        if(tagList.includes(tagValue) === true){
+            toast.error("같은 태그는 입력할 수 없습니다.",{
+                autoClass: 3000,
+                position: toast.POSITION.TOP_CENTER,
+                theme: "dark"
+            })
+            return
+        }
+
         if (!value.trim()) return
         setTagList([...tagList, value])
         e.target.value = ''
