@@ -49,16 +49,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
 
   const handleDropDownKey = event => {
     //input에 값이 있을때만 작동
-    if (isHaveInputValue) {
-      if (
-        event.key === 'ArrowDown' &&
-        dropDownList.length - 1 > dropDownItemIndex
-      ) {
-        setDropDownItemIndex(dropDownItemIndex + 1)
-      }
-
-      if (event.key === 'ArrowUp' && dropDownItemIndex >= 0)
-        setDropDownItemIndex(dropDownItemIndex - 1)
+    if(inputValue !== '' && dropDownItemIndex === -1) {
       if (event.key === 'Enter') {
         const prevQueryEval = searchParams.getAll('evaluation');
         const prevQueryTag = searchParams.getAll('tag');
@@ -86,6 +77,18 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
   
         postMutation.mutate(inputValue)
       }
+    }
+
+    if (isHaveInputValue) {
+      if (
+        event.key === 'ArrowDown' &&
+        dropDownList.length - 1 > dropDownItemIndex
+      ) {
+        setDropDownItemIndex(dropDownItemIndex + 1)
+      }
+
+      if (event.key === 'ArrowUp' && dropDownItemIndex >= 0)
+        setDropDownItemIndex(dropDownItemIndex - 1)
       if (event.key === 'Enter' && dropDownItemIndex >= 0) {
         clickDropDownItem(dropDownList[dropDownItemIndex])
         setDropDownItemIndex(-1)
