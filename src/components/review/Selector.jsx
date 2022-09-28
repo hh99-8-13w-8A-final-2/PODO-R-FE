@@ -552,6 +552,52 @@ const Selector = ({ handleModal, theaterId }) => {
         }
     },[])
     
+    const keyUpHandler = (event) => {
+        const grade = selectGrade.value
+        const floor = selectFloor.value
+        const section = selectSection.value
+        const row = selectRow.value
+        const seat = seatNumber
+
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerySearch = searchParams.getAll('search');
+        if(event.key === "Enter") {
+            if (seat === undefined || seat === ''){
+                  return
+            }
+            if (seat !== undefined && grade === '0'){
+                setSearchParams({
+                    tag: [...prevQueryTag],
+                    evaluation: [...prevQueryEval],
+                    sort: [...prevQuerySort],
+                    search: [...prevQuerySearch],
+                    floor : `${floor}`,
+                    section: `${section}`,
+                    row:`${row}`,
+                    seat:`${seat}`
+                  });
+                  setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+                  return
+            }
+            if (seat !== undefined && grade !== '0'){
+                setSearchParams({
+                    tag: [...prevQueryTag],
+                    evaluation: [...prevQueryEval],
+                    sort: [...prevQuerySort],
+                    search: [...prevQuerySearch],
+                    grade :`${grade}`,
+                    floor : `${floor}`,
+                    section: `${section}`,
+                    row:`${row}`,
+                    seat:`${seat}`
+                  });
+                  setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+                  return
+            }
+        }
+    }
 
 
 
@@ -585,7 +631,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <Select placeholder='열' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={rowOptions} onChange={setSelectRow} value={selectRow}  />
                         <div className='inputSeat'>
-                        <input type="number"  id='seat' name='seat' placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} />  
+                        <input type="number"  id='seat' name='seat' placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} onKeyUp={keyUpHandler}/>  
                         <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset}/></span>
                     </div>
                     <Search className='icon' onClick={ClickSeatSerch}/>
