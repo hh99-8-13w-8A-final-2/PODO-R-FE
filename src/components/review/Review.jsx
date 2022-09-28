@@ -60,7 +60,6 @@ const Review = ({ handleModal, tagUrl }) => {
             }
         )
 
-
     useEffect(() => {
         if (inView) fetchNextPage();
     }, [inView]);

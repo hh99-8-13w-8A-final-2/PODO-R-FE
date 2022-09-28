@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "./Layout";
 import styled from "styled-components";
 import logo from "../../assets/img/logo.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import KakaoLogin from "../kakao/KakaoLogIn";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import { useSelector } from "react-redux";
@@ -12,18 +12,19 @@ import goBack from "../../assets/img/goBack.svg"
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const isLogin = useSelector((state) => state.user.isLogin);
   const onClickHandler = () => {
     navigate("/");
   };
   const onGoBack = () =>{
-    navigate(-1);
+    navigate("/");
   }
   return (
     <StHeader>
       <Layout>
         <StHeaderCont>
-          <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>돌아가기</p></div>
+          {location.pathname !== '/' ? <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>메인으로가기</p></div> : <div></div>}
           <img src={logo} alt="" onClick={onClickHandler} />
           <div>
             {isLogin ? (
