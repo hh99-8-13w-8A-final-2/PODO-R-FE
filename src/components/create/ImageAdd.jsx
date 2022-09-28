@@ -10,19 +10,18 @@ import 'react-toastify/dist/ReactToastify.css';
 const ImageAdd = ({ imgfiles, setImgFiles }) => {
     const files = []
     const [showImages, setShowImages] = useState([]); // 이미지 프리뷰
-
+    
     const handleAddImages = (event) => {
         const imageLists = event.target.files;
         let imageUrlLists = [...showImages];
-
-        if (imageUrlLists.length > 4) {
-            imageUrlLists = imageUrlLists.slice(0, 4);
-            imgfiles = imgfiles.slice(0, 4);
+        console.log(imageUrlLists)
+        if (imageLists.length > 4 -  showImages.length) {
             toast.error("4장까지 등록이 가능합니다.", {
                 autoClose: 3000,
                 position: toast.POSITION.TOP_CENTER,
                 theme: "dark"
             })
+            return
         }
 
         for(let i = 0; i<imageLists.length; i++){
