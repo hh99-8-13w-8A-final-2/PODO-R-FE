@@ -89,6 +89,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
         }
     })
     const deleteMutation = useMutation((commentId) => deleteComment(commentId), {
+        errorPolicy: "ignore",
         onSuccess: () => {
             queryClient.invalidateQueries("comments")
         }
