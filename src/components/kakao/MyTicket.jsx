@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/pagination";
 
 const MyTicket = ({ data, setEachMusicalId }) => {
   const setMusicalIdHandler = (musicalId) => {
@@ -9,8 +12,28 @@ const MyTicket = ({ data, setEachMusicalId }) => {
 
   return (
     <StMyTicket>
+      <Swiper
+          slidesPerView={3}
+          spaceBetween={200}
+          // centeredSlides={true}
+          // pagination={{
+          //   clickable: true,
+          // }}
+          // loop={true}
+          // loopAdditionalSlides={1}
+          // initialSlide={0}
+          breakpoints={{
+            763: {
+                slidesPerView: 5,
+                spaceBetween: 20
+            }
+          }}
+          
+          //modules={[Pagination]}
+          className="mySwiper"
+        >
       {data?.content.map((ticket) => (
-        <StTicket
+        <SwiperSlide
           key={ticket.musicalId}
           onClick={() => setMusicalIdHandler(ticket.musicalId)}
         >
@@ -24,8 +47,9 @@ const MyTicket = ({ data, setEachMusicalId }) => {
               </StDiv2>
             </StLabel>
           </StDiv>
-        </StTicket>
+        </SwiperSlide>
       ))}
+      </Swiper>
     </StMyTicket>
   );
 };
@@ -33,11 +57,17 @@ const MyTicket = ({ data, setEachMusicalId }) => {
 export default MyTicket;
 
 const StMyTicket = styled.div`
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
   align-items: center;
+  .swiper-pagination-bullet {background-color:var(--gray-2)}
+    margin-bottom: 70px;
+    @media (max-width: 763px){
+      margin-bottom: 30px;
+    }
 `;
 
 const StTicket = styled.div`
@@ -46,6 +76,9 @@ const StTicket = styled.div`
   border: 1px solid black;
   margin: 20px;
   border-radius: 10px;
+  @media screen and (max-width: 763px) {
+    width: 40%;
+  }
 `;
 
 const StDiv = styled.div`
