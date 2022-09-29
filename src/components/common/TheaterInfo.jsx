@@ -32,10 +32,7 @@ const TheaterInfo = ({onClose, theaterId}) => {
         setTheaterInfo(res.data)
 
     }
-    useEffect(()=>{
-        document.body.style= `overflow: hidden`;
-        return () => document.body.style = `overflow: auto`
-    },[])
+
 
     for(var i in theaterInfo.conveniences){
             if(theaterInfo.conveniences[i].type === 'CONVENIENCE'){
@@ -140,7 +137,15 @@ padding: 40px;
             }
         }
     }
-    
+    @media (max-width: 763px){
+        .conveniences{
+            >div{
+                >img{
+                    width: 40px;
+                }
+            }
+        }
+    }
 `
 const StLoginBox = styled.div`
   display: flex;

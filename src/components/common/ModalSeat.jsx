@@ -22,16 +22,16 @@ const ModalSeat = ({ onClose, theaterId }) => {
 
     return (
         <StInfoDiv>
-        <StLoginBox>
-            <button onClick={onClose}>
-                <FontAwesomeIcon icon={faXmark} />
-            </button>
-            <div className='name'>좌석 확인하기</div>
-        </StLoginBox>
-        <div className="contents">
-           <img src={seatimg} alt="" />
-        </div>
-    </StInfoDiv>
+            <StLoginBox>
+                <button onClick={onClose}>
+                    <FontAwesomeIcon icon={faXmark} />
+                </button>
+                <div className='name'>좌석 확인하기</div>
+            </StLoginBox>
+            <div className="contents">
+            <img src={seatimg} alt="" />
+            </div>
+        </StInfoDiv>
     );
 };
 
@@ -41,6 +41,7 @@ export default ModalSeat;
 const StInfoDiv = styled.div`
 padding: 40px;
 width: 800px;
+box-sizing: border-box;
 text-align: left;
     .name { 
         font-size: 1.2em;
@@ -55,6 +56,9 @@ text-align: left;
             width: 100%;
         }
     }
+@media (max-width: 763px){
+    width: 100%;
+}
 `
 const StLoginBox = styled.div`
   display: flex;
@@ -80,4 +84,5 @@ const StLoginBox = styled.div`
       color: var(--gray-3);
     }
   }
+ 
 `;

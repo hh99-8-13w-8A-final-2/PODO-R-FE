@@ -47,4 +47,8 @@ const StDiv = styled.div`
             }
         }
     }
+    @media (max-width: 763px) {
+        width: 100%;
+
+    }
 `

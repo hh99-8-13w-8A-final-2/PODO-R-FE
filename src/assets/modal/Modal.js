@@ -56,10 +56,12 @@ const Content = styled.div`
   animation-timing-function: ease-out;
   animation-name: slideUp;
   animation-fill-mode: forwards;
-  @media all and (max-width: 768px) {
+  @media all and (max-width: 768px) {    
     width: 100%;
-    height: 100vh;
+    height: 95vh;
     overflow-y: scroll;
     overflow-x: scroll;
+    position: absolute;
+    bottom: 0;
   }
 `;
