@@ -11,6 +11,7 @@ const Modal = ({ children, onClose}) => {
           {children}
         </Content>
       </Layout>
+      <div onClose={onClose}></div>
     </Background>
   );
 };

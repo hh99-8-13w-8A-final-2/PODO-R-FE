@@ -631,7 +631,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     </StCheckbox>
                 </div>
             </StFilterTopDiv>
-            <StFilterDiv className='bottom' style={{ marginBottom: '50px' }}>
+            <StFilterDiv className='bottom'>
                 <div className='left'>
                     <Select placeholder='좌석등급' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
@@ -648,8 +648,8 @@ const Selector = ({ handleModal, theaterId }) => {
                     <div className='inputSeat'>
                         <input type="number" id='seat' name='seat' min="0" placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} onKeyUp={keyUpHandler} />
                         <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset} /></span>
+                        <Search className='icon' onClick={ClickSeatSerch} />
                     </div>
-                    <Search className='icon' onClick={ClickSeatSerch} />
                 </div>
                 <div className='right'>
                     <RadioSelector query={query} navigate={navigate} params={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck} />
@@ -677,6 +677,11 @@ const StFilterDiv = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 50px;
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        margin-bottom: 0px;
+    }
     >div{
         margin: 20px 0 10px;
     }
@@ -693,6 +698,9 @@ const StFilterDiv = styled.div`
     .left{
         display: flex;
         align-items: center;
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+        }
         >div{
             margin-right: 10px;
             >div{
@@ -700,6 +708,11 @@ const StFilterDiv = styled.div`
                 border-radius: 10px;
                 color: var(--white);
                 border: 1px solid var(--white);
+                font-size: 12px;
+                @media screen and (max-width: 768px) {
+                    width: 300px;
+                    margin-bottom: 10px;
+                }
                 >div>div{
                     color: var(--white);
                 }
@@ -715,6 +728,10 @@ const StFilterDiv = styled.div`
             align-items: center;
             input{
                 width: 100px;
+                @media screen and (max-width: 768px) {
+                    width: 220px;
+                    margin-bottom: 10px;
+                }
             }
             span{
                 color: var(--gray-2);
@@ -735,10 +752,16 @@ const StFilterDiv = styled.div`
         div {
             margin-left: 10px;
             display: flex;
+            @media screen and (max-width: 768px) {
+                    margin-left: 0px;
+                }
             label{
                 display: inline-flex;
                 align-items: center;
                 margin-left: 15px;
+                @media screen and (max-width: 768px) {
+                    margin-left: 0px;
+                }
                 img{
                     width: 30px;
                     margin-right: 5px;
@@ -776,12 +799,18 @@ const StFilterDiv = styled.div`
 `
 
 const StCheckbox = styled.div`
-    width: 1400px;
+    width: 100%;
     height: 40px;
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    overflow-x: scroll;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &.popularBoxList::-webkit-scrollbar{
+        display: none; //크롬
+    }
     div {
         height: 100px;
     }
