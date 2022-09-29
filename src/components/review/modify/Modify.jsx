@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from 'react-query'
-import axios from 'axios';
 import apis from '../../../apis/apis';
 import Select from 'react-select'
 import styled from 'styled-components';
@@ -15,7 +14,6 @@ import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
 const Modify = ({ data, setModify }) => {
 
-    let location = useLocation();
     const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
     const [tagList, setTagList] = useState([]); // 태그 리스트
