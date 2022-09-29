@@ -33,10 +33,10 @@ const KaKaoLogOut = () => {
     <StContentbox>
       {isLogin ? (
         <div>
-          <div onClick={handleModal}>
-            <StLogOutIcon logoutIcon={logoutIcon} />
+          <StLogOutIcon onClick={handleModal}>
+            <img src={logoutIcon} alt="로그아웃"/>
             <StLoginTxt>로그아웃</StLoginTxt>
-          </div>
+          </StLogOutIcon>
 
           <ModalPortal>
             {signupModalOn && (
@@ -61,19 +61,22 @@ export default KaKaoLogOut;
 
 const StContentbox = styled.div`
   display: flex;
-  width: 76px;
   cursor: pointer;
 `;
 
 const StLogOutIcon = styled.div`
-  width: 20px;
-  height: 16px;
-  align-items: center;
-  background: ${(props) => `url(${props.logoutIcon})`} no-repeat;
-  cursor: pointer;
-`;
+  >img {
+    width: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  `;
+
 const StLoginTxt = styled.span`
   cursor: pointer;
+  @media (max-width: 763px){
+    display: none;
+  }
 `;
 
 const StLogOutContainer = styled.div`

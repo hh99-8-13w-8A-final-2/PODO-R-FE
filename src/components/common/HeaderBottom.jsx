@@ -49,10 +49,12 @@ const HeaderBottom = () => {
         <StHeaderBottom>    
             <Layout>
                 <StHeaderBottomCont>
-                     <span className='title'>{musicals.musicalName}</span> <span className='theater'>{musicals.theaterName}<img src={info} alt="" className='icon' onClick={handleModal} /> <span className='btn' onClick={handleSeatModal}>좌석 확인하기</span></span> 
-                     
+                    <span className='title'>{musicals.musicalName}</span>
+                    <div className='theater'>
+                        <span className='info'>{musicals.theaterName}<img src={info} alt="" className='icon' onClick={handleModal} /></span>
+                        <span className='btn' onClick={handleSeatModal}>좌석 확인하기</span>
+                    </div> 
                 </StHeaderBottomCont>
-
                 <ModalPortal>
                     {theaterModal && (
                         <Modal  onClose ={handleModal} theaterModal={theaterModal} >
@@ -95,6 +97,10 @@ const StHeaderBottomCont = styled.div`
         position: absolute;
         right: 0;
         bottom: -3px;
+        span.info{
+            display: flex;
+            align-items: center;
+        }
         img{
             width: 26px;
             margin-left: 10px;
@@ -111,6 +117,16 @@ const StHeaderBottomCont = styled.div`
         color: var(--white);
         margin-left: 20px;
         cursor: pointer;
+    }
+    @media (max-width: 763px){
+        display: flex;
+        flex-direction: column;
+        .theater{
+            position: unset;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
     }
 `
 

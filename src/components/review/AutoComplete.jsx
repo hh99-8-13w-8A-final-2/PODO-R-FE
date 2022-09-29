@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ReactComponent as Search } from '../../assets/img/search.svg'
+import { ReactComponent as SearchSmall } from '../../assets/img/searchSmall.svg'
 import { useQuery, useMutation, useQueryClient } from "react-query"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -48,6 +49,36 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
 
   const handleDropDownKey = event => {
     //input에 값이 있을때만 작동
+    if(inputValue !== '' && dropDownItemIndex === -1) {
+      if (event.key === 'Enter') {
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerygrade = searchParams.getAll('grade')
+        const prevQueryfloor = searchParams.getAll('floor')
+        const prevQuerysection = searchParams.getAll('section')
+        const prevQueryrow = searchParams.getAll('row')
+        const prevQueryseat = searchParams.getAll('seat')
+  
+        setSearchParams({
+          tag: [...prevQueryTag],
+          sort: [...prevQuerySort],
+          grade: [...prevQuerygrade],
+          floor: [...prevQueryfloor],
+          section: [...prevQuerysection],
+          row: [...prevQueryrow],
+          seat: [...prevQueryseat],
+          evaluation: [...prevQueryEval],
+          search: inputValue
+        });
+        setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+        setInputValue('')
+        setIsHaveInputValue(false)
+  
+        postMutation.mutate(inputValue)
+      }
+    }
+
     if (isHaveInputValue) {
       if (
         event.key === 'ArrowDown' &&
@@ -84,31 +115,33 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
   }
 
   const inputValueHandler = () => {
-    const prevQueryEval = searchParams.getAll('evaluation');
-    const prevQueryTag = searchParams.getAll('tag');
-    const prevQuerySort = searchParams.getAll('sort');
-    const prevQuerygrade = searchParams.getAll('grade')
-    const prevQueryfloor = searchParams.getAll('floor')
-    const prevQuerysection = searchParams.getAll('section')
-    const prevQueryrow = searchParams.getAll('row')
-    const prevQueryseat = searchParams.getAll('seat')
-
-    setSearchParams({
-      tag: [...prevQueryTag],
-      sort: [...prevQuerySort],
-      grade: [...prevQuerygrade],
-      floor: [...prevQueryfloor],
-      section: [...prevQuerysection],
-      row: [...prevQueryrow],
-      seat: [...prevQueryseat],
-      evaluation: [...prevQueryEval],
-      search: inputValue
-    });
-    setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
-    setInputValue('')
-    setIsHaveInputValue(false)
-
-    postMutation.mutate(inputValue)
+    if(isHaveInputValue) {
+      const prevQueryEval = searchParams.getAll('evaluation');
+      const prevQueryTag = searchParams.getAll('tag');
+      const prevQuerySort = searchParams.getAll('sort');
+      const prevQuerygrade = searchParams.getAll('grade')
+      const prevQueryfloor = searchParams.getAll('floor')
+      const prevQuerysection = searchParams.getAll('section')
+      const prevQueryrow = searchParams.getAll('row')
+      const prevQueryseat = searchParams.getAll('seat')
+  
+      setSearchParams({
+        tag: [...prevQueryTag],
+        sort: [...prevQuerySort],
+        grade: [...prevQuerygrade],
+        floor: [...prevQueryfloor],
+        section: [...prevQuerysection],
+        row: [...prevQueryrow],
+        seat: [...prevQueryseat],
+        evaluation: [...prevQueryEval],
+        search: inputValue
+      });
+      setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+      setInputValue('')
+      setIsHaveInputValue(false)
+  
+      postMutation.mutate(inputValue)
+    }
   }
 
   return (
@@ -119,6 +152,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
           value={inputValue}
           onChange={changeInputValue}
           onKeyUp={handleDropDownKey}
+          placeholder="본문 내용을 입력해주세요"
         />
         <SearchButton onClick={inputValueHandler}><Search /></SearchButton>
       </InputBox>
@@ -137,7 +171,9 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
                   dropDownItemIndex === dropDownIndex ? 'selected' : ''
                 }
               >
-                {dropDownItem}
+                <div>
+                  {dropDownItemIndex === dropDownIndex ? <SearchSmall fill='#BB63FF'/> : <SearchSmall fill='#888'/>}{dropDownItem}
+                </div>
                 <button onClick={(e) => deleteHandler(dropDownItem, e)}>
                   <FontAwesomeIcon icon={faXmark} />
                 </button>
@@ -153,6 +189,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
 
 const activeBorderRadius = '25px 25px 0 0'
 const inactiveBorderRadius = '25px 25px 25px 25px'
+const inactiveBorderBottom = 'none'
 
 const WholeBox = styled.div`
   padding: 10px;
@@ -174,6 +211,7 @@ const InputBox = styled.div`
   flex-direction: row;
   align-items: center;
   border: 1px solid var(--maincolor-1);
+  border-bottom: ${props => props.isHaveInputValue && inactiveBorderBottom};
   background-color: transparent;
   border-radius: ${props =>
     props.isHaveInputValue ? activeBorderRadius : inactiveBorderRadius};
@@ -188,19 +226,17 @@ const Input = styled.input`
   border: none;
   outline: none;
   font-size: 16px;
+  color: var(--white);
 `
 
 const SearchButton = styled.div`
   cursor: pointer;
-  svg {
-    width: 30px;
-  }
 `
 
 const DropDownBox = styled.ul`
   display: block;
   margin: 0 auto;
-  padding: 8px 0;
+  padding: 10px 24px;
   border: 1px solid var(--maincolor-1);
   background-color: transparent;
   color: #fff;
@@ -211,11 +247,16 @@ const DropDownBox = styled.ul`
 `
 
 const DropDownItem = styled.li`
-  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   transition: all 0.3s;
+  margin-bottom: 10px;
+  color: var(--gray-2);
+  div {
+    display: flex;
+    align-items: center;
+  }
   span {
     color: var(--gray-2);
   }

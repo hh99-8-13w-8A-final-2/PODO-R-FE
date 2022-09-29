@@ -125,4 +125,11 @@ const StRadioDiv=styled.div`
     label{
         color: var(--gray-2);
     }
+    @media (max-width: 763px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        >div{
+            width: 80%;
+        }
+    }
 `

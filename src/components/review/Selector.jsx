@@ -19,246 +19,247 @@ const Selector = ({ handleModal, theaterId }) => {
     const navigate = useNavigate();
     const [params] = useSearchParams();
     const query = Object.fromEntries([...params]);
-  
-    const [Data, setData] = useState([]); //좌석 정보
-    const [Data1,setData1] =useState([]); //1층 섹션, row 정보
-    const [Data2,setData2] =useState([]); //2층 섹션, row 정보
-    const [Data3,setData3] =useState([]); //3층 섹션, row 정보
-    const [Data4,setData4] =useState([]); //발코니 섹션, row 정보
-    const floorOptions =[]; //층 select에 넣어주는 값
-    const sectionOptions =[]; //구역 select에 넣어주는 값
-    const rowOptions =[]; //열 select에 넣어주는 값
-    const [selectGrade, setSelectGrade] = useState({value : '0', label:'좌석 등급'}); //선택한 등급
-    const [selectFloor, setSelectFloor] = useState({value : '0', label:'층'}); //선택한 층
-    const [selectSection, setSelectSection] = useState({value : '100', label: '구역'}); //선택한 구역
-    const [selectRow, setSelectRow] = useState({value : '0', label: '열'}); //선택한 열
-    const [seatNumber, setSeatNumber] =useState();//입력한 좌석
 
-    const getSeat = async() => {
-        if(theaterId === undefined){return}
+    const [Data, setData] = useState([]); //좌석 정보
+    const [Data1, setData1] = useState([]); //1층 섹션, row 정보
+    const [Data2, setData2] = useState([]); //2층 섹션, row 정보
+    const [Data3, setData3] = useState([]); //3층 섹션, row 정보
+    const [Data4, setData4] = useState([]); //발코니 섹션, row 정보
+    const floorOptions = []; //층 select에 넣어주는 값
+    const sectionOptions = []; //구역 select에 넣어주는 값
+    const rowOptions = []; //열 select에 넣어주는 값
+    const [selectGrade, setSelectGrade] = useState({ value: '0', label: '좌석 등급' }); //선택한 등급
+    const [selectFloor, setSelectFloor] = useState({ value: '0', label: '층' }); //선택한 층
+    const [selectSection, setSelectSection] = useState({ value: '100', label: '구역' }); //선택한 구역
+    const [selectRow, setSelectRow] = useState({ value: '0', label: '열' }); //선택한 열
+    const [seatNumber, setSeatNumber] = useState();//입력한 좌석
+
+    const getSeat = async () => {
+        if (theaterId === undefined) { return }
         /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
-  
+
         setData(data)
-        for(var i in data){
-            if(i === '0'){
+        for (var i in data) {
+            if (i === '0') {
                 const data = res.data[i].sections
                 setData1(data)
-            }else if(i === '1'){
+            } else if (i === '1') {
                 const data = res.data[i].sections
                 setData2(data)
-            }else if(i === '2'){
+            } else if (i === '2') {
                 const data = res.data[i].sections
                 setData3(data)
-            }else{
+            } else {
                 const data = res.data[i].sections
                 setData4(data)
             }
         }
-    }; 
-    useEffect(()=>{
+    };
+    useEffect(() => {
         getSeat();
-     },[theaterId]);
-    for (var floor in Data){
+    }, [theaterId]);
+    for (var floor in Data) {
         const data1 = Data[floor]
-        floorOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+        floorOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
     }
-    if (selectFloor.value === "1층"){
-        for (var section in Data1){
+    if (selectFloor.value === "1층") {
+        for (var section in Data1) {
             const data1 = Data1[section]
-            if(data1.section === "0"){
-                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
-            }else{
-                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            if (data1.section === "0") {
+                sectionOptions.push({ "value": "0", "label": "구역 없음" })
+            } else {
+                sectionOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
             }
         }
-        const rowdata = Data1.findIndex( (e) => e.section === selectSection.value)
-        if(rowdata !== -1){
-            for(var rows in Data1[rowdata].rows){
+        const rowdata = Data1.findIndex((e) => e.section === selectSection.value)
+        if (rowdata !== -1) {
+            for (var rows in Data1[rowdata].rows) {
                 const data1 = Data1[rowdata].rows[rows]
-                if(data1 === "0"){
-                    rowOptions.push({"value" : "0" , "label":"열 없음"})
-                }else{
-                    if(Object.values(data1).length === 1){
-                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
-                    }else{
-                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                if (data1 === "0") {
+                    rowOptions.push({ "value": "0", "label": "열 없음" })
+                } else {
+                    if (Object.values(data1).length === 1) {
+                        rowOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+                    } else {
+                        rowOptions.push({ "value": Object.values(data1)[0] + Object.values(data1)[1], "label": Object.values(data1)[0] + Object.values(data1)[1] })
                     }
-                } 
+                }
             }
         }
-    }else if (selectFloor.value === "2층"){
-        for (var section in Data2){
+    } else if (selectFloor.value === "2층") {
+        for (var section in Data2) {
             const data1 = Data2[section]
-            if(data1.section === "0"){
-                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
-            }else{
-                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            if (data1.section === "0") {
+                sectionOptions.push({ "value": "0", "label": "구역 없음" })
+            } else {
+                sectionOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
             }
         }
-        const rowdata = Data2.findIndex( (e) => e.section === selectSection.value)
-        if(rowdata !== -1){
-            for(var rows in Data2[rowdata].rows){
+        const rowdata = Data2.findIndex((e) => e.section === selectSection.value)
+        if (rowdata !== -1) {
+            for (var rows in Data2[rowdata].rows) {
                 const data1 = Data2[rowdata].rows[rows]
-                if(data1 === "0"){
-                    rowOptions.push({"value" : "0" , "label":"열 없음"})
-                }else{
-                    if(Object.values(data1).length === 1){
-                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
-                    }else{
-                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                if (data1 === "0") {
+                    rowOptions.push({ "value": "0", "label": "열 없음" })
+                } else {
+                    if (Object.values(data1).length === 1) {
+                        rowOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+                    } else {
+                        rowOptions.push({ "value": Object.values(data1)[0] + Object.values(data1)[1], "label": Object.values(data1)[0] + Object.values(data1)[1] })
                     }
-                } 
+                }
             }
         }
-    }else if (selectFloor.value === "3층" || "발코니"){
-        for (var section in Data3){
+    } else if (selectFloor.value === "3층" || "발코니") {
+        for (var section in Data3) {
             const data1 = Data3[section]
-            if(data1.section === "0"){
-                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
-            }else{
-                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            if (data1.section === "0") {
+                sectionOptions.push({ "value": "0", "label": "구역 없음" })
+            } else {
+                sectionOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
             }
         }
-        const rowdata = Data3.findIndex( (e) => e.section === selectSection.value)
-        if(rowdata !== -1){
-            for(var rows in Data3[rowdata].rows){
+        const rowdata = Data3.findIndex((e) => e.section === selectSection.value)
+        if (rowdata !== -1) {
+            for (var rows in Data3[rowdata].rows) {
                 const data1 = Data3[rowdata].rows[rows]
-                if(data1 === "0"){
-                    rowOptions.push({"value" : "0" , "label":"열 없음"})
-                }else{
-                    if(Object.values(data1).length === 1){
-                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
-                    }else{
-                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                if (data1 === "0") {
+                    rowOptions.push({ "value": "0", "label": "열 없음" })
+                } else {
+                    if (Object.values(data1).length === 1) {
+                        rowOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+                    } else {
+                        rowOptions.push({ "value": Object.values(data1)[0] + Object.values(data1)[1], "label": Object.values(data1)[0] + Object.values(data1)[1] })
                     }
-                } 
+                }
             }
         }
-    }else if (selectFloor.value === "발코니"){
-        for (var section in Data4){
+    } else if (selectFloor.value === "발코니") {
+        for (var section in Data4) {
             const data1 = Data4[section]
-            if(data1.section === "0"){
-                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
-            }else{
-                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            if (data1.section === "0") {
+                sectionOptions.push({ "value": "0", "label": "구역 없음" })
+            } else {
+                sectionOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
             }
         }
-        const rowdata = Data4.findIndex( (e) => e.section === selectSection.value)
-        if(rowdata !== -1){
-            for(var rows in Data4[rowdata].rows){
+        const rowdata = Data4.findIndex((e) => e.section === selectSection.value)
+        if (rowdata !== -1) {
+            for (var rows in Data4[rowdata].rows) {
                 const data1 = Data4[rowdata].rows[rows]
-                if(data1 === "0"){
-                    rowOptions.push({"value" : "0" , "label":"열 없음"})
-                }else{
-                    if(Object.values(data1).length === 1){
-                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
-                    }else{
-                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                if (data1 === "0") {
+                    rowOptions.push({ "value": "0", "label": "열 없음" })
+                } else {
+                    if (Object.values(data1).length === 1) {
+                        rowOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+                    } else {
+                        rowOptions.push({ "value": Object.values(data1)[0] + Object.values(data1)[1], "label": Object.values(data1)[0] + Object.values(data1)[1] })
                     }
-                } 
+                }
             }
         }
     }
-    else{}
+    else { }
 
-    const onChangeSeat = (e) =>{
+    const onChangeSeat = (e) => {
         setSeatNumber(e.target.value)
     } // 좌석 시트 값
-    
+
     const onClickReset = () => {
-        setSelectGrade({value : '0', label:'좌석 등급'})
-        setSelectFloor({value : '0', label:'층'})
-        setSelectSection({value : '100', label:'구역'}) 
-        setSelectRow({value : '0', label: '열'}) 
+        setSelectGrade({ value: '0', label: '좌석 등급' })
+        setSelectFloor({ value: '0', label: '층' })
+        setSelectSection({ value: '100', label: '구역' })
+        setSelectRow({ value: '0', label: '열' })
         setSeatNumber(undefined)
         // 좌석 초기화
     }
     let [searchParams, setSearchParams] = useSearchParams();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
-    
-    const ClickSeatSerch = () =>{
+
+    const ClickSeatSerch = () => {
         const grade = selectGrade.value
         const floor = selectFloor.value
         const section = selectSection.value
         const row = selectRow.value
         const seat = seatNumber
+        console.log(seat)
 
         const prevQueryTag = searchParams.getAll('tag');
         const prevQueryEval = searchParams.getAll('evaluation');
         const prevQuerySort = searchParams.getAll('sort');
         const prevQuerySearch = searchParams.getAll('search');
-        if(grade === '0' && floor === '0' && section === '100' && row === '0' && seat === undefined) {
+        if (grade === '0' && floor === '0' && section === '100' && row === '0' && seat === undefined) {
             setTagUrl('')
             navigate(`/musicals/${musicalId}/reviews`)
             return
         }
-        if(grade === '0' && section === '100' && floor >= '1') {
+        if (grade === '0' && section === '100' && floor >= '1') {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                floor : `${floor}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+                floor: `${floor}`
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
             return
         }
 
-        if(grade === '0' && floor >= '1' && row === '0') {
+        if (grade === '0' && floor >= '1' && row === '0') {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                floor : `${floor}`,
+                floor: `${floor}`,
                 section: `${section}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
             return
         }
 
-        if(grade === '0' && floor >= '1' && seat === undefined) {
+        if (grade === '0' && floor >= '1' && seat === undefined) {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                floor : `${floor}`,
+                floor: `${floor}`,
                 section: `${section}`,
-                row:`${row}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+                row: `${row}`
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
             return
         }
 
-        if(grade === '0' && floor >= '1' && seat !== undefined) {
+        if (grade === '0' && floor >= '1' && seat !== undefined) {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                floor : `${floor}`,
+                floor: `${floor}`,
                 section: `${section}`,
-                row:`${row}`,
-                seat:`${seat}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+                row: `${row}`,
+                seat: `${seat}`
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
             return
         }
 
-        if(grade === '0' && floor >= '1' && seat === '') {
+        if (grade === '0' && floor >= '1' && seat === '') {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                floor : `${floor}`,
+                floor: `${floor}`,
                 section: `${section}`,
-                row:`${row}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+                row: `${row}`
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
             return
         }
 
@@ -268,10 +269,10 @@ const Selector = ({ handleModal, theaterId }) => {
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                grade :`${grade}`,
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-              return
+                grade: `${grade}`,
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+            return
         }
 
         if (section === '100') {
@@ -280,11 +281,11 @@ const Selector = ({ handleModal, theaterId }) => {
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                grade :`${grade}`,
-                floor : `${floor}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-              return
+                grade: `${grade}`,
+                floor: `${floor}`
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+            return
         }
 
         if (row === '0') {
@@ -293,78 +294,88 @@ const Selector = ({ handleModal, theaterId }) => {
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                grade :`${grade}`,
-                floor : `${floor}`,
+                grade: `${grade}`,
+                floor: `${floor}`,
                 section: `${section}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-              return
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+            return
         }
-        if (seat !== undefined){
+        if (seat !== undefined) {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                grade :`${grade}`,
-                floor : `${floor}`,
+                grade: `${grade}`,
+                floor: `${floor}`,
                 section: `${section}`,
-                row:`${row}`,
-                seat:`${seat}`
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-              return
+                row: `${row}`,
+                seat: `${seat}`
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+            return
         }
-        if (seat === undefined){
+        if (seat === undefined) {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                grade :`${grade}`,
-                floor : `${floor}`,
+                grade: `${grade}`,
+                floor: `${floor}`,
                 section: `${section}`,
-                row:`${row}`,
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-              return
+                row: `${row}`,
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+            return
         }
-        if (seat === ''){
+        if (seat === '') {
             setSearchParams({
                 tag: [...prevQueryTag],
                 evaluation: [...prevQueryEval],
                 sort: [...prevQuerySort],
                 search: [...prevQuerySearch],
-                grade :`${grade}`,
-                floor : `${floor}`,
+                grade: `${grade}`,
+                floor: `${floor}`,
                 section: `${section}`,
-                row:`${row}`,
-              });
-              setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-              return
+                row: `${row}`,
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+            return
         }
-        
+
     }
 
     const fetchTags = () => {
         //return axios.get(`${URI.BASE}/api/tags`)
         return apis.getFetchTags(musicalId)
-      }
-    
+    }
+
     const { status, data, error } = useQuery('/getTags', fetchTags,
         {
             staleTime: 1000,
             refetchOnWindowFocus: false,
         }
     )
-    
+    window.onload = function() {
+        const number = document.getElementById('seat');
+        number.onkeydown = function(e) {
+            if(!((e.keyCode > 95 && e.keyCode < 106)
+              || (e.keyCode > 47 && e.keyCode < 58) 
+              || e.keyCode == 8)) {
+                return false;
+            }
+        }
+    }
+
     const [tagUrl, setTagUrl] = useState('');
     const wholeTagsArray = data?.data.tags;
     const [isTagCheck, setIsTagCheck] = useState(Array(15).fill(false))
     const [isEvalCheck, setIsEvalCheck] = useState(Array(4).fill(false))
     let update = require('immutability-helper');
 
-    const handleCheck  = (e) =>{
+    const handleCheck = (e) => {
         const key = parseInt(e.target.alt)
         let newData = update(isTagCheck, {
             $splice: [[key, 1, !isTagCheck[key]]]
@@ -385,37 +396,37 @@ const Selector = ({ handleModal, theaterId }) => {
         // 이전에 가지고 있던 query를 불러오기
         // 여러개가 될 수 있어, getAll 메서드를 사용했다.
         // 하나라면, get을 사용할 수 있을 것이다.
-    
+
         if (prevQueryTag.includes(currentQuery)) {
-          // 이전에 가지고 있던 쿼리가, 타겟의 쿼리를 가지고 있다면 (한번 더 눌렀다면)
-          // 현재 누른 타겟의 쿼리는 제거해주자.
-          const newQuery = prevQueryTag.filter((query) => query !== currentQuery);
-          setSearchParams({
-            evaluation: [...prevQueryEval],
-            sort: [...prevQuerySort],
-            grade: [...prevQuerygrade],
-            floor: [...prevQueryfloor],
-            section: [...prevQuerysection],
-            row: [...prevQueryrow],
-            seat: [...prevQueryseat],
-            search: [...prevQuerySearch],
-            tag: newQuery, 
-          });
-          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            // 이전에 가지고 있던 쿼리가, 타겟의 쿼리를 가지고 있다면 (한번 더 눌렀다면)
+            // 현재 누른 타겟의 쿼리는 제거해주자.
+            const newQuery = prevQueryTag.filter((query) => query !== currentQuery);
+            setSearchParams({
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                grade: [...prevQuerygrade],
+                floor: [...prevQueryfloor],
+                section: [...prevQuerysection],
+                row: [...prevQueryrow],
+                seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
+                tag: newQuery,
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
         } else {
-          // 아니라면, 쿼리를 추가해주자.
-          setSearchParams({
-            evaluation: [...prevQueryEval],
-            sort: [...prevQuerySort],
-            grade: [...prevQuerygrade],
-            floor: [...prevQueryfloor],
-            section: [...prevQuerysection],
-            row: [...prevQueryrow],
-            seat: [...prevQueryseat],
-            search: [...prevQuerySearch],
-            tag: [...prevQueryTag, currentQuery]
-          });
-          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            // 아니라면, 쿼리를 추가해주자.
+            setSearchParams({
+                evaluation: [...prevQueryEval],
+                sort: [...prevQuerySort],
+                grade: [...prevQuerygrade],
+                floor: [...prevQueryfloor],
+                section: [...prevQuerysection],
+                row: [...prevQueryrow],
+                seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
+                tag: [...prevQueryTag, currentQuery]
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
         }
     }
 
@@ -437,40 +448,40 @@ const Selector = ({ handleModal, theaterId }) => {
         const prevQueryrow = searchParams.getAll('row')
         const prevQueryseat = searchParams.getAll('seat')
         const prevQuerySearch = searchParams.getAll('search');
-    
+
         if (prevQueryEval.includes(currentQuery)) {
-          const newQuery = prevQueryEval.filter((query) => query !== currentQuery);
-          setSearchParams({
-            tag: [...prevQueryTag],
-            sort: [...prevQuerySort],
-            grade: [...prevQuerygrade],
-            floor: [...prevQueryfloor],
-            section: [...prevQuerysection],
-            row: [...prevQueryrow],
-            seat: [...prevQueryseat],
-            search: [...prevQuerySearch],
-            evaluation: newQuery
-          });
-          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            const newQuery = prevQueryEval.filter((query) => query !== currentQuery);
+            setSearchParams({
+                tag: [...prevQueryTag],
+                sort: [...prevQuerySort],
+                grade: [...prevQuerygrade],
+                floor: [...prevQueryfloor],
+                section: [...prevQuerysection],
+                row: [...prevQueryrow],
+                seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
+                evaluation: newQuery
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
         } else {
-          setSearchParams({
-            tag: [...prevQueryTag],
-            sort: [...prevQuerySort],
-            grade: [...prevQuerygrade],
-            floor: [...prevQueryfloor],
-            section: [...prevQuerysection],
-            row: [...prevQueryrow],
-            seat: [...prevQueryseat],
-            search: [...prevQuerySearch],
-            evaluation: [...prevQueryEval, currentQuery]
-          });
-          setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+            setSearchParams({
+                tag: [...prevQueryTag],
+                sort: [...prevQuerySort],
+                grade: [...prevQuerygrade],
+                floor: [...prevQueryfloor],
+                section: [...prevQuerysection],
+                row: [...prevQueryrow],
+                seat: [...prevQueryseat],
+                search: [...prevQuerySearch],
+                evaluation: [...prevQueryEval, currentQuery]
+            });
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
         }
     }
 
     const [isOrderCheck, setIsOrderCheck] = useState(Array(2).fill(false))
 
-    const handleOrderCheck  = (e) =>{
+    const handleOrderCheck = (e) => {
         const key = parseInt(e.target.alt)
         let newData = update(isOrderCheck, {
             $splice: [[key, 1, !isOrderCheck[key]]]
@@ -501,8 +512,8 @@ const Selector = ({ handleModal, theaterId }) => {
                 search: [...prevQuerySearch],
                 sort: newQuery
             });
-            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-          } else {
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+        } else {
             setSearchParams({
                 tag: [...prevQueryTag],
                 eval: [...prevQueryEval],
@@ -514,11 +525,11 @@ const Selector = ({ handleModal, theaterId }) => {
                 search: [...prevQuerySearch],
                 sort: [...prevQuerySort, currentQuery]
             });
-            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
-          }
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+        }
     }
 
-    
+
     const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
         { value: 'OP', label: 'OP' },
@@ -528,73 +539,123 @@ const Selector = ({ handleModal, theaterId }) => {
     ]
 
     useEffect(() => {
-        if(window.location.href.split('?').splice(1,1).toString() === '') {
+        if (window.location.href.split('?').splice(1, 1).toString() === '') {
             setTagUrl('')
-        }else {
-            setTagUrl('&' + window.location.href.split('?').splice(1,1).toString())
+        } else {
+            setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
             let checking = sessionStorage.getItem('tagCheck')
-            if(typeof(checking) === 'string') {
+            if (typeof (checking) === 'string') {
                 let checkingBool = (checking.split(',')).map(check => JSON.parse(check))
                 setIsTagCheck(checkingBool)
             }
 
             let evalChecking = sessionStorage.getItem('evalCheck')
-            if(typeof(evalChecking) === 'string') {
+            if (typeof (evalChecking) === 'string') {
                 let evalCheckingBool = (evalChecking.split(',')).map(check => JSON.parse(check))
                 setIsEvalCheck(evalCheckingBool)
             }
             let orderChecking = sessionStorage.getItem('orderCheck')
-            if(typeof(orderChecking) === 'string') {
+            if (typeof (orderChecking) === 'string') {
                 let orderCheckingBool = (orderChecking.split(',')).map(check => JSON.parse(check))
                 setIsOrderCheck(orderCheckingBool)
             }
             sessionStorage.clear()
         }
-    },[])
-    
+    }, [])
+
+    const keyUpHandler = (event) => {
+        const grade = selectGrade.value
+        const floor = selectFloor.value
+        const section = selectSection.value
+        const row = selectRow.value
+        const seat = seatNumber
+
+        const prevQueryTag = searchParams.getAll('tag');
+        const prevQueryEval = searchParams.getAll('evaluation');
+        const prevQuerySort = searchParams.getAll('sort');
+        const prevQuerySearch = searchParams.getAll('search');
+        if (event.key === "Enter") {
+            if (seat === undefined || seat === '') {
+                return
+            }
+            if (seat !== undefined && grade === '0') {
+                setSearchParams({
+                    tag: [...prevQueryTag],
+                    evaluation: [...prevQueryEval],
+                    sort: [...prevQuerySort],
+                    search: [...prevQuerySearch],
+                    floor: `${floor}`,
+                    section: `${section}`,
+                    row: `${row}`,
+                    seat: `${seat}`
+                });
+                setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+                return
+            }
+            if (seat !== undefined && grade !== '0') {
+                setSearchParams({
+                    tag: [...prevQueryTag],
+                    evaluation: [...prevQueryEval],
+                    sort: [...prevQuerySort],
+                    search: [...prevQuerySearch],
+                    grade: `${grade}`,
+                    floor: `${floor}`,
+                    section: `${section}`,
+                    row: `${row}`,
+                    seat: `${seat}`
+                });
+                setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+                return
+            }
+        }
+    }
 
 
 
-    if(status === 'loading'){return <div className='popularBox'></div>}
-    if(status === 'error'){return <div className='popularBox'><p>Error:{error.message}</p></div>}
-    
-   
+    if (status === 'loading') { return <div className='popularBox'></div> }
+    if (status === 'error') { return <div className='popularBox'><p>Error:{error.message}</p></div> }
+
+
     return (
         <div>
             <StFilterTopDiv>
-                <AutoComplete setTagUrl={setTagUrl} setSearchParams={setSearchParams} searchParams={searchParams}/>
+                <AutoComplete setTagUrl={setTagUrl} setSearchParams={setSearchParams} searchParams={searchParams} />
                 <div>
                     <StCheckbox>
-                    {wholeTagsArray.map((tag, index) => (
-                        <Fragment key={tag}>
-                            <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) =>handleCheck(e)} defaultChecked={isTagCheck[index]}/>
-                            <label htmlFor={tag}>{tag}</label>
-                        </Fragment>
+                        {wholeTagsArray.map((tag, index) => (
+                            <Fragment key={tag}>
+                                <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) => handleCheck(e)} defaultChecked={isTagCheck[index]} />
+                                <label htmlFor={tag}>{tag}</label>
+                            </Fragment>
                         ))}
                     </StCheckbox>
                 </div>
             </StFilterTopDiv>
-            <StFilterDiv className='bottom' style={{marginBottom:'50px'}}>
+            <StFilterDiv className='bottom' style={{ marginBottom: '50px' }}>
                 <div className='left'>
                     <Select placeholder='좌석등급' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={gradeOptions} onChange={setSelectGrade} value={selectGrade} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
+                    })} options={gradeOptions} onChange={setSelectGrade} value={selectGrade} />
                     <Select placeholder='층' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={floorOptions}  onChange={setSelectFloor} value={selectFloor} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
+                    })} options={floorOptions} onChange={setSelectFloor} value={selectFloor} />
                     <Select placeholder='구역' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={sectionOptions} onChange={setSelectSection} value={selectSection} />
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
+                    })} options={sectionOptions} onChange={setSelectSection} value={selectSection} />
                     <Select placeholder='열' theme={(theme) => ({
-                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)'},})} options={rowOptions} onChange={setSelectRow} value={selectRow}  />
-                        <div className='inputSeat'>
-                        <input type="number"  id='seat' name='seat' placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} />  
-                        <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset}/></span>
+                        ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
+                    })} options={rowOptions} onChange={setSelectRow} value={selectRow} />
+                    <div className='inputSeat'>
+                        <input type="number" id='seat' name='seat' min="0" placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} onKeyUp={keyUpHandler} />
+                        <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset} /></span>
                     </div>
-                    <Search className='icon' onClick={ClickSeatSerch}/>
+                    <Search className='icon' onClick={ClickSeatSerch} />
                 </div>
                 <div className='right'>
-                    <RadioSelector query={query} navigate={navigate} params ={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck}/>
+                    <RadioSelector query={query} navigate={navigate} params={params} handleEvalCheck={handleEvalCheck} isEvalCheck={isEvalCheck} isOrderCheck={isOrderCheck} handleOrderCheck={handleOrderCheck} />
                 </div>
             </StFilterDiv >
-            <Review handleModal={handleModal} theaterId={theaterId} tagUrl={tagUrl}/>
+            <Review handleModal={handleModal} theaterId={theaterId} tagUrl={tagUrl} />
         </div>
     );
 };
@@ -663,6 +724,11 @@ const StFilterDiv = styled.div`
             }
         }
         img {cursor: pointer;}
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button{
+            -webkit-appearance: none;
+            margin: 0;
+        }
     }
     .right{
         display: flex;
@@ -679,10 +745,10 @@ const StFilterDiv = styled.div`
                 }
             }
         }
-        input[type="checkbox"],input[type="radio"] {
+        input[type="checkbox"] {
             display:none;
         }
-        input[type="checkbox"] + label, input[type="radio"] + label{
+        input[type="checkbox"] + label {
             color: var(--gray-2);
             transition: all .3s;
             img{
@@ -694,14 +760,14 @@ const StFilterDiv = styled.div`
             }
         }
     
-        input[type="checkbox"]:checked + label, input[type="radio"]:checked + label {
+        input[type="checkbox"]:checked + label {
             color: var(--white);
             font-weight: 500;
             img{
                 filter: invert(1);
             }
         }
-        input[type="radio"]:checked + label{
+        input[type="checkbox"]:checked + label{
             img{
                 filter:contrast(1)
             }
@@ -709,7 +775,7 @@ const StFilterDiv = styled.div`
     }
 `
 
-const StCheckbox =styled.div`
+const StCheckbox = styled.div`
     width: 1400px;
     height: 40px;
     overflow: hidden;
