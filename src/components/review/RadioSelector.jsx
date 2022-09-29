@@ -4,13 +4,14 @@ import view from '../../assets/img/view.svg'
 import sound from '../../assets/img/sound.svg'
 import light from '../../assets/img/light.svg'
 import up_small from '../../assets/img/up_small.svg'
+import styled from 'styled-components';
 
 const RadioSelector = ({handleEvalCheck, isEvalCheck, isOrderCheck, handleOrderCheck}) => {
      
    
     
     return (
-        <>
+        <StCheckBoxDiv>
           <div>
                 <input type="checkbox" id='gap' alt='0' data-query='단차좋음' name='gap' onChange={(e) => handleEvalCheck(e)} defaultChecked={isEvalCheck[0]}/>
                 <label htmlFor="gap"> <img src={gap} alt="" /> 단차좋음</label>
@@ -27,8 +28,26 @@ const RadioSelector = ({handleEvalCheck, isEvalCheck, isOrderCheck, handleOrderC
                 <input type="checkbox" id='new' alt='1' data-query='createdAt,desc' onChange={(e) => handleOrderCheck(e)} defaultChecked={isOrderCheck[1]}/>
                 <label htmlFor="new"> <img src={up_small} alt=""  className='up_small' />최신순</label>
             </div>  
-        </>
+        </StCheckBoxDiv>
     );
 };
+
+const StCheckBoxDiv = styled.div`
+    @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        div {
+            font-size: 20px;
+            width: 280px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-left: 0px;
+            label {
+                margin-bottom: 10px;
+            }
+        }
+    }
+`
 
 export default RadioSelector;
