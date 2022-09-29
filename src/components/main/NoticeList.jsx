@@ -83,11 +83,17 @@ const StDiv = styled.div`
         align-items: center;
         justify-content: center;
     }
+    @media (max-width: 763px){
+        width: 100%;
+    }
 `
 
 const StCont = styled.div`
     display: flex;
     justify-content: space-between;
+    @media (max-width: 763px){
+        flex-direction: column;
+    }
 `
 
 const StButtonLeft = styled.button`

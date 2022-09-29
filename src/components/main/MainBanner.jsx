@@ -79,6 +79,11 @@ const StMainBaanerSction = styled.div`
     }
     .swiper-pagination-bullet {background-color:var(--gray-2)}
     margin-bottom: 70px;
+    @media (max-width: 763px){
+        .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after, .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after{
+            display: none;
+        }
+    }
 `
 
 const StMainBanner = styled.div`
@@ -95,10 +100,6 @@ const StMainBanner = styled.div`
     justify-content: center;
     cursor: pointer;
     div {
-        /* position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 200px; */
         color: var(--white);
         p {
             font-size: 2em;
@@ -113,6 +114,25 @@ const StMainBanner = styled.div`
             /* background-color: var(--maincolor-2); */
             border-radius: 40px;
             color: var(--maincolor-1)
+        }
+    }
+    @media (max-width: 763px){
+        width: 100%;
+        height:200px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        div{
+            p{
+                font-size: 1em;
+            }
+            .button{
+                font-size: 1em;
+                padding: 5px 10px;
+                margin-top: 20px;
+            }
+        }
+        .swiper-pagination{
+            margin-top: 20px
         }
     }
 `

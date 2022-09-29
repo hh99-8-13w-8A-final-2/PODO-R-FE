@@ -21,10 +21,10 @@ const KakaoLogin = () => {
       {isLogin ? (
         <div></div>
       ) : (
-        <div onClick={handleModal}>
-          <StLoginIcon loginIcon={loginIcon} />
+        <StLoginIcon onClick={handleModal}>
+          <img src={loginIcon} alt="로그인"/>
           <StLoginTxt>로그인</StLoginTxt>
-        </div>
+        </StLoginIcon>
       )}
 
       <ModalPortal>
@@ -47,7 +47,7 @@ export default KakaoLogin;
 
 const StContentbox = styled.div`
   display: flex;
-  width: 63px;
+  
   button {
     padding: 10px;
     border-radius: 8px;
@@ -65,14 +65,23 @@ const StContentbox = styled.div`
 `;
 
 const StLoginIcon = styled.div`
-  width: 20px;
-  height: 16px;
   align-items: center;
-  background: ${(props) => `url(${props.loginIcon})`} no-repeat;
-  cursor: pointer;
+  >img {
+    cursor: pointer;
+    margin-right: 10px;
+    width: 20px;
+  }
+  span{
+    display: block;
+    
+  }
+  
 `;
 const StLoginTxt = styled.span`
   cursor: pointer;
+  @media (max-width: 763px){
+    display: none;
+  }
 `;
 
 const StLoginBox = styled.div`

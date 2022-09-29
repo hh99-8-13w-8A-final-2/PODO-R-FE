@@ -35,4 +35,9 @@ const StMyPageBtn = styled.div`
   svg {
     width: 20px;
   }
+  @media (max-width: 763px){
+    span{
+      display: none;
+    }
+  }
 `;

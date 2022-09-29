@@ -385,7 +385,7 @@ margin: 0 auto;
        }
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 763px) {
         width: 100%;
         h4{
             margin: 50px 0 20px;
@@ -418,7 +418,7 @@ const StTopSelectDiv = styled.div`
     .css-1okebmr-indicatorSeparator{
         background-color: transparent;
     }
-    @media (max-width: 767px) {
+    @media (max-width: 763px) {
         width: 100%;
         flex-direction: column;
         >div{

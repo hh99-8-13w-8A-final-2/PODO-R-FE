@@ -15,13 +15,19 @@ const TicketList = ({status, data, error }) => {
     return (
         <StListDiv>
         <Swiper
-          slidesPerView={6}
-          spaceBetween={30}
+          slidesPerView={3}
+          spaceBetween={100}
           centeredSlides={false}
           pagination={{
             clickable: true,
           }}
           initialSlide={0}
+          breakpoints={{
+            763: {
+                slidesPerView: 6,
+                spaceBetween: 30
+            }
+          }}
           
           //modules={[Pagination]}
           className="mySwiper"
@@ -49,10 +55,13 @@ export default TicketList;
 const StListDiv =styled.div`
     .swiper-pagination-bullet {background-color:var(--gray-2)}
     margin-bottom: 70px;
+    @media (max-width: 763px){
+        margin-bottom: 30px;
+    }
 `
 const StDiv = styled.div`
     width: 200px;
-    height: 280px;
+    height: 300px;
     background:linear-gradient(0deg, #111111ae 100%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
     display: flex;
     flex-direction: column;
@@ -61,11 +70,15 @@ const StDiv = styled.div`
     box-sizing: border-box;
     position: relative;
     padding: 10px;
-    margin: 15px;
     line-height: 20px;
     cursor: pointer;
     border-radius: 20px;
     margin-bottom: 50px;
+    @media (max-width: 763px){
+        width: 160px;
+        height: 230px;
+        margin-bottom: 30px;
+    }
 `
 const StH4 = styled.h4`
     font-size: 20px;
@@ -83,6 +96,10 @@ const StH4 = styled.h4`
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    @media (max-width: 763px){
+        font-size:  1.1em;
+        width: 140px;
+    }
 `
 
 const StDiv1 = styled.div`
@@ -92,6 +109,9 @@ const StDiv1 = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    @media (max-width: 763px){
+        width: 140px;
+    }
 ` 
 
 const StDiv2 = styled.div`
@@ -101,4 +121,8 @@ const StDiv2 = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    @media (max-width: 763px){
+        width: 140px;
+        font-size: .7em;
+    }
 `

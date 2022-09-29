@@ -48,6 +48,10 @@ const StLi = styled.li`
     display: flex;
     justify-content: space-between;
     width: 690px;
+    @media (max-width: 763px){
+        width: 100%;
+        font-size: .9em;
+    }
 
 `
 
@@ -59,10 +63,16 @@ const StCont = styled.span`
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: pointer;
+    @media (max-width: 763px){
+        width: 300px;
+    }
 `
 
 const StDate = styled.span`
     padding: 10px;
+    @media (max-width: 763px){
+        padding: 0;
+    }
 `
 
 export default Notice;

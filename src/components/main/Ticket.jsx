@@ -43,6 +43,10 @@ const StWrapDiv = styled.div`
     a {
         text-decoration: none;
     }
+    @media (max-width: 763px){
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
+    }
 `
 
 const StDiv = styled.div`
@@ -61,6 +65,11 @@ const StDiv = styled.div`
     cursor: pointer;
     border-radius: 20px;
     margin-bottom: 50px;
+    @media (max-width: 763px){
+        width: 160px;
+        height: 230px;
+        margin-bottom: 30px;
+    }
 `
 const StH4 = styled.h4`
     font-size: 20px;
@@ -78,6 +87,10 @@ const StH4 = styled.h4`
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    @media (max-width: 763px){
+        font-size:  1.1em;
+        width: 140px;
+    }
 `
 
 const StDiv1 = styled.div`
@@ -87,6 +100,9 @@ const StDiv1 = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    @media (max-width: 763px){
+        width: 140px;
+    }
 ` 
 
 const StDiv2 = styled.div`
@@ -96,6 +112,10 @@ const StDiv2 = styled.div`
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    @media (max-width: 763px){
+        width: 140px;
+        font-size: .7em;
+    }
 `
 
 export default Ticket;

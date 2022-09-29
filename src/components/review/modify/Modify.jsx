@@ -306,6 +306,15 @@ const Modify = ({ data, setModify }) => {
     }
 
     
+    const number = document.getElementById('seat');
+    number.onkeydown = function(e) {
+        if(!((e.keyCode > 95 && e.keyCode < 106)
+          || (e.keyCode > 47 && e.keyCode < 58) 
+          || e.keyCode == 8)) {
+            return false;
+        }
+    }
+    
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
             <h4><span style={{ color: 'var(--error)' }}>*</span> 좌석정보</h4>
