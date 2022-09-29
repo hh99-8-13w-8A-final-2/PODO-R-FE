@@ -1,31 +1,32 @@
-import React from "react";
+import React , { useRef }from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from 'swiper';
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 
 const MyTicket = ({ data, setEachMusicalId }) => {
+  const swiperRef = useRef(null)
   const setMusicalIdHandler = (musicalId) => {
     setEachMusicalId(musicalId);
   };
 
   return (
     <StMyTicket>
+      <div
+        onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
+        onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
+        >
       <Swiper
-          slidesPerView={3}
-          spaceBetween={200}
-          // centeredSlides={true}
-          // pagination={{
-          //   clickable: true,
-          // }}
-          // loop={true}
-          // loopAdditionalSlides={1}
-          // initialSlide={0}
+          ref={swiperRef}
+          slidesPerView={2}
+          spaceBetween={10}
+          modules={[Pagination, Navigation]}
           breakpoints={{
             763: {
                 slidesPerView: 5,
-                spaceBetween: 200
+                spaceBetween: 10
             }
           }}
           
@@ -39,17 +40,20 @@ const MyTicket = ({ data, setEachMusicalId }) => {
         >
           <StDiv>
             <input type="radio" name="musicalBox" id={ticket.musicalId} />
-            <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
-              <StH3>{ticket.musicalName}</StH3>
-              <StDiv1>{ticket.musicalRegion}</StDiv1>
-              <StDiv2>
-                {ticket.openDate} ~ {ticket.closeDate}
-              </StDiv2>
-            </StLabel>
+            <div className="label">
+              <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
+                <StH3>{ticket.musicalName}</StH3>
+                <StDiv1>{ticket.musicalRegion}</StDiv1>
+                <StDiv2>
+                  {ticket.openDate} ~ {ticket.closeDate}
+                </StDiv2>
+              </StLabel>
+            </div>
           </StDiv>
         </SwiperSlide>
       ))}
       </Swiper>
+      </div>
     </StMyTicket>
   );
 };
@@ -58,11 +62,6 @@ export default MyTicket;
 
 const StMyTicket = styled.div`
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
   .swiper-pagination-bullet {background-color:var(--gray-2)}
     margin-bottom: 70px;
     @media (max-width: 763px){
@@ -70,19 +69,11 @@ const StMyTicket = styled.div`
     }
 `;
 
-const StTicket = styled.div`
-  width: 190px;
-  height: 190px;
-  border: 1px solid black;
-  margin: 20px;
-  border-radius: 10px;
-  @media screen and (max-width: 763px) {
-    width: 40%;
-  }
-`;
 
 const StDiv = styled.div`
   box-sizing: border-box;
+  width: 190px;
+  height: 190px;
   input {
     display: none;
   }
