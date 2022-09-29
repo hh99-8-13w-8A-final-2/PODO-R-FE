@@ -12,7 +12,7 @@ const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
   const nickname = localStorage.getItem("nickname");
 
-  const [newNickName, setNewNickName] = useState();
+  const [newNickName, setNewNickName] = useState(nickname);
   const [signupModalOn, setSignupModalOn] = useState(false);
   const [imagePreview, setImagePreview] = useState();
 
@@ -24,22 +24,27 @@ const UserProfile = () => {
     BASE: process.env.REACT_APP_BASE_URI,
   };
 
-  const { register, handleSubmit, watch, setFocus } = useForm({
+  const { register, handleSubmit, watch, setFocus, resetField } = useForm({
     mode: "onChange",
   });
   const imageUrl = watch("imgUrl");
+  console.log(imageUrl)
 
 
   const handleModal = (e) => {
     e.preventDefault();
     setSignupModalOn(!signupModalOn);
+    resetField("imgUrl")
+    setNameMessage("")
+    setIsName(false);
   };
 
   const onChangeHandler = (e) => {
-    setNewNickName(e.target.value);
-    if (e.target.value.length < 2 || e.target.value.length > 8) {
+    let { value } = {...e.target}
+    setNewNickName(()=> value);
+    if (value.length < 2 || value.length > 8 ) {
       setNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
-      setIsName(false);
+      setIsName(false);    
     } else {
       setNameMessage("올바른 형식입니다.");
       setIsName(true);
@@ -97,6 +102,7 @@ const UserProfile = () => {
     if (imageUrl && imageUrl.length > 0) {
       const file = imageUrl[0];
       setImagePreview(URL.createObjectURL(file));
+      setIsName(true);
     }
   }, [imageUrl]);
 
@@ -125,14 +131,14 @@ const UserProfile = () => {
                     {imageUrl === undefined || imageUrl.length === 0 ? (
                       <div>
                         <StLabel imgUrl={profilePic}>
-                          <input type="file" {...register("imgUrl")} />
+                          <input type="file" accept="image/png, image/jpeg" {...register("imgUrl")} />
                           <span>+</span>
                         </StLabel>
                       </div>
                     ) : (
                       <div>
                         <StLabel2 imgUrl={imagePreview}>
-                          <input type="file" {...register("imgUrl")} />
+                          <input type="file" accept="image/png, image/jpeg" {...register("imgUrl")} />
                         </StLabel2>
                       </div>
                     )}
@@ -145,7 +151,9 @@ const UserProfile = () => {
                         text="이름"
                         type="text"
                         onChange={onChangeHandler}
-                        placeholder={nickname}
+                        // placeholder={nickname}
+                        // value={nickname}
+                        defaultValue={nickname}
                       />
                     </div>
                     <div className="validity">
