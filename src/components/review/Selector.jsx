@@ -625,7 +625,7 @@ const Selector = ({ handleModal, theaterId }) => {
                         {wholeTagsArray.map((tag, index) => (
                             <Fragment key={tag}>
                                 <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) => handleCheck(e)} defaultChecked={isTagCheck[index]} />
-                                <label htmlFor={tag}>{tag}</label>
+                                <label htmlFor={tag}><div className='tagList'>{tag}</div></label>
                             </Fragment>
                         ))}
                     </StCheckbox>
@@ -647,8 +647,8 @@ const Selector = ({ handleModal, theaterId }) => {
                     })} options={rowOptions} onChange={setSelectRow} value={selectRow} />
                     <div className='inputSeat'>
                         <input type="number" id='seat' name='seat' min="0" placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} onKeyUp={keyUpHandler} />
-                        <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset} /></span>
-                        <Search className='icon' onClick={ClickSeatSerch} />
+                        <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset} /> <Search className='icon' onClick={ClickSeatSerch} /></span>
+                       
                     </div>
                 </div>
                 <div className='right'>
@@ -670,6 +670,12 @@ const StFilterTopDiv = styled.div`
     align-items: center;
     >div{
         margin: 20px 0 10px;
+    }
+    @media (max-width: 763px){
+        margin: 20px 0 0 0;
+        >div{
+            width: 100%;
+        }
     }
 `
 
@@ -710,7 +716,6 @@ const StFilterDiv = styled.div`
                 border: 1px solid var(--white);
                 font-size: 12px;
                 @media screen and (max-width: 768px) {
-                    width: 300px;
                     margin-bottom: 10px;
                 }
                 >div>div{
@@ -726,18 +731,23 @@ const StFilterDiv = styled.div`
             border-radius: 8px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             input{
                 width: 100px;
                 @media screen and (max-width: 768px) {
                     width: 220px;
-                    margin-bottom: 10px;
                 }
             }
             span{
+                display: flex;
                 color: var(--gray-2);
                 font-size: 20px;
                 margin: 0 10px;
                 cursor: pointer;
+                align-items: center;
+                >* {
+                    padding: 0 4px;
+                }
             }
         }
         img {cursor: pointer;}
@@ -752,16 +762,10 @@ const StFilterDiv = styled.div`
         div {
             margin-left: 10px;
             display: flex;
-            @media screen and (max-width: 768px) {
-                    margin-left: 0px;
-                }
             label{
                 display: inline-flex;
                 align-items: center;
                 margin-left: 15px;
-                @media screen and (max-width: 768px) {
-                    margin-left: 0px;
-                }
                 img{
                     width: 30px;
                     margin-right: 5px;
@@ -796,19 +800,40 @@ const StFilterDiv = styled.div`
             }
         }
     }
+    @media screen and (max-width: 768px) {
+        margin-left: 0px;
+        .left{
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            div:last-of-type{
+                grid-column: 1 / 3;
+            }
+        }
+        .right{
+            margin: 0 0 10px;
+            width: 100%;
+            div{
+                display: block;
+                width: 100%;
+                margin-left: 0;
+                label{
+                    margin: 10px 5px;
+                    font-size: .7em;
+                }
+            }
+        }
+    }
 `
 
 const StCheckbox = styled.div`
-    width: 100%;
-    height: 40px;
-    overflow: hidden;
+    width: 1400px;
+    height: 50px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     overflow-x: scroll;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
-    &.popularBoxList::-webkit-scrollbar{
+    &::-webkit-scrollbar{
         display: none; //크롬
     }
     div {
@@ -820,6 +845,21 @@ const StCheckbox = styled.div`
         border-radius:20px;
         box-sizing: border-box;
         margin-bottom: 10px;
+        .tagList{
+            height: auto;
+            font-size: 1em;
+            line-height: 1.4em;
+        }
+        flex: none;
+    }
+    @media (max-width: 763px){
+        width: 100%;
+        flex-wrap: nowrap;
+        label{
+            span{
+                display: block;
+            }
+        }
     }
     input[type="checkbox"] {
         display:none;
@@ -834,4 +874,5 @@ const StCheckbox = styled.div`
         background-color: var(--maincolor-1);
         border: 1px solid var(--maincolor-1);
     }
+   
 `

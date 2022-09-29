@@ -272,4 +272,8 @@ const StMoreDiv = styled.button`
     padding: 10px;
     color: var(--gray-2);
     border-radius: 10px;
+    @media (max-width: 763px){
+        width: 100%;
+        margin: 0;
+    }
 `

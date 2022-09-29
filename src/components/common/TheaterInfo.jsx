@@ -32,6 +32,10 @@ const TheaterInfo = ({onClose, theaterId}) => {
         setTheaterInfo(res.data)
 
     }
+    useEffect(()=>{
+        document.body.style= `overflow: hidden`;
+        return () => document.body.style = `overflow: auto`
+    },[])
 
     for(var i in theaterInfo.conveniences){
             if(theaterInfo.conveniences[i].type === 'CONVENIENCE'){

@@ -43,13 +43,15 @@ const StFooterCont = styled.div`
     display: flex;
     justify-content: space-between;
     div {
-        width: 100%;
+        width: 130px;
         padding: 40px 20px;
     }
     @media (max-width: 763px){
+        flex-direction: column;
         div{
-             width:50%;
-             padding: 40px 0;
+             width:100px;
+             padding: 0;
+             
         }
     }
 `
@@ -70,12 +72,15 @@ const StFooterUl = styled.ul`
         }
     }
     @media (max-width: 763px){
-        font-size: .5em;
-        padding: 40px 0;
+        font-size: .9em;
+        padding: 20px 0;
+        align-items: center;
         li {
-            margin-left: 3px;
             &.bold{
-                margin: 0 10px 0 20px;
+                margin:0 5px 0 30px;
+            }
+            &.bold:first-of-type{
+                margin: 0;
             }
         }
     }
