@@ -172,6 +172,12 @@ const StWrap = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     row-gap: 10px;
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
+    @media screen and (max-width: 560px) {
+        grid-template-columns: 1fr;
+    }
 `
 
 const StReviewDiv = styled.div`
@@ -182,6 +188,9 @@ const StReviewDiv = styled.div`
     cursor: pointer;
     align-self: center;
     justify-self: center;
+    @media screen and (max-width: 560px) {
+
+    }
 `
 
 const StThumbDiv = styled.div`
@@ -194,6 +203,9 @@ const StThumbDiv = styled.div`
     background-color: rgba(34,34,34,0.4);
     background-blend-mode : multiply;
     position: relative;
+    @media screen and (max-width: 560px) {
+
+    }
    
 `
 
@@ -224,12 +236,18 @@ const StH3 = styled.div`
     color: var(--white);
     font-size: 18px;
     margin-bottom: 10px;
+    @media screen and (max-width: 560px) {
+        font-size: 12px;
+    }
 `
 
 const StDate = styled.div`
     color: var(--gray-2);
     font-size: 14px;
     margin-bottom: 10px;
+    @media screen and (max-width: 560px) {
+        font-size: 10px;
+    }
 `
 
 const StIconDiv = styled.div`

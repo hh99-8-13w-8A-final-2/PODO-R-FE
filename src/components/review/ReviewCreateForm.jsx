@@ -82,9 +82,12 @@ const ReviewCreateForm = ({ reviewId }) => {
 
 const StDiv = styled.div`
     display: flex;
+    width: 100%;
     align-items: flex-start;
+    justify-content: space-between;
     div {
         display: flex;
+        width: 100%;
         flex-direction: column;
         p {
             text-align: left;
@@ -93,15 +96,18 @@ const StDiv = styled.div`
             font-size: 14px;
         }
     }
+    @media screen and (max-width: 763px) {
+        width: 90%;
+    }
 `
 
 const StInput = styled.input`
-    width: 467px;
+    width: 95%;
     height: 37px;
     background-color: #eee;
     margin-right: 4px;
     @media screen and (max-width: 763px) {
-        width: 420px;
+        width: 95%;
     }
 `
 

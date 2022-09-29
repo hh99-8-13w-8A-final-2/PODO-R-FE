@@ -89,6 +89,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
         }
     })
     const deleteMutation = useMutation((commentId) => deleteComment(commentId), {
+        errorPolicy: "ignore",
         onSuccess: () => {
             queryClient.invalidateQueries("comments")
         }
@@ -130,7 +131,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     }
 
     return (
-        <div>
+        <StCommentBox>
             <StListHeader>
                 <div>댓글 {data.pages[0].total}</div>
                 <StToggleDiv onClick={() => setIsClick(false)}>
@@ -141,7 +142,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             <StListWrap>
             {data?.pages.map((group, i) => {
                 return (
-                    <StCommentList key={i}>
+                    <StCommentList key={i} className="StCommentList">
                         {group.data.map((comment) => {
                             const convertToDate = new Date(comment.createdAt);
                             const createYear = convertToDate.getFullYear();
@@ -250,9 +251,13 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                 {data.pages[0].total !== 0 && !hasNextPage && "더이상 댓글이 없네요"}
             </StObserverDiv>
             </StListWrap>
-        </div>
+        </StCommentBox>
     );
 };
+const StCommentBox = styled.div`
+    width: 100%;
+    height: 600px;
+`
 
 const StListHeader = styled.div`
     margin-top: 25px;
@@ -265,6 +270,9 @@ const StListHeader = styled.div`
         display: flex;
         align-items: center;
     }
+    @media screen and (max-width: 763px) {
+        width: 90%;
+    }
 `
 
 const StToggleDiv = styled.div`
@@ -273,16 +281,20 @@ const StToggleDiv = styled.div`
 const StListWrap = styled.div`
     max-height: 500px;
     overflow-y: scroll;
+    width: 100%;
+    @media screen and (max-width: 763px) {
+        width: 90%;
+    }
 `
 
 const StCommentList = styled.div`
-
 `
 
 const StDiv = styled.div`
     border-top: 1px solid var(--gray-1);
     padding: 20px 0px;
     display: flex;
+    width: 100%;
     flex-direction: column;
 `
 
@@ -378,7 +390,8 @@ const StCommentContDiv = styled.div`
     p {
         text-align: left;
         font-size: 14px;
-        width: 434px;
+        width: 90%;
+        word-break:break-all;
     }
 `
 const StValidateP = styled.p`
@@ -388,7 +401,7 @@ const StValidateP = styled.p`
 const StModifyInput = styled.input`
     display: block;
     background-color: #eee;
-    width: 350px;
+    width: 90%;
     margin-bottom: 10px;
 `
 const StObserverDiv = styled.div`

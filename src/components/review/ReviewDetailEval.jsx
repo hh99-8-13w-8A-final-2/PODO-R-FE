@@ -49,13 +49,18 @@ const ReviewDetailEval = ({ data }) => {
 const StEvalBox = styled.div`
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    @media screen and (max-width: 1200px) {
+        justify-content: left;
+    }
 `
 
 const StDiv = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     position: relative;
+    width: 20%;
     &::after {
         display: block;
         position: absolute;
@@ -69,6 +74,12 @@ const StDiv = styled.div`
     span {
         line-height: 42px;
     }
+    @media screen and (max-width: 1200px) {
+        font-size: 14px;
+        &::after {
+            display: none;
+        }
+    }
     div {
         display: flex;
         justify-content: space-between;
@@ -81,8 +92,14 @@ const StDiv = styled.div`
                 line-height: 20px;
                 font-weight: 600;
             }
-        }
+            @media screen and (max-width: 1200px) {
+                display: flex;
+                flex-direction: column;
+                font-size: 12px;
+            }
+            }
     }
+
 `
 
 

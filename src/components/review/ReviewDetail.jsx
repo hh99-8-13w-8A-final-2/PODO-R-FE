@@ -267,19 +267,19 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
 };
 
 const StReviewDetailBox = styled.div`
-    width: 1400px;
+    width: 100%;
     display: grid;
-    grid-template-columns: 800px 600px 600px;
+    grid-template-columns: 57% 43% 43%;
     @media screen and (max-width: 768px) {
-        grid-template-columns: 500px;
+        grid-template-columns: 100%;
     }
 `
 
 const StSideImgBox = styled.div`
-    width: 800px;
+    width: 100%;
     grid-row: 1/4;
     @media screen and (max-width: 768px) {
-        width: 500px;
+        width: 100%;
         grid-row: 2/3;
         margin-left: 30px;
     }
@@ -288,7 +288,6 @@ const StSideImgBox = styled.div`
 const StInfoDiv = styled.div`
     padding: 30px 30px 0px 30px;
     @media screen and (max-width: 768px) {
-        width: 500px;
         grid-row: 1/2;
         padding-bottom: 0;
     }
@@ -297,7 +296,7 @@ const StInfoDiv = styled.div`
 const StDetailHeader = styled.div`
   align-items: center;
   box-sizing: border-box;
-  width: 540px;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -317,8 +316,7 @@ const StDetailHeader = styled.div`
   }
   margin-bottom: 30px;
   @media screen and (max-width: 768px) {
-        grid-row: 1/2;
-        width: 500px;
+        width: 100%;
     }
 `;
 
@@ -382,9 +380,8 @@ const StH3 = styled.h3`
 const StReviewDiv = styled.div`
     grid-row: 2/6;
     padding: 0px 30px;
-    position: relative;
     @media screen and (max-width: 763px) {
-        width: 500px;
+        width: 100%;
         height: 800px;
         grid-row: 3/5;
         margin-top: 30px;
@@ -394,11 +391,11 @@ const StReviewDiv = styled.div`
 const StDetailHeaderBottom = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 540px;
+    width: 100%;
     align-items: center;
     margin-bottom: 40px;
     @media screen and (max-width: 763px) {
-        width: 500px;
+        width: 90%;
     }
 `
 const StProfileDiv = styled.div`
@@ -450,7 +447,8 @@ const StScore = styled.div`
 `
 
 const StContents = styled.div`
-    height: 400px;
+    width: 100%;
+    height: 450px;
     overflow: auto;
 `
 
@@ -476,16 +474,19 @@ const StTagDiv = styled.div`
 `
 
 const StBottomCont = styled.div`
-    position: absolute;
-    padding: 20px 0px;
+    padding-top: 20px;
     bottom: 0;
-    width: 540px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid #eee;
+    a {
+        display: block;
+        width: 180px;
+    }
     @media screen and (max-width: 763px) {
-        width: 500px;
+        width: 90%;
     }
 `
 
@@ -520,6 +521,7 @@ const StDl = styled.dl`
 const StBottomLeftDiv = styled.div`
     display: flex;
     align-items: center;
+    width: 300px;
 `
 
 const StBottomRightDiv = styled.div`

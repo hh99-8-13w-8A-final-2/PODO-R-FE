@@ -269,8 +269,6 @@ const Modify = ({ data, setModify }) => {
         }else{formdata.set('operaGlass', operaGlass1)}
 
         
-        const token = window.localStorage.getItem("accessToken")
-        const jsonType = { "Content-Type": "application/json", "Authorization": token }
 
 
         const obj = {};
@@ -308,18 +306,6 @@ const Modify = ({ data, setModify }) => {
     }
 
     
-<<<<<<< Updated upstream
-=======
-    const number = document.getElementById('seat');
-    number.onkeydown = function(e) {
-        if(!((e.keyCode > 95 && e.keyCode < 106)
-          || (e.keyCode > 47 && e.keyCode < 58) 
-          || e.keyCode == 8)) {
-            return false;
-        }
-    }
->>>>>>> Stashed changes
-    
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
             <h4><span style={{ color: 'var(--error)' }}>*</span> 좌석정보</h4>
@@ -353,11 +339,7 @@ const Modify = ({ data, setModify }) => {
                     <p className='error'>{errors.row && errors.row?.message}</p>
                 </div>
                 <div>
-<<<<<<< Updated upstream
-                    <input type="number" name='seat' min='0' defaultValue={data?.data.seat} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
-=======
                     <input type="number" id='seat' min="0"  defaultValue={data?.data.seat || ''} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
->>>>>>> Stashed changes
                     {errors.seat && errors.seat.type === "max" && <p className='error'> 300이하의 숫자로 입력해주세요. </p>}
                     {errors.seat && <p className='error'>필수로 입력하셔야합니다.</p>}
                 </div>

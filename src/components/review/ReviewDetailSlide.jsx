@@ -11,17 +11,17 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, n
     const swiperRef = useRef(null)
 
     return (
-        <StSlideDiv>
+        <StSlideDiv className='StSlideDiv'>
             {data?.data.imgurls.length > 1 ?
-                <div
+                <StSlideInnerDiv
+                className='innerDiv'
                 onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
                 onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
                 >
                     <Swiper
                         ref={swiperRef}
                         slidesPerView={1}
-                        modules={[Pagination, Navigation, Autoplay]}
-                        navigation
+                        modules={[Pagination, Autoplay]}
                         pagination={{ clickable: true }}
                         loop={true}
                         autoplay={{
@@ -35,9 +35,11 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, n
                             </SwiperSlide>
                         )}
                     </Swiper>
-                </div>
-            : 
-            <StDiv imgUrl = {data?.data.imgurls[0]}></StDiv>
+                </StSlideInnerDiv>
+            :
+            <StFlexDiv className='StFlexDiv'>
+                <StDiv imgUrl = {data?.data.imgurls[0]}></StDiv>
+            </StFlexDiv> 
             }
             {isClick ?
                 <StContentDiv >
@@ -92,20 +94,41 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, n
         </StSlideDiv>
     );
 };
+const StFlexDiv = styled.div`
+    width: 100%;
+    div {
+        width: 100%;
+        @media screen and (max-width: 768px) {
+        width: 90%;
+    }
+    }
+`
 
 const StSlideDiv = styled.div`
     position: relative;
-    @media screen and (max-width: 763px) {
-        width: 500px;
-        height: 500px;
+    width: 100%;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        height: 400px;
     }
 `
+const StSlideInnerDiv = styled.div`
+    width: 100%;
+    div {
+        width: 100%;
+    }
+    @media screen and (max-width: 768px) {
+        width: 90%;
+        height: 400px;
+    }
+`
+
 const StContentDiv = styled.div`
     transition-duration: 0.8s;
     transition-timing-function: ease-in-out;
     z-index: 999;
     position: absolute;
-    width: 800px;
+    width: 100%;
     left: 0;
     bottom: 0;
     background-color: rgba(0,0,0,0.5);
@@ -114,16 +137,17 @@ const StContentDiv = styled.div`
     max-height: 200px;
     overflow-y: scroll;
     color: var(--white);
+    @media screen and (max-width: 768px) {
+        width: 90%;
+    }
     div {
+
         display: flex;
     }
     p {
         text-align: left;
         line-height: 24px;
         color: var(--gray-1);
-    }
-    @media screen and (max-width: 763px) {
-        width: 500px;
     }
 `
 
@@ -132,16 +156,16 @@ const StHeader = styled.div`
 `
 
 const StDiv = styled.div`
-    width: 800px;
-    height: 800px;
+    width: 840px;
+    height: 840px;
     background: ${props => `url(${props.imgUrl})`};
     background-size: cover;
     background-position: center;
     border-radius: 10px 0px 0px 10px;
-    @media screen and (max-width: 763px) {
-        width: 500px;
-        height: 500px;
-        border-radius: 10px 10px 10px 10px;
+    @media screen and (max-width: 768px) {
+        width: 90%;
+        height: 400px;
+        border-radius: 10px
     }
 `
 
