@@ -1,4 +1,7 @@
+
 import { createGlobalStyle } from "styled-components";
+
+
 
 const GlobalStyle = createGlobalStyle`
 
@@ -21,7 +24,8 @@ const GlobalStyle = createGlobalStyle`
     body, h1, h2, h3, h4, h5, h6, input, textarea, select, button {
         font-family: 'SUIT-Regular', sans-serif;
     }
-
+   
+    
     
     input, textarea{
         background-color: var(--gray-3);

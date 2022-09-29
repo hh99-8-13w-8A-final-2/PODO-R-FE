@@ -74,12 +74,7 @@ export default MyReviewList;
 
 const StMyReviewList = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
-  flex-wrap: wrap;
+ 
 `;
 
 const StH3 = styled.h3`

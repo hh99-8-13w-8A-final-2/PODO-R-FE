@@ -1,11 +1,5 @@
-import React from 'react';
-
-const theme = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+const theme ={
+    ismodal : `${localStorage.getItem('modal')}`
+}
 
 export default theme;

@@ -4,12 +4,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import { ReactComponent as Perfect } from '../../assets/img/icon_perfect.svg'
-import { ReactComponent as NotGodd } from '../../assets/img/icon_notgood.svg'
-import { ReactComponent as Gap } from '../../assets/img/gap.svg'
-import { ReactComponent as View } from '../../assets/img/view.svg'
-import { ReactComponent as Sound } from '../../assets/img/sound.svg'
-import { ReactComponent as Light } from '../../assets/img/light.svg'
+import  Perfect from '../../assets/img/icon_perfect.svg'
+import  NotGodd from '../../assets/img/icon_notgood.svg'
+import  Gap from '../../assets/img/gap.svg'
+import  View from '../../assets/img/view.svg'
+import  Sound from '../../assets/img/sound.svg'
+import  Light from '../../assets/img/light.svg'
 import { useLocation } from 'react-router-dom';
 
 const LiveReview = ({ status, reviewList, error, handleModal }) => {
@@ -31,13 +31,19 @@ const LiveReview = ({ status, reviewList, error, handleModal }) => {
         >
         <Swiper
             ref={swiperRef}
-            spaceBetween={40}
-            slidesPerView={6}
+            spaceBetween={150}
+            slidesPerView={3}
             modules={[Pagination, Navigation, Autoplay]}
             loop={true}
             autoplay={{
             delay: 3000,
             }}
+            breakpoints={{
+                763: {
+                    slidesPerView: 6,
+                    spaceBetween: 40
+                }
+              }}
         >
             <StFlowBox>
                 {reviewList?.data.map((review) => (
@@ -45,17 +51,17 @@ const LiveReview = ({ status, reviewList, error, handleModal }) => {
                             <StReviewBox imgUrl={review.imgUrl}>
                                     <StH3>{review.floor} {review.section !== '0' && review.section + '구역'} {review.row}열 {review.seat}</StH3>
                                     <StIconDiv>
-                                        {review.reviewScore === 10 && <StPerfectDiv><Perfect/><span>모든게완-벽</span></StPerfectDiv>}
-                                        {review.evaluation.gap === 3 && review.reviewScore < 10 ? <div><Gap fill='#fff' /><span>단차좋음</span></div> : null}
-                                        {review.evaluation.sight === 3 && review.reviewScore < 10 ? <div><View fill='#fff' /><span>시야좋음</span></div> : null}
-                                        {review.evaluation.sound === 3 && review.reviewScore < 10 ? <div><Sound fill='#fff' /><span>음향좋음</span></div> : null}
-                                        {review.evaluation.light === 3 && review.reviewScore < 10 ? <div><Light fill='#fff' /><span>조명좋음</span></div> : null}
+                                        {review.reviewScore === 10 && <StPerfectDiv><img src={Perfect}  alt="모든게 완벽"/><span>모든게완-벽</span></StPerfectDiv>}
+                                        {review.evaluation.gap === 3 && review.reviewScore < 10 ? <div><img className='icon' src={Gap} alt="단차 아이콘" /><span>단차좋음</span></div> : null}
+                                        {review.evaluation.sight === 3 && review.reviewScore < 10 ? <div><img className='icon' src={View} alt="시야 아이콘" /><span>시야좋음</span></div> : null}
+                                        {review.evaluation.sound === 3 && review.reviewScore < 10 ? <div><img className='icon' src={Sound} alt="음향 아이콘" /><span>음향좋음</span></div> : null}
+                                        {review.evaluation.light === 3 && review.reviewScore < 10 ? <div><img className='icon' src={Light} alt="조명 아이콘" /><span>조명좋음</span></div> : null}
                                         {
                                         review.evaluation.gap < 3 && 
                                         review.evaluation.sight < 3 &&
                                         review.evaluation.sound < 3 &&
                                         review.evaluation.light < 3 &&
-                                            <StNotGoodDiv><NotGodd/><span>정말별로</span></StNotGoodDiv>
+                                            <StNotGoodDiv><img src={NotGodd} alt='정말별로'/><span>정말별로</span></StNotGoodDiv>
                                         }
                                     </StIconDiv>  
                                     <StDiv>{review.reviewScore}</StDiv>
@@ -91,6 +97,10 @@ const StReviewBox = styled.div`
     background-color: rgba(0,0,0,0.7);
     background-size: cover;
     background-position: center;
+    @media (max-width: 763px){
+        width: 170px;
+        height: 170px;
+    }
 `
 
 const StH3 = styled.h3`
@@ -113,6 +123,9 @@ const StDiv = styled.div`
     font-size: 40px;
     left: 50%;
     transform: translateX(-50%);
+    @media (max-width: 763px){
+     font-size: 25px ;
+    }
 `
 
 const StIconDiv = styled.div`
@@ -122,8 +135,25 @@ const StIconDiv = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
+        margin: 0 5px;
         span {
             font-size: 12px;
+        }
+        img{
+            width: 40px;
+            height: 40px;
+        }
+        img.icon{
+            filter: invert(1);
+        }
+    }
+    @media (max-width: 763px){
+        div{
+            img{
+                width: 30px;
+                height: 30px;
+                margin-top: 5px;
+            }
         }
     }
 `

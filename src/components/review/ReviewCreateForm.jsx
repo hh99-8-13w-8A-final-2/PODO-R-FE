@@ -96,9 +96,7 @@ const StDiv = styled.div`
             font-size: 14px;
         }
     }
-    @media screen and (max-width: 763px) {
-        width: 90%;
-    }
+
 `
 
 const StInput = styled.input`

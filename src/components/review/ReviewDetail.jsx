@@ -267,11 +267,12 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
 };
 
 const StReviewDetailBox = styled.div`
-    width: 100%;
+    width: 1400px;
     display: grid;
     grid-template-columns: 57% 43% 43%;
     @media screen and (max-width: 768px) {
         grid-template-columns: 100%;
+        width: 100%;
     }
 `
 
@@ -281,7 +282,6 @@ const StSideImgBox = styled.div`
     @media screen and (max-width: 768px) {
         width: 100%;
         grid-row: 2/3;
-        margin-left: 30px;
     }
 `
 
@@ -361,16 +361,7 @@ const StToggleButtonBox = styled.div`
 
 const StModifyButton = styled.button`
     position: relative;
-    /* &::after {
-        position: absolute;
-        display: block;
-        content: '';
-        width: 1px;
-        height: 12px;
-        background-color: var(--gray-2);
-        right: 0;
-        top: 5px;
-    } */
+
 `
 
 const StH3 = styled.h3`
@@ -381,10 +372,12 @@ const StReviewDiv = styled.div`
     grid-row: 2/6;
     padding: 0px 30px;
     @media screen and (max-width: 763px) {
-        width: 100%;
-        height: 800px;
+        width: 90%;
+        margin: 0 auto;
         grid-row: 3/5;
         margin-top: 30px;
+        padding: 0;
+        padding-bottom: 20px;
     }
 `
 
@@ -395,7 +388,8 @@ const StDetailHeaderBottom = styled.div`
     align-items: center;
     margin-bottom: 40px;
     @media screen and (max-width: 763px) {
-        width: 90%;
+        width: 100%;
+        margin: 0 0 20px 0px;
     }
 `
 const StProfileDiv = styled.div`
@@ -450,6 +444,9 @@ const StContents = styled.div`
     width: 100%;
     height: 450px;
     overflow: auto;
+    @media (max-width: 763px){
+        height: 200px;
+    }
 `
 
 const StP = styled.p`
@@ -484,9 +481,6 @@ const StBottomCont = styled.div`
     a {
         display: block;
         width: 180px;
-    }
-    @media screen and (max-width: 763px) {
-        width: 90%;
     }
 `
 
