@@ -196,6 +196,11 @@ const StReviewDiv = styled.div`
     justify-self: center;
     display: flex;
     flex-direction: column;
+    @media screen and (max-width: 560px) {
+        flex-direction: row;
+        width: 350px;
+        height: 150px;
+    }
 `
 
 const StThumbDiv = styled.div`
@@ -208,7 +213,11 @@ const StThumbDiv = styled.div`
     background-color: rgba(34,34,34,0.4);
     background-blend-mode : multiply;
     position: relative;
-   
+    @media screen and (max-width: 560px) {
+        width: 130px;
+        height: 150px;
+        border-radius: 20px 0px 0px 20px;
+    }
 `
 
 const StUtillDiv = styled.div`
@@ -232,12 +241,19 @@ const StInfoBox = styled.div`
     background-color: var(--gray-3);
     border-radius: 0px 0px 20px 20px;
     height: 112px;
+    @media screen and (max-width: 560px) {
+        width: 220px;
+        height: 150px;
+        box-sizing: border-box;
+        border-radius: 0px 20px 20px 0px;
+    }
 `
 
 const StH3 = styled.div`
     color: var(--white);
     font-size: 18px;
     margin-bottom: 10px;
+    width: 100%;
 `
 
 const StDate = styled.div`
@@ -249,7 +265,7 @@ const StDate = styled.div`
 const StIconDiv = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 210px;
+    width: 100%;
     div {
         display: flex;
         flex-direction: column;
@@ -272,4 +288,7 @@ const StMoreDiv = styled.button`
     padding: 10px;
     color: var(--gray-2);
     border-radius: 10px;
+    @media screen and (max-width: 768px) {
+        width: 100%;
+    }
 `
