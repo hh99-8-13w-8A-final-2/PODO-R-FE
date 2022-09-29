@@ -196,7 +196,7 @@ const StIconDiv = styled.div`
   }
   span {
     color: var(--gray-2);
-    font-size: 12px;
+    font-size: 10px;
   }
 
   .filter-purple {
