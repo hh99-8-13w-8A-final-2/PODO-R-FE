@@ -94,7 +94,7 @@ const StDiv = styled.div`
         }
 `
 const StImgBoxDiv = styled.div`
-    background:linear-gradient(0deg, #111111ae 100%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
+    background:linear-gradient( 0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100% ), ${props => `url(${props.imgUrl})`};
     background-size: cover;
     background-position: center;
 `

@@ -1,17 +1,20 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
 import Layout from "../../components/common/Layout";
 
 const Modal = ({ children, onClose}) => {
   
+  useEffect(() => {
+    document.body.style= `overflow: hidden`;
+    return () => document.body.style = `overflow: auto`
+  }, [])
+
   return (
     <Background theaterModal>
-      <Layout>
         <Content>
           {children}
         </Content>
-      </Layout>
-      <div onClose={onClose}></div>
+      <div className="close" onClick={onClose}></div>
     </Background>
   );
 };
@@ -31,6 +34,12 @@ const Background = styled.div`
   background: rgba(0, 0, 0, 0.7);
   z-index: 1000;
   backdrop-filter: blur(5px);
+  .close {
+    position: fixed;
+    cursor: pointer;
+    inset: 0;
+    z-index: 5;
+  }
   animation-duration: 0.25s;
   animation-timing-function: ease-out;
   animation-name: ${props => props.theaterModal === true ? 'fadeIn' : 'fadeOut'};
@@ -48,9 +57,9 @@ const Content = styled.div`
   animation-name: slideUp;
   animation-fill-mode: forwards;
   @media all and (max-width: 768px) {
-        width: 100%;
-        height: 100vh;
-        overflow-y: scroll;
-        overflow-x: scroll;
+    width: 100%;
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: scroll;
   }
 `;

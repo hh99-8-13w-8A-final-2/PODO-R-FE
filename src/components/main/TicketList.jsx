@@ -62,7 +62,8 @@ const StListDiv =styled.div`
 const StDiv = styled.div`
     width: 200px;
     height: 300px;
-    background:linear-gradient(0deg, #111111ae 100%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};
+    background:linear-gradient( 0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%, rgba(0,0,0,0) 100% ), ${props => `url(${props.imgUrl})`};
+    background-position: center center;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

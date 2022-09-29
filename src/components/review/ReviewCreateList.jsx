@@ -270,9 +270,7 @@ const StListHeader = styled.div`
         display: flex;
         align-items: center;
     }
-    @media screen and (max-width: 763px) {
-        width: 90%;
-    }
+
 `
 
 const StToggleDiv = styled.div`

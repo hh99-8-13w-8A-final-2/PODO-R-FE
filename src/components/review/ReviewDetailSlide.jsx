@@ -98,9 +98,7 @@ const StFlexDiv = styled.div`
     width: 100%;
     div {
         width: 100%;
-        @media screen and (max-width: 768px) {
-        width: 90%;
-    }
+
     }
 `
 
@@ -118,7 +116,7 @@ const StSlideInnerDiv = styled.div`
         width: 100%;
     }
     @media screen and (max-width: 768px) {
-        width: 90%;
+        width: 100%;
         height: 400px;
     }
 `
@@ -137,9 +135,7 @@ const StContentDiv = styled.div`
     max-height: 200px;
     overflow-y: scroll;
     color: var(--white);
-    @media screen and (max-width: 768px) {
-        width: 90%;
-    }
+
     div {
 
         display: flex;
@@ -149,6 +145,7 @@ const StContentDiv = styled.div`
         line-height: 24px;
         color: var(--gray-1);
     }
+    
 `
 
 const StHeader = styled.div`
@@ -163,9 +160,9 @@ const StDiv = styled.div`
     background-position: center;
     border-radius: 10px 0px 0px 10px;
     @media screen and (max-width: 768px) {
-        width: 90%;
+        width: 100%;
         height: 400px;
-        border-radius: 10px
+        border-radius: 0 0 0 0;
     }
 `
 
