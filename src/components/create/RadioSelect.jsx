@@ -86,7 +86,7 @@ const StRadioDiv=styled.div`
             span{
                 margin-bottom: 10px;
                 text-align: center;
-                z-index: 2;
+                z-index: 0;
                 &::after{
                     content:'';
                     display: block;
