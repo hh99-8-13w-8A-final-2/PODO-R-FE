@@ -375,10 +375,9 @@ const Selector = ({ handleModal, theaterId }) => {
     const [isEvalCheck, setIsEvalCheck] = useState(Array(4).fill(false))
     let update = require('immutability-helper');
 
-    const handleCheck = (e) => {
-        const key = parseInt(e.target.alt)
+    const handleCheck = (e, index) => {
         let newData = update(isTagCheck, {
-            $splice: [[key, 1, !isTagCheck[key]]]
+            $splice: [[index, 1, !isTagCheck[index]]]
         })
         setIsTagCheck(newData)
         sessionStorage.setItem('tagCheck', newData)
@@ -431,10 +430,9 @@ const Selector = ({ handleModal, theaterId }) => {
     }
 
 
-    const handleEvalCheck = (e) => {
-        const key = parseInt(e.target.alt)
+    const handleEvalCheck = (e, index) => {
         let newData = update(isEvalCheck, {
-            $splice: [[key, 1, !isEvalCheck[key]]]
+            $splice: [[index, 1, !isEvalCheck[index]]]
         })
         setIsEvalCheck(newData)
         sessionStorage.setItem('evalCheck', newData)
@@ -481,10 +479,9 @@ const Selector = ({ handleModal, theaterId }) => {
 
     const [isOrderCheck, setIsOrderCheck] = useState(Array(2).fill(false))
 
-    const handleOrderCheck = (e) => {
-        const key = parseInt(e.target.alt)
+    const handleOrderCheck = (e, index) => {
         let newData = update(isOrderCheck, {
-            $splice: [[key, 1, !isOrderCheck[key]]]
+            $splice: [[index, 1, !isOrderCheck[index]]]
         })
         setIsOrderCheck(newData)
         sessionStorage.setItem('orderCheck', newData)
@@ -624,8 +621,8 @@ const Selector = ({ handleModal, theaterId }) => {
                     <StCheckbox>
                         {wholeTagsArray.map((tag, index) => (
                             <Fragment key={tag}>
-                                <input type="checkbox" id={tag} alt={index} data-query={tag} name={tag} onChange={(e) => handleCheck(e)} defaultChecked={isTagCheck[index]} />
-                                <label htmlFor={tag}><div className='tagList'>{tag}</div></label>
+                                <input type="checkbox" id={tag} data-query={tag} name={tag} onChange={(e) => handleCheck(e, index)} defaultChecked={isTagCheck[index]} />
+                                <label htmlFor={tag}>{tag}</label>
                             </Fragment>
                         ))}
                     </StCheckbox>
