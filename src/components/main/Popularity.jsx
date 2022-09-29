@@ -73,6 +73,25 @@ const StDiv = styled.div`
                 }
             }
         }
+        @media (max-width: 763px){
+            margin-bottom: 50px;
+            .popularBoxList{
+                display: flex;
+                width: 100%;
+                height: 220px;
+                overflow-x: scroll;
+                -ms-overflow-style: none; /* IE and Edge */
+                scrollbar-width: none; /* Firefox */
+                &.popularBoxList::-webkit-scrollbar{
+                    display: none; //크롬
+                }
+                div.popularBox{
+                    margin-right: 25px;
+                    width: 370px;
+                    height: 220px;
+                }
+            }
+        }
 `
 const StImgBoxDiv = styled.div`
     background:linear-gradient(0deg, #111111ae 100%, rgba(0,0,0,0) 100%), ${props => `url(${props.imgUrl})`};

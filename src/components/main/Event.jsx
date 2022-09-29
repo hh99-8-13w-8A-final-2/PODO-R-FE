@@ -27,6 +27,10 @@ const StDiv = styled.div`
     div {
         font-size: 16px;
     }
+    @media (max-width: 763px){
+        width: 100%;
+        margin-top: 50px;
+    }
 `
 
 const StEventBanner = styled.div`
@@ -37,6 +41,9 @@ const StEventBanner = styled.div`
     background-position: center;
     border-radius:10px;
     cursor: pointer;
+    @media (max-width: 763px){
+        width:100%;
+    }
 `
 
 export default Event;

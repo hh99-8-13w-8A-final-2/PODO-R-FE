@@ -38,7 +38,7 @@ const TicketOpenList = () => {
     return (
         <StDiv>
             <div className='ticketMenu'>
-                <h3>티켓 오픈 공연</h3>
+                <h3>공연 리스트</h3>
                 {
                     listAllOpen === false ? <p onClick={listToggle}>뮤지컬 전체보기</p> :<p onClick={listToggle}>접기</p>
                 }

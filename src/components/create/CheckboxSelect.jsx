@@ -41,4 +41,5 @@ label {
         background-color: var(--maincolor-1);
         border: 1px solid var(--maincolor-1);
     }
+
 `

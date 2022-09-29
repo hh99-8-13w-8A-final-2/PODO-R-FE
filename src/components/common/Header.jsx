@@ -24,8 +24,8 @@ const Header = () => {
     <StHeader>
       <Layout>
         <StHeaderCont>
-          {location.pathname !== '/' ? <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>메인으로가기</p></div> : <div></div>}
-          <img src={logo} alt="" onClick={onClickHandler} />
+          {location.pathname !== '/' ? <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>메인으로</p></div> : <div></div>}
+          <img className="logo" src={logo} alt="로고 이미지" onClick={onClickHandler} />
           <div>
             {isLogin ? (
               <StDiv>
@@ -56,8 +56,9 @@ const StHeaderCont = styled.div`
   .goBack{
     width: 15px;
     position: static;
+    margin-right: 10px;
   }
-  img {
+  img.logo {
     width: 15%;
     cursor: pointer;
     position: absolute;
@@ -66,6 +67,15 @@ const StHeaderCont = styled.div`
   }
   div {
     display: flex;
+
+  }
+  @media (max-width: 763px){
+    img.logo{
+      width: 50%;
+    }
+    p{
+      font-size: 14px;
+    }
   }
 `;
 

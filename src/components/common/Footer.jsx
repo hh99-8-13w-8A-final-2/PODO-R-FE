@@ -15,7 +15,7 @@ const Footer = () => {
             <Layout>
                 <StFooterCont>
                     <div>
-                        <img src={logo_footer} alt="" />
+                        <img className='footerLogo' src={logo_footer} alt="하단 로고" />
                     </div>
                     <StFooterUl>
                         <li className='bold'>FE</li>
@@ -43,7 +43,14 @@ const StFooterCont = styled.div`
     display: flex;
     justify-content: space-between;
     div {
+        width: 100%;
         padding: 40px 20px;
+    }
+    @media (max-width: 763px){
+        div{
+             width:50%;
+             padding: 40px 0;
+        }
     }
 `
 
@@ -60,6 +67,16 @@ const StFooterUl = styled.ul`
         }
         &.name{
             cursor: pointer;
+        }
+    }
+    @media (max-width: 763px){
+        font-size: .5em;
+        padding: 40px 0;
+        li {
+            margin-left: 3px;
+            &.bold{
+                margin: 0 10px 0 20px;
+            }
         }
     }
 `
