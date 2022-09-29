@@ -50,7 +50,7 @@ const MyReviewList = ({
         }
       },
     }
-  );
+  ); console.log(data)
 
   return (
     <div>
