@@ -25,7 +25,7 @@ const MyTicket = ({ data, setEachMusicalId }) => {
           breakpoints={{
             763: {
                 slidesPerView: 5,
-                spaceBetween: 20
+                spaceBetween: 200
             }
           }}
           

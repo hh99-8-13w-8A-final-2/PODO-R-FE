@@ -6,6 +6,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import styled from 'styled-components';
 
 const queryClient = new QueryClient()
+localStorage.setItem('modal',true)
 
 function App() {
   return (

@@ -110,18 +110,13 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
 export default MyReview;
 
 const StMyReviews = styled.div`
-  width: 100%;
   @media screen and (max-width: 763px) {
   }
 `
 
 const StMyIconSet = styled.div`
-  width: 70%;
-  display: flex;
-  flex-direction: row;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
+  
+  
   @media screen and (max-width: 763px) {
     display: flex;
     flex-direction: column;
@@ -132,11 +127,8 @@ const StMyIconSet = styled.div`
 `
 
 const StMyReview = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   @media screen and (max-width: 763px) {
     width: 100%;
   }
@@ -146,13 +138,12 @@ const StH3 = styled.h3`
   color: var(--white);
   padding: 20px 10px;
   @media screen and (max-width: 763px) {
-    font-size: 20px;
+    font-size: 1em;
     display: flex;
   }
 `;
 
 const StReview = styled.div`
-  width: 600px;
   height: 150px;
   border: 1px solid black;
   background-color: var(--gray-3);
@@ -224,4 +215,8 @@ const StMoreDiv = styled.button`
     padding: 10px;
     color: var(--gray-2);
     border-radius: 10px;
+    @media screen and (max-width: 763px){
+      width: 100%;
+      margin: 0;
+    }
 `
