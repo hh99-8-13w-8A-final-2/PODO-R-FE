@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-
+import styled from 'styled-components';
 
 const TheaterMap = ({coordinate}) => {
     
@@ -29,10 +29,19 @@ const TheaterMap = ({coordinate}) => {
 
     return (
         <div>
-            <div id="map" style={{width:"540px", height:"340px", borderRadius:'10px'}}></div> 
+            <Stdiv className='kakaoMap'  id="map" ></Stdiv> 
         </div>
     );
 };
 
 export default TheaterMap;
+
+const Stdiv = styled.div`
+  width: 540px;
+  height: 340px;
+  border-radius: 10px;
+  @media (max-width: 763px){
+    width: 100%;
+  }
+`
 
