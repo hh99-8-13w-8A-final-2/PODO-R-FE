@@ -193,9 +193,11 @@ const inactiveBorderBottom = 'none'
 
 const WholeBox = styled.div`
   padding: 10px;
+  max-width: 620px;
+  width: 100%;
   .search{
         display: flex;
-        input{ width:400px }
+        input{ width: 100% }
         img{
             margin-left: 10px;
         }
@@ -205,7 +207,7 @@ const WholeBox = styled.div`
 const InputBox = styled.div`
   box-sizing: border-box;
   padding: 0px 20px;
-  width: 600px;
+  width: 100%;
   height: 56px;
   display: flex;
   flex-direction: row;
