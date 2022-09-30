@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import apis from '../../apis/apis';
 import { Fragment } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as Gap } from '../../assets/img/gap.svg'
 import { ReactComponent as View } from '../../assets/img/view.svg'
 import { ReactComponent as Sound } from '../../assets/img/sound.svg'
@@ -25,7 +25,7 @@ const fetchReviews = async (pageParam, musicalId, tagUrl) => {
 
 
 const Review = ({ handleModal, tagUrl }) => {
-    // 현재 페이지 url에서 musicalId값을 받아온다. 
+    // 현재 페이지 url에서 musicalId값을 받아온다.
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
 

@@ -58,6 +58,7 @@ const Selector = ({ handleModal, theaterId }) => {
         }
     };
     useEffect(() => {
+        setSelectGrade(selectGrade)
         getSeat();
     }, [theaterId]);
     for (var floor in Data) {
@@ -477,7 +478,7 @@ const Selector = ({ handleModal, theaterId }) => {
         }
     }
 
-    const [isOrderCheck, setIsOrderCheck] = useState(Array(2).fill(false))
+    const [isOrderCheck, setIsOrderCheck] = useState(Array(1).fill(false))
 
     const handleOrderCheck = (e, index) => {
         let newData = update(isOrderCheck, {
@@ -556,7 +557,6 @@ const Selector = ({ handleModal, theaterId }) => {
                 let orderCheckingBool = (orderChecking.split(',')).map(check => JSON.parse(check))
                 setIsOrderCheck(orderCheckingBool)
             }
-            sessionStorage.clear()
         }
     }, [])
 
@@ -621,7 +621,7 @@ const Selector = ({ handleModal, theaterId }) => {
                     <StCheckbox>
                         {wholeTagsArray.map((tag, index) => (
                             <Fragment key={tag}>
-                                <input type="checkbox" id={tag} data-query={tag} name={tag} onChange={(e) => handleCheck(e, index)} defaultChecked={isTagCheck[index]} />
+                                <input type="checkbox" id={tag} data-query={tag} name={tag} onChange={(e) => handleCheck(e, index)} defaultChecked={isTagCheck[index]}/>
                                 <label htmlFor={tag}>{tag}</label>
                             </Fragment>
                         ))}
@@ -793,7 +793,7 @@ const StFilterDiv = styled.div`
         }
         input[type="checkbox"]:checked + label{
             img{
-                filter:contrast(1)
+                filter:contrast(1);
             }
         }
     }

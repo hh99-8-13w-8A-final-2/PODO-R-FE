@@ -1,8 +1,8 @@
 import React from 'react';
-import gap from '../../assets/img/gap.svg'
-import view from '../../assets/img/view.svg'
-import sound from '../../assets/img/sound.svg'
-import light from '../../assets/img/light.svg'
+import gap from '../../assets/img/gap2.svg'
+import view from '../../assets/img/view2.svg'
+import sound from '../../assets/img/sound2.svg'
+import light from '../../assets/img/light2.svg'
 import up_small from '../../assets/img/up_small.svg'
 import styled from 'styled-components';
 
@@ -25,8 +25,6 @@ const RadioSelector = ({handleEvalCheck, isEvalCheck, isOrderCheck, handleOrderC
             <div>
                 <input type="checkbox" id='rank' data-query='score,desc' onChange={(e) => handleOrderCheck(e, 0)} defaultChecked={isOrderCheck[0]}/>
                 <label htmlFor="rank"> <img src={up_small} alt="" className='up_small'/>평점좋은순</label>
-                <input type="checkbox" id='new' data-query='createdAt,desc' onChange={(e) => handleOrderCheck(e, 1)} defaultChecked={isOrderCheck[1]}/>
-                <label htmlFor="new"> <img src={up_small} alt=""  className='up_small' />최신순</label>
             </div>  
         </StCheckBoxDiv>
     );
