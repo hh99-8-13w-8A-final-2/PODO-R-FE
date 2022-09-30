@@ -47,6 +47,7 @@ const StInfoDiv = styled.div`
 padding: 40px;
 box-sizing: border-box;
 width: 800px;
+box-sizing: border-box;
 text-align: left;
     .name { 
         font-size: 1.2em;

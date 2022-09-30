@@ -27,7 +27,6 @@ const Notice = ({isloading, isError, error, data }) => {
                     <StLi key={notice.noticeId}>
                         <StCont onClick={handleModal} id={notice.noticeId}>{notice.title}</StCont>
                         <StDate>{notice.createdAt.slice(0,10)}</StDate>
-                        
                     </StLi>
                 ))}
             </ul>
@@ -47,6 +46,7 @@ const StLi = styled.li`
     font-size: 16px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 690px;
     @media (max-width: 763px){
         width: 100%;
@@ -66,12 +66,20 @@ const StCont = styled.span`
     @media (max-width: 763px){
         width: 300px;
     }
+    @media (max-width: 375px){
+        font-size: 12px;
+        width: 200px;
+    }
 `
 
 const StDate = styled.span`
     padding: 10px;
     @media (max-width: 763px){
         padding: 0;
+        
+    }
+    @media (max-width: 375px){
+       font-size: 12px;
     }
 `
 
