@@ -15,7 +15,8 @@ const apis = {
     getPopularMusical : () => baseApi.get(`/api/musicals/popular`),
     getNoticeContents: (noticeId) => baseApi.get(`/api/notices/${noticeId}`),
     //마이페이지
-    getMyReviewFind : () => axiosApi.get(`/api/mypage/reviews`),
+    getMyReviewFind : (pageParam) => axiosApi.get(`/api/mypage/reviews?size=20&page=${pageParam}`),
+    getMyEachReviewFind : (eachMusicalId, pageParam) => axiosApi.get(`/api/mypage/${eachMusicalId}/reviews?size=20&page=${pageParam}`),
     getMyMusicalFindList : () => axiosApi.get(`/api/mypage/musicals`),
     getMyDetailReview : (getMusicalId) => axiosApi.get(`/api/mypage/${getMusicalId}/reviews`),
     //리뷰 작성

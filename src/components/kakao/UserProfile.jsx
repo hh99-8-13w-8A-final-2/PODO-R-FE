@@ -187,16 +187,20 @@ const StNickName = styled.div`
   .nickInput {
     display: flex;
     align-items: center;
+    justify-content: center;
+    align-content: center;
     p {
       margin-right: 10px;
     }
     input {
-      width: 300px;
+      width: 200px;
       background-color: var(--gray-4);
     }
   }
   .validity {
     margin-top: 10px;
+  }
+  @media screen and (max-width: 763px) {
   }
 `;
 
