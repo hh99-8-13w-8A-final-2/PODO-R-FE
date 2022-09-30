@@ -19,6 +19,8 @@ const apis = {
     getMyEachReviewFind : (eachMusicalId, pageParam) => axiosApi.get(`/api/mypage/${eachMusicalId}/reviews?size=20&page=${pageParam}`),
     getMyMusicalFindList : () => axiosApi.get(`/api/mypage/musicals`),
     getMyDetailReview : (getMusicalId) => axiosApi.get(`/api/mypage/${getMusicalId}/reviews`),
+    postImgUpload : (fd) => axiosApi.post(`/api/image/upload`, fd, {headers: multipartType}),
+    putProfileUpdate : (data) => axiosApi.put(`/api/member/update`, JSON.stringify(data), {headers: jsonType}),
     //리뷰 작성
     getTheater: (theaterId) => baseApi.get(`/api/theaters/${theaterId}`),
     postImg : (imgFormdata) => axiosApi.post(`/api/image/upload`, imgFormdata, {headers: multipartType}) ,

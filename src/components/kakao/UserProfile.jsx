@@ -7,6 +7,7 @@ import ModalPortal from "../../assets/modal/Portal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import pencil from "../../assets/img/pencil.svg";
+import apis from "../../apis/apis";
 
 const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
@@ -20,31 +21,30 @@ const UserProfile = () => {
   const [isName, setIsName] = useState(false);
   const [user, setUser] = useState();
 
-  const URI = {
-    BASE: process.env.REACT_APP_BASE_URI,
-  };
-
   const { register, handleSubmit, watch, setFocus, resetField } = useForm({
     mode: "onChange",
   });
   const imageUrl = watch("imgUrl");
-  console.log(imageUrl)
-
+  console.log(imageUrl);
 
   const handleModal = (e) => {
     e.preventDefault();
     setSignupModalOn(!signupModalOn);
-    resetField("imgUrl")
-    setNameMessage("")
+    resetField("imgUrl");
+    setNameMessage("");
     setIsName(false);
   };
 
   const onChangeHandler = (e) => {
-    let { value } = {...e.target}
-    setNewNickName(()=> value);
-    if (value.length < 2 || value.length > 8 ) {
+    let { value } = { ...e.target };
+    let pattern = /\s/g;
+    setNewNickName(() => value);
+    if (value.length < 2 || value.length > 8) {
       setNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
-      setIsName(false);    
+      setIsName(false);
+    } else if (value.match(pattern)) {
+      setNameMessage("띄어쓰기는 안됩니다.");
+      setIsName(false);
     } else {
       setNameMessage("올바른 형식입니다.");
       setIsName(true);
@@ -57,15 +57,7 @@ const UserProfile = () => {
     }
     const fd = new FormData();
     fd.append("image", imageUrl[0]);
-    const response = await axios({
-      method: "post",
-      url: `${URI.BASE}/api/image/upload`,
-      data: fd,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await apis.postImgUpload(fd);
     return response.data.imageUrl[0];
   };
 
@@ -74,16 +66,7 @@ const UserProfile = () => {
       nickname: newNickName,
       profilePic: img,
     };
-    const response = await axios({
-      method: "put",
-      url: `${URI.BASE}/api/member/update`,
-      headers: {
-        Authorization: localStorage.getItem("accessToken"),
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify(data),
-    });
-
+    const response = await apis.putProfileUpdate(data);
     localStorage.setItem("nickname", response.data.nickname);
     localStorage.setItem("profilePic", response.data.profilePic);
     setUser({ ...user });
@@ -97,7 +80,6 @@ const UserProfile = () => {
     handleModal(e);
   };
 
-  // 이미지 프리뷰
   useEffect(() => {
     if (imageUrl && imageUrl.length > 0) {
       const file = imageUrl[0];
@@ -131,14 +113,22 @@ const UserProfile = () => {
                     {imageUrl === undefined || imageUrl.length === 0 ? (
                       <div>
                         <StLabel imgUrl={profilePic}>
-                          <input type="file" accept="image/png, image/jpeg" {...register("imgUrl")} />
+                          <input
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            {...register("imgUrl")}
+                          />
                           <span>+</span>
                         </StLabel>
                       </div>
                     ) : (
                       <div>
                         <StLabel2 imgUrl={imagePreview}>
-                          <input type="file" accept="image/png, image/jpeg" {...register("imgUrl")} />
+                          <input
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            {...register("imgUrl")}
+                          />
                         </StLabel2>
                       </div>
                     )}

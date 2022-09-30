@@ -9,13 +9,10 @@ import Light from "../../assets/img/light.svg";
 import { useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { selector } from "recoil";
-import { infoReviewState } from "../../pages/MyPage";
 
 const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNextPage, fetchNextPage2, isFetchingNextPage2}) => {
 
   const { ref, inView } = useInView();
-
-  // console.log(inView)
 
   useEffect(() => {
     if(inView) fetchNextPage();
@@ -24,9 +21,6 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
   useEffect(() => {
     if(inView) fetchNextPage2();
   }, [inView]);
-
-  console.log(data)
-  console.log(singleData)
 
   return (
     <StMyReviews>
@@ -181,10 +175,6 @@ const StDiv = styled.div`
   background-position: center;
   margin-left: 10px;
   border-radius: 8px;
-  /* @media screen and (max-width: 763px) {
-    width:50px;
-    height:50px;
-  } */
 `;
 
 const StIconDiv = styled.div`

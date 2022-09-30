@@ -6,9 +6,6 @@ import apis from "../../apis/apis";
 import { login } from "../../redux/modules/userSlice";
 
 const Twitter = () => {
-  const URI = {
-    BASE: process.env.REACT_APP_BASE_URI,
-  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const oauth_token = new URL(window.location.href).searchParams.get(
