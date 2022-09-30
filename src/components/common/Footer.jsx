@@ -72,7 +72,7 @@ const StFooterUl = styled.ul`
         }
     }
     @media (max-width: 763px){
-        font-size: .9em;
+        font-size: .6em;
         padding: 20px 0;
         align-items: center;
         li {

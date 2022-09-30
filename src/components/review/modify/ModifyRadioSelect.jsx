@@ -118,7 +118,7 @@ const StRadioDiv=styled.div`
             span{
                 margin-bottom: 10px;
                 text-align: center;
-                z-index: 2;
+                z-index: 0;
                 &::after{
                     content:'';
                     display: block;
@@ -156,5 +156,12 @@ const StRadioDiv=styled.div`
     }
     label{
         color: var(--gray-2);
+    }
+    @media (max-width: 763px) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        >div{
+            width: 80%;
+        }
     }
 `

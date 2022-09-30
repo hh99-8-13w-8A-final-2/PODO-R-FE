@@ -45,6 +45,7 @@ export default NoticContents;
 
 const StInfoDiv = styled.div`
 padding: 40px;
+box-sizing: border-box;
 width: 800px;
 box-sizing: border-box;
 text-align: left;
@@ -68,7 +69,7 @@ text-align: left;
             white-space: pre-line;
         }
     }
-    @media (max-width: 768px){
+    @media (max-width: 763px){
         width: 100%;
     }
 `

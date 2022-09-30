@@ -427,6 +427,13 @@ margin: 0 auto;
             color: var(--white);
         }
     }
+    @media (max-width: 763px) {
+        width: 100%;
+        
+        h4{
+            margin: 50px 0 20px;
+        }
+    }
 `
 const StTopSelectDiv = styled.div`
     display: flex;
@@ -454,5 +461,17 @@ const StTopSelectDiv = styled.div`
     }
     .css-1okebmr-indicatorSeparator{
         background-color: transparent;
+    }
+    @media (max-width: 763px) {
+        width: 100%;
+        flex-direction: column;
+        >div{
+            width: 100%;
+            padding: 3px 0;
+            z-index: auto;
+        }
+        >div:last-of-type>input{
+            width: 100%;
+        }
     }
 `
