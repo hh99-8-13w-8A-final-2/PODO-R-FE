@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 
 //토큰 없는 경우 
 
@@ -56,6 +56,7 @@ axiosApi.interceptors.response.use(
           return Promise.reject(error);
         });
     }
+    console.log(error.response.data)
     return Promise.reject(error)
   }
 );

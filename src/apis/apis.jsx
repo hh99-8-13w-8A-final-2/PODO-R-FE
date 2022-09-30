@@ -22,7 +22,7 @@ const apis = {
     //리뷰 작성
     getTheater: (theaterId) => baseApi.get(`/api/theaters/${theaterId}`),
     postImg : (imgFormdata) => axiosApi.post(`/api/image/upload`, imgFormdata, {headers: multipartType}) ,
-    postReview : (musicalId, json) => axiosApi.post(`/api/musicals/${musicalId}/reviews`, json , { headers: jsonType}),
+    postReview : (musicalId, json) => axiosApi.post(`/api/musicals/${musicalId}/reviews`, json, { headers: jsonType}),
     getOpenMusical : () => baseApi.get(`/api/musicals/open`),
     getAllMusical : () => baseApi.get(`/api/musicals/all`),
     //리뷰 페이지 
@@ -44,10 +44,10 @@ const apis = {
     deleteLike : (reviewsId) => axiosApi.delete(`/api/hearts?reviewId=${reviewsId}`),
     //리뷰 수정
     postModifyImg : (formData) => axiosApi.post(`/api/image/upload`,formData, {headers: multipartType}),
-    putModify : (musicalId, data, json) => axiosApi.put(`/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json,{ headers: jsonType}),
-    postComment : (reviewId, content) => axiosApi.post(`/api/comments?reviewId=${reviewId}`,content, {headers: jsonType}),
+    putModify : (musicalId, data, json) => axiosApi.put(`/api/musicals/${musicalId}/reviews/${data.data.reviewId}`, json, { headers: jsonType}),
+    postComment : (reviewId, content) => axiosApi.post(`/api/comments?reviewId=${reviewId}`,JSON.stringify(content), {headers: jsonType}),
     getComment : (reviewId, pageParam) => baseApi.get(`/api/comments?reviewId=${reviewId}&page=${pageParam}`),
-    putModifyedComment : (modifyId, content) => axiosApi.put(`/api/comments/${modifyId}`, content, {headers: jsonType}),
+    putModifyedComment : (modifyId, content) => axiosApi.put(`/api/comments/${modifyId}`, JSON.stringify(content), {headers: jsonType}),
     deleteComment : (commentId) => axiosApi.delete(`/api/comments/${commentId}`, {headers: jsonType}),
     
 }
