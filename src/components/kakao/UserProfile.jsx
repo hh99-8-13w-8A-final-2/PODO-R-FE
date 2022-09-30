@@ -187,6 +187,8 @@ const StNickName = styled.div`
   .nickInput {
     display: flex;
     align-items: center;
+    justify-content: center;
+    align-content: center;
     p {
       margin-right: 10px;
     }
