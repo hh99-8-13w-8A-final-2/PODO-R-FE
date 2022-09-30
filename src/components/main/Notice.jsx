@@ -46,6 +46,7 @@ const StLi = styled.li`
     font-size: 16px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 690px;
     @media (max-width: 763px){
         width: 100%;
@@ -66,6 +67,7 @@ const StCont = styled.span`
         width: 300px;
     }
     @media (max-width: 375px){
+        font-size: 12px;
         width: 200px;
     }
 `
@@ -74,6 +76,7 @@ const StDate = styled.span`
     padding: 10px;
     @media (max-width: 763px){
         padding: 0;
+        
     }
     @media (max-width: 375px){
        font-size: 12px;
