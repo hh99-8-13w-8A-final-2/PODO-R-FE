@@ -101,6 +101,10 @@ const StReviewBox = styled.div`
         width: 170px;
         height: 170px;
     }
+    @media (max-width: 375px){
+        width: 150px;
+        height: 150px;
+    }
 `
 
 const StH3 = styled.h3`
@@ -138,6 +142,9 @@ const StIconDiv = styled.div`
         margin: 0 5px;
         span {
             font-size: 12px;
+            @media (max-width: 375px){
+                font-size: 10px;
+            }
         }
         img{
             width: 40px;
