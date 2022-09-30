@@ -191,12 +191,14 @@ const StNickName = styled.div`
       margin-right: 10px;
     }
     input {
-      width: 300px;
+      width: 200px;
       background-color: var(--gray-4);
     }
   }
   .validity {
     margin-top: 10px;
+  }
+  @media screen and (max-width: 763px) {
   }
 `;
 
