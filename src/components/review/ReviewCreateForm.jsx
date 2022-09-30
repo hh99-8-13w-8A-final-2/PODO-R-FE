@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css"
 const postComment = async(new_comment) => {
     const { reviewId, content } = new_comment
     /* const {data} = await axios.post(`${URI.BASE}/api/comments?reviewId=${reviewId}`, content, {headers: headers}) */
-    const { data } = await apis.postComment(reviewId, String(content))
+    const { data } = await apis.postComment(reviewId, content)
 
     return data
   }
@@ -33,6 +33,10 @@ const ReviewCreateForm = ({ reviewId }) => {
 
 
     const onSubmit = (data) => {
+        const new_comment = {
+            content: data.comment,
+            reviewId: reviewId,
+        }
         if (!userId) {
             toast.error("로그인 해주세요", {
                 icon: "🙏",
@@ -41,19 +45,7 @@ const ReviewCreateForm = ({ reviewId }) => {
                 theme: "colored"
             })
         }else {
-            if(!isNaN(data.comment)) {
-                const new_comment = {
-                    content: String(data.comment),
-                    reviewId: reviewId,
-                }
-                mutate(new_comment)
-            }else {
-                const new_comment = {
-                    content: data.comment,
-                    reviewId: reviewId,
-                }
-                mutate(new_comment)
-            }
+            mutate(new_comment)
 
             toast.success("댓글이 등록되었습니다", {
                 icon: "✍️",

@@ -5,6 +5,7 @@ import { ReactComponent as SearchSmall } from '../../assets/img/searchSmall.svg'
 import { useQuery, useMutation, useQueryClient } from "react-query"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import apis from '../../apis/apis';
 
 const getResentsSearch = () => {
@@ -20,7 +21,6 @@ const postSearch = async (inputValue) => {
 }
 
 const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
-
   const { data } = useQuery('recents/search', getResentsSearch,
     {
       refetchOnWindowFocus: false,
@@ -45,6 +45,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
   const clickDropDownItem = clickedItem => {
     setInputValue(clickedItem)
     setIsHaveInputValue(false)
+    setDropDownItemIndex(-1)
   }
 
   const handleDropDownKey = event => {
@@ -142,6 +143,60 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
   
       postMutation.mutate(inputValue)
     }
+    if(!isHaveInputValue && inputValue !== '') {
+      const prevQueryEval = searchParams.getAll('evaluation');
+      const prevQueryTag = searchParams.getAll('tag');
+      const prevQuerySort = searchParams.getAll('sort');
+      const prevQuerygrade = searchParams.getAll('grade')
+      const prevQueryfloor = searchParams.getAll('floor')
+      const prevQuerysection = searchParams.getAll('section')
+      const prevQueryrow = searchParams.getAll('row')
+      const prevQueryseat = searchParams.getAll('seat')
+  
+      setSearchParams({
+        tag: [...prevQueryTag],
+        sort: [...prevQuerySort],
+        grade: [...prevQuerygrade],
+        floor: [...prevQueryfloor],
+        section: [...prevQuerysection],
+        row: [...prevQueryrow],
+        seat: [...prevQueryseat],
+        evaluation: [...prevQueryEval],
+        search: inputValue
+      });
+      setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+      setInputValue('')
+      setIsHaveInputValue(false)
+  
+      postMutation.mutate(inputValue)
+    } 
+  }
+
+  const onClickReset = () => {
+      const prevQueryEval = searchParams.getAll('evaluation');
+      const prevQueryTag = searchParams.getAll('tag');
+      const prevQuerySort = searchParams.getAll('sort');
+      const prevQuerygrade = searchParams.getAll('grade')
+      const prevQueryfloor = searchParams.getAll('floor')
+      const prevQuerysection = searchParams.getAll('section')
+      const prevQueryrow = searchParams.getAll('row')
+      const prevQueryseat = searchParams.getAll('seat')
+  
+      setSearchParams({
+        tag: [...prevQueryTag],
+        sort: [...prevQuerySort],
+        grade: [...prevQuerygrade],
+        floor: [...prevQueryfloor],
+        section: [...prevQuerysection],
+        row: [...prevQueryrow],
+        seat: [...prevQueryseat],
+        evaluation: [...prevQueryEval],
+      });
+      setTagUrl('&' + window.location.href.split('?').splice(1, 1).toString())
+      setInputValue('')
+      setIsHaveInputValue(false)
+  
+      postMutation.mutate(inputValue)
   }
 
   return (
@@ -154,6 +209,7 @@ const AutoComplete = ({ setTagUrl, setSearchParams, searchParams }) => {
           onKeyUp={handleDropDownKey}
           placeholder="본문 내용을 입력해주세요"
         />
+        <button><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset} /></button>
         <SearchButton onClick={inputValueHandler}><Search /></SearchButton>
       </InputBox>
       {inputValue !== '' && isHaveInputValue &&
@@ -218,6 +274,13 @@ const InputBox = styled.div`
   border-radius: ${props =>
     props.isHaveInputValue ? activeBorderRadius : inactiveBorderRadius};
   z-index: 3;
+  button {
+    color: var(--gray-2);
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
 `
 
 const Input = styled.input`
