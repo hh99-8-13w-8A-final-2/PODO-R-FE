@@ -7,6 +7,7 @@ import Modal from "../assets/modal/Modal";
 import ReviewDetail from "../components/review/ReviewDetail";
 import axios from "axios";
 import { useInfiniteQuery } from "react-query";
+import apis from "../apis/apis";
 
 const MyDetailReviews = async (eachMusicalId, pageParam) => {
   if (eachMusicalId === "") {
@@ -17,17 +18,7 @@ const MyDetailReviews = async (eachMusicalId, pageParam) => {
       total: 1,
     };
   }
-  const URI = {
-    BASE: process.env.REACT_APP_BASE_URI,
-  };
-
-  const response2 = await axios({
-    method: "get",
-    url: `${URI.BASE}/api/mypage/${eachMusicalId}/reviews?size=20&page=${pageParam}`,
-    headers: {
-      Authorization: localStorage.getItem("accessToken"),
-    },
-  });
+  const response2 = await apis.getMyEachReviewFind(eachMusicalId, pageParam);
   const data = response2.data.content;
   const pageData = response2.data.totalPages;
   const total = response2.data.totalElements;
