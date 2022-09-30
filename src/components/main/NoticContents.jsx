@@ -46,6 +46,7 @@ export default NoticContents;
 const StInfoDiv = styled.div`
 padding: 40px;
 width: 800px;
+box-sizing: border-box;
 text-align: left;
     .name { 
         font-size: 1.2em;
@@ -66,6 +67,9 @@ text-align: left;
             line-height: 22px;
             white-space: pre-line;
         }
+    }
+    @media (max-width: 768px){
+        width: 100%;
     }
 `
 const StLoginBox = styled.div`

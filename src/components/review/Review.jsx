@@ -207,16 +207,14 @@ const StThumbDiv = styled.div`
     width: 250px;
     height: 250px;
     border-radius: 20px 20px 0px 0px;
-    background: ${props => `url(${props.imgUrl})`};
+    background:linear-gradient( 0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 100% ), ${props => `url(${props.imgUrl})`};
     background-size: cover;
     background-position: center;
-    background-color: rgba(34,34,34,0.4);
-    background-blend-mode : multiply;
     position: relative;
     @media screen and (max-width: 560px) {
         width: 130px;
         height: 150px;
-        border-radius: 20px 0px 0px 20px;
+        border-radius: 10px 0px 0px 10px;
     }
 `
 
@@ -226,6 +224,7 @@ const StUtillDiv = styled.div`
     align-items: center;
     right: 0;
     bottom: 0;
+    padding: 10px;
     svg {
         margin-left: 10px;
     }
@@ -245,7 +244,7 @@ const StInfoBox = styled.div`
         width: 220px;
         height: 150px;
         box-sizing: border-box;
-        border-radius: 0px 20px 20px 0px;
+        border-radius: 0px 10px 10px 0px;
     }
 `
 
