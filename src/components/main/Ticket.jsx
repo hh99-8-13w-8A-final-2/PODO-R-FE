@@ -71,6 +71,12 @@ const StDiv = styled.div`
         height: 230px;
         margin-bottom: 30px;
     }
+    @media (max-width: 375px){
+        width: 110px;
+        height: 160px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
 `
 const StH4 = styled.h4`
     font-size: 20px;
@@ -92,6 +98,10 @@ const StH4 = styled.h4`
         font-size:  1.1em;
         width: 140px;
     }
+    @media (max-width: 375px){
+        width: 100px;
+        font-size: 12px;
+    }
 `
 
 const StDiv1 = styled.div`
@@ -103,6 +113,10 @@ const StDiv1 = styled.div`
     white-space: nowrap;
     @media (max-width: 763px){
         width: 140px;
+    }
+    @media (max-width: 375px){
+        width: 100px;
+        font-size: 10px;
     }
 ` 
 
@@ -116,6 +130,10 @@ const StDiv2 = styled.div`
     @media (max-width: 763px){
         width: 140px;
         font-size: .7em;
+    }
+    @media (max-width: 375px){
+        width: 100px;
+        font-size: 10px;
     }
 `
 

@@ -280,9 +280,6 @@ const StListWrap = styled.div`
     max-height: 500px;
     overflow-y: scroll;
     width: 100%;
-    @media screen and (max-width: 763px) {
-        width: 90%;
-    }
 `
 
 const StCommentList = styled.div`
