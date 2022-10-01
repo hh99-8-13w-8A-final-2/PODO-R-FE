@@ -647,7 +647,7 @@ const Selector = ({ handleModal, theaterId }) => {
         }       
     }, [])
 
-    window.onpopstate = function(event) {
+    window.onpopstate = function() {
         navigate("/")
     }
 
@@ -810,6 +810,9 @@ const StFilterDiv = styled.div`
                 img{
                     width: 30px;
                     margin-right: 5px;
+                        @media (max-width: 375px){
+                            width: 50px;
+                        }
                 }
             }
         }
@@ -861,6 +864,7 @@ const StFilterDiv = styled.div`
                 label{
                     margin: 10px 5px;
                     font-size: .7em;
+
                 }
             }
         }

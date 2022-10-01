@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import apis from '../../apis/apis';
 import { Fragment } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ReactComponent as Gap } from '../../assets/img/gap.svg'
 import { ReactComponent as View } from '../../assets/img/view.svg'
 import { ReactComponent as Sound } from '../../assets/img/sound.svg'
@@ -11,6 +11,7 @@ import { ReactComponent as Light } from '../../assets/img/light.svg'
 import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import { useInView } from "react-intersection-observer";
+import moment from 'moment'
 
 const fetchReviews = async (pageParam, musicalId, tagUrl) => {
     const res = await apis.getReview(musicalId, pageParam, tagUrl)
@@ -28,14 +29,6 @@ const Review = ({ handleModal, tagUrl }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다.
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
-
-    // 현재 시간 정보
-    let today = new Date();
-    let currentYear = today.getFullYear(); // 년도
-    let currentMonth = today.getMonth() + 1;  // 월
-    let currentDate = today.getDate();  // 날짜
-    let currentHours = today.getHours(); // 시
-    let currentMinutes = today.getMinutes();  // 분
 
     const { ref, inView } = useInView();
 
@@ -76,12 +69,46 @@ const Review = ({ handleModal, tagUrl }) => {
                     <StWrap key={i}>
                         <Fragment>
                             {group.data.map((data) => {
-                                const convertToDate = new Date(data.createdAt);
-                                const createYear = convertToDate.getFullYear();
-                                const createMonth = convertToDate.getMonth() + 1;
-                                const createDate = convertToDate.getDate();
-                                const createHours = convertToDate.getHours();
-                                const createMinute = convertToDate.getMinutes();
+                                const changeToDate = (datetime) => {
+                                    // 오늘 날짜
+                                    let now = moment(new Date())
+                                    // 오늘과의 시간 차이
+                                    let duration = moment.duration(now.diff(datetime))
+                                    // 변환
+                                    // asSeconds 를 하면 오늘과의 시간차이를 
+                                    // 초단위로 float datatype 으로 보여준다 (3.82 이런식)
+                                    let seconds = duration.asSeconds()
+                                    let minute = duration.asMinutes()
+                                    let hours = duration.asHours()
+                                    let days = duration.asDays()
+                                    let weeks = duration.asWeeks()
+                                    let month = duration.asMonths()
+                                    let year = duration.asYears()
+                                    
+                                    // 그래서 사용할 때는 parseInt 를 사용해 int 로 바꿔야 한다. 
+                                    if (minute < 1) {
+                                        // 1분 미만이면 초 단위로 보여주고,  
+                                    return parseInt(seconds) + '초 전'
+                                    } else if (hours < 1) {
+                                    // 1시간 미만이면 분 단위로 보여주고
+                                    return parseInt(minute) + '분 전'
+                                    } else if (hours < 24) {
+                                    // 하루 미만이면 시간으로 보여주고
+                                    return parseInt(hours) + '시간 전'
+                                    } else if (weeks < 1) {
+                                    // 일주일 미만이면 일 단위로 보여주고
+                                    return parseInt(days) + '일 전'
+                                    } else if (month < 1) {
+                                    // 한 달 미만이면 주 단위로 보여주고
+                                    return parseInt(weeks) + '주 전'
+                                    } else if (year < 1) {
+                                    // 1년 미만이면 달 단위로 보여주고
+                                    return parseInt(month) + '달 전'
+                                    } else {
+                                    // 1년 이상이면 넌 단위로 보여주고
+                                    return parseInt(year) + '년 전'
+                                    }
+                                }
                                 return (
                                     <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId, data.musicalId)}>
                                         <StThumbDiv imgUrl={data.imgUrl}>
@@ -93,42 +120,7 @@ const Review = ({ handleModal, tagUrl }) => {
                                         <StInfoBox>
                                             <StH3>{data.grade}석 {data.floor} {data.section !== "0" && <>{data.section}구역</>} {data.row}열 {data.seat}</StH3>
                                             <StDate>
-                                                {
-                                                    currentYear - createYear > 0 &&
-                                                    <span>{currentYear - createYear}년 전</span>
-                                                }
-                                                {
-                                                    currentYear - createYear === 0 &&
-                                                    currentMonth - createMonth > 0 &&
-                                                    <span>{currentMonth - createMonth}달 전</span>
-                                                }
-                                                {
-                                                    currentYear - createYear === 0 &&
-                                                    currentMonth - createMonth === 0 &&
-                                                    currentDate - createDate > 6 &&
-                                                    <span>{parseInt((currentDate - createDate) / 7)}주일 전</span>
-                                                }
-                                                {
-                                                    currentYear - createYear === 0 &&
-                                                    currentMonth - createMonth === 0 &&
-                                                    currentDate - createDate > 0 && currentDate - createDate < 7 &&
-                                                    <span>{(currentDate - createDate)}일 전</span>
-                                                }
-                                                {
-                                                    currentYear - createYear === 0 &&
-                                                    currentMonth - createMonth === 0 &&
-                                                    currentDate - createDate === 0 &&
-                                                    currentHours - createHours > 0 &&
-                                                    <span>{currentHours - createHours}시간 전</span>
-                                                }
-                                                {
-                                                    currentYear - createYear === 0 &&
-                                                    currentMonth - createMonth === 0 &&
-                                                    currentDate - createDate === 0 &&
-                                                    currentHours - createHours === 0 &&
-                                                    currentMinutes - createMinute > 0 &&
-                                                    <span>방금 전</span>
-                                                }
+                                                {changeToDate(data.createdAt)}
                                             </StDate>
                                             <StIconDiv>
                                                 {data.evaluation.gap === 3 && <div><Gap fill='#BB63FF' /><span>단차좋음</span></div>}

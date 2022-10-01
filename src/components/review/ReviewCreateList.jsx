@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { useInfiniteQuery } from "react-query";
 import { useMutation, useQueryClient } from "react-query"
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as TextIcon } from '../../assets/img/textIcon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,6 +9,7 @@ import apis from '../../apis/apis';
 import { useForm } from "react-hook-form"
 import { toast } from 'react-toastify';
 import { useInView } from "react-intersection-observer";
+import moment from 'moment'
 
 const getComments = async (reviewId, pageParam) => {
     /* const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`); */
@@ -42,13 +42,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     const [toggle, setToggle] = useState(false);
     const userId = parseInt(localStorage.getItem('userId'))
     const { ref, inView } = useInView();
-
-    let today = new Date();
-    let currentYear = today.getFullYear(); // 년도
-    let currentMonth = today.getMonth() + 1;  // 월
-    let currentDate = today.getDate();  // 날짜
-    let currentHours = today.getHours(); // 시
-    let currentMinutes = today.getMinutes();  // 분
+    const [ modifyValue, setModifyValue ] = useState('');
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
@@ -144,12 +138,46 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                 return (
                     <StCommentList key={i} className="StCommentList">
                         {group.data.map((comment) => {
-                            const convertToDate = new Date(comment.createdAt);
-                            const createYear = convertToDate.getFullYear();
-                            const createMonth = convertToDate.getMonth() + 1;
-                            const createDate = convertToDate.getDate();
-                            const createHours = convertToDate.getHours();
-                            const createMinute = convertToDate.getMinutes();
+                            const changeToDate = (datetime) => {
+                                // 오늘 날짜
+                                let now = moment(new Date())
+                                // 오늘과의 시간 차이
+                                let duration = moment.duration(now.diff(datetime))
+                                // 변환
+                                // asSeconds 를 하면 오늘과의 시간차이를 
+                                // 초단위로 float datatype 으로 보여준다 (3.82 이런식)
+                                let seconds = duration.asSeconds()
+                                let minute = duration.asMinutes()
+                                let hours = duration.asHours()
+                                let days = duration.asDays()
+                                let weeks = duration.asWeeks()
+                                let month = duration.asMonths()
+                                let year = duration.asYears()
+                                
+                                // 그래서 사용할 때는 parseInt 를 사용해 int 로 바꿔야 한다. 
+                                if (minute < 1) {
+                                    // 1분 미만이면 초 단위로 보여주고,  
+                                return parseInt(seconds) + '초 전'
+                                } else if (hours < 1) {
+                                // 1시간 미만이면 분 단위로 보여주고
+                                return parseInt(minute) + '분 전'
+                                } else if (hours < 24) {
+                                // 하루 미만이면 시간으로 보여주고
+                                return parseInt(hours) + '시간 전'
+                                } else if (weeks < 1) {
+                                // 일주일 미만이면 일 단위로 보여주고
+                                return parseInt(days) + '일 전'
+                                } else if (month < 1) {
+                                // 한 달 미만이면 주 단위로 보여주고
+                                return parseInt(weeks) + '주 전'
+                                } else if (year < 1) {
+                                // 1년 미만이면 달 단위로 보여주고
+                                return parseInt(month) + '달 전'
+                                } else {
+                                // 1년 이상이면 넌 단위로 보여주고
+                                return parseInt(year) + '년 전'
+                                }
+                            }
                             return (
                                 <StDiv key={comment.commentId}>
                                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -159,42 +187,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                                 <dl>
                                                     <StNameDt>{comment.nickname}</StNameDt>
                                                     <StDateDd>
-                                                        {
-                                                            currentYear - createYear > 0 &&
-                                                            <span>{currentYear - createYear}년 전</span>
-                                                        }
-                                                        {
-                                                            currentYear - createYear === 0 &&
-                                                            currentMonth - createMonth > 0 &&
-                                                            <span>{currentMonth - createMonth}달 전</span>
-                                                        }
-                                                        {
-                                                            currentYear - createYear === 0 &&
-                                                            currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate > 6 &&
-                                                            <span>{parseInt((currentDate - createDate) / 7)}주일 전</span>
-                                                        }
-                                                        {
-                                                            currentYear - createYear === 0 &&
-                                                            currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate > 0 && currentDate - createDate < 7 &&
-                                                            <span>{(currentDate - createDate)}일 전</span>
-                                                        }
-                                                        {
-                                                            currentYear - createYear === 0 &&
-                                                            currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate === 0 &&
-                                                            currentHours - createHours > 0 &&
-                                                            <span>{currentHours - createHours}시간 전</span>
-                                                        }
-                                                        {
-                                                            currentYear - createYear === 0 &&
-                                                            currentMonth - createMonth === 0 &&
-                                                            currentDate - createDate === 0 &&
-                                                            currentHours - createHours === 0 &&
-                                                            currentMinutes - createMinute >= 0 &&
-                                                            <span>방금 전</span>
-                                                        }
+                                                        {changeToDate(comment.createdAt)}
                                                     </StDateDd>
                                                 </dl>
                                             </StCommentHeader>
@@ -227,8 +220,9 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                             <StCommentContDiv>
                                                 <StModifyInput
                                                     type="text"
-                                                    placeholder='수정할 내용을 입력하세요'
+                                                    placeholder='수정할 내용을 입력하세요(225자 이하)'
                                                     {...register("modify", { required: true, validate: value => isBlank(value) })}
+                                                    defaultValue={comment.content}
                                                 />
                                                 {errors.modify && errors.modify.type === "required" && <StValidateP>댓글 내용을 입력해 주세요~</StValidateP>}
                                                 {errors.modify && errors.modify.type === "validate" && <StValidateP>공백만 입력되었어요!</StValidateP>}
