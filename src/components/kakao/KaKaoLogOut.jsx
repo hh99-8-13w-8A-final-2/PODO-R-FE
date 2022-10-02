@@ -67,6 +67,7 @@ const StContentbox = styled.div`
 const StLogOutIcon = styled.div`
   >img {
     width: 20px;
+    height: 100%;
     cursor: pointer;
     margin-right: 10px;
   }

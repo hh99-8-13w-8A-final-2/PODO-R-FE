@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { __getmusicalData } from '../redux/modules/musicalSlice';
 import { useDispatch } from "react-redux";
 import Selector from '../components/review/Selector';
@@ -12,12 +12,7 @@ import apis from '../apis/apis';
 
 
 const ReviewPage = () => {
-
-    const URI = {
-        BASE: process.env.REACT_APP_BASE_URI
-      };
-    
-    
+    const navigate = useNavigate();
     let location = useLocation();
     let musical = location.pathname.split('/').splice(2,1).toString()
     const dispatch = useDispatch();
@@ -28,9 +23,15 @@ const ReviewPage = () => {
     const [create, SetCreate] = useState(false)
     const [musicals, setMusicals] = useState({});
     const getData = async() =>{
-        //const res = await axios.get(`${URI.BASE}/api/musicals/${musical}`)
-        const res = await apis.getMusicalData(musical)
-        setMusicals(res.data)
+        try{
+            const res = await apis.getMusicalData(musical)
+            setMusicals(res.data)
+        } catch(err){
+            if(err.response.status === 400){
+                navigate("/notfind")
+            }
+            console.log(err.response.status)
+        }
      }
 
     const onClickHandler = () =>{
@@ -46,6 +47,7 @@ const ReviewPage = () => {
         setModalOn(!modalOn);
     }
     useEffect(()=>{
+        
         getData()
         dispatch(__getmusicalData(musical));
         window.scrollTo({

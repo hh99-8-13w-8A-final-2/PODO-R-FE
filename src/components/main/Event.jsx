@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import event from '../../assets/img/event.png'
+import event from '../../assets/img/event.webp'
 
 const Event = () => {
     const eventLink = "https://forms.gle/CRbxHXdK6mc259568"

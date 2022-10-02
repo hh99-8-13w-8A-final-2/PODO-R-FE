@@ -78,8 +78,10 @@ div{
     &:hover {
         background-color: var(--maincolor-1);
     }
-}
     img{
         width: 24px;
+        height: 100%;
     }
+}
+   
 `
