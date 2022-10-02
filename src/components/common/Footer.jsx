@@ -45,6 +45,10 @@ const StFooterCont = styled.div`
     div {
         width: 130px;
         padding: 40px 20px;
+        img{
+            width: 100%;
+            height: 100%;
+        }
     }
     @media (max-width: 763px){
         flex-direction: column;

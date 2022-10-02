@@ -909,6 +909,7 @@ const StCheckbox = styled.div`
         color: var(--gray-2);
         border: 1px solid var(--gray-2);
         transition: all .3s;
+        line-height: 25px;
     }
     input[type="checkbox"]:checked + label{
         color: var(--white);

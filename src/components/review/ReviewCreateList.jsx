@@ -351,6 +351,7 @@ const StUserImg = styled.div`
     background: ${props => `url(${props.imgUrl})`};
     background-size: cover;
     background-position: center;
+    word-break:break-all;
 `
 const StNameDt = styled.dt`
     font-size: 14px;

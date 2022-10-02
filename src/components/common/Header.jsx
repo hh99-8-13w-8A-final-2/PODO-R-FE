@@ -67,6 +67,7 @@ const StHeaderCont = styled.div`
   }
   div {
     display: flex;
+    align-items: center;
 
   }
   @media (max-width: 763px){

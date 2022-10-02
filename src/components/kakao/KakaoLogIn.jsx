@@ -70,6 +70,7 @@ const StLoginIcon = styled.div`
     cursor: pointer;
     margin-right: 10px;
     width: 20px;
+    height: 100%;
   }
   span{
     display: block;

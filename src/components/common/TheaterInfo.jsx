@@ -64,7 +64,7 @@ const TheaterInfo = ({onClose, theaterId}) => {
             <div className='info'>
                 <p><span>전화번호</span> {theaterInfo.theaterTel} </p>
                 <p><span>주소</span>{theaterInfo.theaterAddr}</p>
-                <p><span>홈페이지</span>{theaterInfo.theaterUrl}</p>
+                <p><span>홈페이지</span> <span className='homepage' onClick={()=>{window.open(theaterInfo.theaterUrl)}}>{theaterInfo.theaterUrl}</span></p>
             </div>
             <div className='conveniences'>
                 <div className='convenience'>
@@ -112,6 +112,10 @@ padding: 40px;
             }
         }
         margin-bottom: 20px;
+        .homepage{
+            cursor: pointer;
+            text-decoration-line: underline;
+        }
     }
     .map{
         margin-top: 20px;

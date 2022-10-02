@@ -24,7 +24,7 @@ const NoticContents = ({onClose, noticeId}) => {
     return (
         <StInfoDiv>
             <StLoginBox>
-                <button onClick={onClose}>
+                <button onClick={onClose} title={"닫기 버튼"}>
                     <FontAwesomeIcon icon={faXmark} />
                 </button>
                 <div className='name'>[공지사항] {data?.title}</div>

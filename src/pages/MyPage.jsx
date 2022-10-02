@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import UserProfile from "../components/kakao/UserProfile";
 import MyTicketList from "../components/kakao/MyTicketList";
 import MyReviewList from "../components/kakao/MyReviewList";
 import Portal from "../assets/modal/Portal";
 import Modal from "../assets/modal/Modal";
 import ReviewDetail from "../components/review/ReviewDetail";
-import axios from "axios";
 import { useInfiniteQuery } from "react-query";
 import apis from "../apis/apis";
 
@@ -35,6 +35,16 @@ const MyPage = () => {
   const [reviewsId, SetReviewsId] = useState("");
   const [musicalId, setMusicalId] = useState("");
   const [eachMusicalId, setEachMusicalId] = useState("");
+  const navigate = useNavigate();
+  
+
+  
+
+  useEffect(()=>{
+    if(localStorage.getItem('userId') === null){
+      navigate("/notfind")
+    }
+  })
 
   const {
     data,
