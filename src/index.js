@@ -7,13 +7,16 @@ import { ThemeProvider } from 'styled-components';
 import theme from './assets/style/theme';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { RecoilRoot } from 'recoil';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ThemeProvider theme={theme}>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <RecoilRoot>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </RecoilRoot>
   </ThemeProvider>
 );
 

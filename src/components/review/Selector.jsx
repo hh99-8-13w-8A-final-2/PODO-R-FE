@@ -14,7 +14,6 @@ import apis from '../../apis/apis';
 
 
 const Selector = ({ handleModal, theaterId }) => {
-    //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     let location = useLocation();
     const navigate = useNavigate();
     const [params] = useSearchParams();
@@ -36,7 +35,6 @@ const Selector = ({ handleModal, theaterId }) => {
 
     const getSeat = async () => {
         if (theaterId === undefined) { return }
-        /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
 
@@ -350,7 +348,6 @@ const Selector = ({ handleModal, theaterId }) => {
     }
 
     const fetchTags = () => {
-        //return axios.get(`${URI.BASE}/api/tags`)
         return apis.getFetchTags(musicalId)
     }
 

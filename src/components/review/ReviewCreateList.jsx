@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "react-query";
 import { useMutation, useQueryClient } from "react-query"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import styled from 'styled-components';
 import { ReactComponent as TextIcon } from '../../assets/img/textIcon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,7 +28,21 @@ const getComments = async (reviewId, pageParam) => {
 const postModifyedComment = async (new_comment) => {
     const { modifyId, content } = new_comment
     return await apis.putModifyedComment(modifyId, content)
-
+    .then(() => {
+        toast.success("수정이 완료되었습니다", {
+            icon:"🔨",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+        })
+    }) 
+    .catch(() => {
+        toast.error("댓글 수정이 실패했습니다. 글자 수를 확인해 보세요(255자 이하)", {
+            icon: "✍️",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+            theme: "colored"
+        })
+    })
 }
 
 const deleteComment = async (commentId) => {
@@ -42,7 +56,6 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
     const [toggle, setToggle] = useState(false);
     const userId = parseInt(localStorage.getItem('userId'))
     const { ref, inView } = useInView();
-    const [ modifyValue, setModifyValue ] = useState('');
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
@@ -61,7 +74,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                 }
             }
         )
-
+    
+    console.log(data)
         
 
     useEffect(() => {
@@ -105,11 +119,6 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             modifyId: modifyId,
         }
         modifyMutation.mutate(modify_comment)
-        toast.success("수정이 완료되었습니다", {
-            icon:"🔨",
-            autoClose: 500,
-            position: toast.POSITION.TOP_RIGHT,
-        })
         setToggle(!toggle)
         reset({ modify: "" })
     }
@@ -123,6 +132,8 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
             theme:"dark"
         })
     }
+
+
 
     return (
         <StCommentBox>
@@ -222,7 +233,7 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                                                     type="text"
                                                     placeholder='수정할 내용을 입력하세요(225자 이하)'
                                                     {...register("modify", { required: true, validate: value => isBlank(value) })}
-                                                    defaultValue={comment.content}
+
                                                 />
                                                 {errors.modify && errors.modify.type === "required" && <StValidateP>댓글 내용을 입력해 주세요~</StValidateP>}
                                                 {errors.modify && errors.modify.type === "validate" && <StValidateP>공백만 입력되었어요!</StValidateP>}

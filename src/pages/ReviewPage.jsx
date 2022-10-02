@@ -1,42 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { __getmusicalData } from '../redux/modules/musicalSlice';
-import { useDispatch } from "react-redux";
 import Selector from '../components/review/Selector';
 import CreateBtn from '../components/common/CreateBtn'
 import Portal from '../assets/modal/Portal'
 import Modal from '../assets/modal/Modal';
 import ReviewDetail from '../components/review/ReviewDetail';
 import Create from '../components/create/Create';
-import apis from '../apis/apis';
+import { useRecoilValue } from 'recoil';
+import muslicalSelector from '../atoms/musicalSelector';
 
 
 const ReviewPage = () => {
-
-    const URI = {
-        BASE: process.env.REACT_APP_BASE_URI
-      };
-    
-    
+        
     let location = useLocation();
     let musical = location.pathname.split('/').splice(2,1).toString()
-    const dispatch = useDispatch();
     
     const [modalOn, setModalOn] = useState(false);
     const [reviewsId, SetReviewsId ] = useState('');
     const [musicalId, SetMusicalId ] = useState('');
     const [create, SetCreate] = useState(false)
-    const [musicals, setMusicals] = useState({});
-    const getData = async() =>{
-        //const res = await axios.get(`${URI.BASE}/api/musicals/${musical}`)
-        const res = await apis.getMusicalData(musical)
-        setMusicals(res.data)
-     }
 
     const onClickHandler = () =>{
         SetCreate(!create)
     }
-    //console.log(musicals)
+
     const handleModal = (reviewsId, musicalId) => {
       setModalOn(!modalOn);
       SetReviewsId(reviewsId);
@@ -45,9 +32,10 @@ const ReviewPage = () => {
     const modalclose = () =>{
         setModalOn(!modalOn);
     }
+
+    const musicalInfo = useRecoilValue(muslicalSelector(musical))
+
     useEffect(()=>{
-        getData()
-        dispatch(__getmusicalData(musical));
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
@@ -57,7 +45,7 @@ const ReviewPage = () => {
 
     return (
         <>
-            {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicals.theaterId} /> : <Selector theaterId={musicals.theaterId} handleModal={handleModal} />}
+            {create ? <Create create={create} SetCreate={SetCreate} theaterId={musicalInfo.theaterId} musicalId={musicalInfo.musicalId}/> : <Selector theaterId={musicalInfo.theaterId} handleModal={handleModal} />}
             <CreateBtn onClickHandler={onClickHandler}/>
             <Portal>
                 {modalOn && 

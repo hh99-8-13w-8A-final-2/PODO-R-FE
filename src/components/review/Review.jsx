@@ -60,8 +60,6 @@ const Review = ({ handleModal, tagUrl }) => {
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
-
-
     return (
         <div>
             {data?.pages.map((group, i) => {
@@ -109,6 +107,7 @@ const Review = ({ handleModal, tagUrl }) => {
                                     return parseInt(year) + '년 전'
                                     }
                                 }
+                                console.log(data)
                                 return (
                                     <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId, data.musicalId)}>
                                         <StThumbDiv imgUrl={data.imgUrl}>

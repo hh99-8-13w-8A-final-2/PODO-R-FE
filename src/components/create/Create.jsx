@@ -4,27 +4,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import apis from "../../apis/apis";
-import axios from 'axios';
 import Select from 'react-select'
 import styled from 'styled-components';
 import Tag from './Tag';
 import ImageAdd from './ImageAdd';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
-import Modal from '../../assets/modal/Modal';
-import ModalPortal from '../../assets/modal/Portal';
 import 'react-toastify/dist/ReactToastify.css';
-import ModalSeat from '../common/ModalSeat';
 
 
 
-const Create = ({ create, SetCreate, theaterId }) => {
-    const navigate = useNavigate();
-    //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
-    const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
+const Create = ({ create, SetCreate, theaterId, musicalId }) => {
 
-    /* let location = useLocation();
-    let musicalId = location.pathname.split('/').splice(2, 1).toString() */
     const [tagList, setTagList] = useState([]); // 태그 리스트
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보
@@ -50,7 +41,6 @@ const Create = ({ create, SetCreate, theaterId }) => {
     
     
     const getSeat = async () => {
-        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
