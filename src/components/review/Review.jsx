@@ -107,7 +107,6 @@ const Review = ({ handleModal, tagUrl }) => {
                                     return parseInt(year) + '년 전'
                                     }
                                 }
-                                console.log(data)
                                 return (
                                     <StReviewDiv key={data.reviewId} onClick={() => handleModal(data.reviewId, data.musicalId)}>
                                         <StThumbDiv imgUrl={data.imgUrl}>

@@ -242,11 +242,7 @@ const Modify = ({ data, setModify }) => {
             queryClient.invalidateQueries("/ReviewDetail")
             queryClient.invalidateQueries("reviews")
         }
-    })
-
-    console.log(queryClient)
-    
-
+    })    
 
     const onSubmit = async () => {
        

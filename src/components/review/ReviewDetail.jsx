@@ -54,7 +54,6 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
             refetchOnWindowFocus: false,
         }
     )
-    console.log(data)
     const MySwal = withReactContent(Swal)
     const queryClient = useQueryClient();
     const deleteId = {

@@ -26,6 +26,7 @@ const apis = {
     getOpenMusical : () => baseApi.get(`/api/musicals/open`),
     getAllMusical : () => baseApi.get(`/api/musicals/all`),
     //리뷰 페이지 
+    getMusicalInfo:(musicalId) => baseApi.get(`/api/musicals/${musicalId}`),
     getSeat:(theaterId) => baseApi.get(`/api/theaters/${theaterId}/seats`),
     getMusicalId : (musicalId) => baseApi.get(`/api/musicals/${musicalId}`),
     getTheaterInfo : (theaterId) => baseApi.get(`/api/theaters/${theaterId}`),
