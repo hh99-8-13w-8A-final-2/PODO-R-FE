@@ -33,24 +33,24 @@ const Modify = ({ data, setModify }) => {
     const imgUrls = data?.data.imgurls
     const { register, formState: { errors }, control, watch, handleSubmit } = useForm({
         defaultValues: {
-            grade: {
-            label: data.data.grade,
-            value: data.data.grade,
-            },
-            floor: {
-            label: data.data.floor,
-            value: data.data.floor,
-            },
-            section: {
-            label: data.data.section,
-            value: data.data.section,
-            },
-            row: {
-            label: data.data.row,
-            value: data.data.row,
-            },
-            },
-    });
+        grade: {
+        label: data.data.grade,
+        value: data.data.grade,
+        },
+        floor: {
+        label: data.data.floor,
+        value: data.data.floor,
+        },
+        section: {
+        label: data.data.section,
+        value: data.data.section,
+        },
+        row: {
+        label: data.data.row,
+        value: data.data.row,
+        },
+        },
+        });
     
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI

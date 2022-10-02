@@ -12,7 +12,11 @@ import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
 import 'react-toastify/dist/ReactToastify.css';
 
-
+document.addEventListener('keydown', function(event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+    };
+  }, true);
 
 const Create = ({ create, SetCreate, theaterId, musicalId }) => {
 
@@ -33,13 +37,12 @@ const Create = ({ create, SetCreate, theaterId, musicalId }) => {
 
     const { register, formState: { errors }, control, watch, handleSubmit } = useForm({
         defaultValues: {
-            floor: '1F'
+            floor: ''
         }
     });
     
    
-    
-    
+   
     const getSeat = async () => {
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보

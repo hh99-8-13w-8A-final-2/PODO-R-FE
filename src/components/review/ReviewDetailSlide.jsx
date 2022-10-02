@@ -144,6 +144,7 @@ const StContentDiv = styled.div`
         text-align: left;
         line-height: 24px;
         color: var(--gray-1);
+        word-break: break-all;
     }
     
 `

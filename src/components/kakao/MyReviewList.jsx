@@ -6,10 +6,7 @@ import apis from "../../apis/apis";
 import { useInfiniteQuery } from "react-query";
 
 const myFetchReviews = async (pageParam, userId) => {
-  const headers = {
-    Authorization: localStorage.getItem("accessToken"),
-  };
-  const response = await apis.getMyReviewFind(headers);
+  const response = await apis.getMyReviewFind(pageParam);
   const data = response.data.content;
   const pageData = response.data.totalPages;
   const total = response.data.totalElements;
@@ -50,7 +47,7 @@ const MyReviewList = ({
         }
       },
     }
-  );
+  ); console.log(data)
 
   return (
     <div>

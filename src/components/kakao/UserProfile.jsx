@@ -11,15 +11,20 @@ import pencil from "../../assets/img/pencil.svg";
 const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
   const nickname = localStorage.getItem("nickname");
-
   const [newNickName, setNewNickName] = useState(nickname);
   const [signupModalOn, setSignupModalOn] = useState(false);
   const [imagePreview, setImagePreview] = useState();
-
   const [nameMessage, setNameMessage] = useState("");
   const [isName, setIsName] = useState(false);
   const [user, setUser] = useState();
 
+ 
+  function showKeyCode(e) {
+
+    if (e.keyCode == 32) {
+    return false;
+    }
+  }
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
   };
@@ -41,7 +46,7 @@ const UserProfile = () => {
 
   const onChangeHandler = (e) => {
     let { value } = {...e.target}
-    setNewNickName(()=> value);
+    setNewNickName(()=> value.replace( / /g, ''));
     if (value.length < 2 || value.length > 8 ) {
       setNameMessage("2글자 이상 8글자 미만으로 입력해주세요.");
       setIsName(false);    
@@ -50,7 +55,7 @@ const UserProfile = () => {
       setIsName(true);
     }
   };
-
+  console.log(newNickName)
   const profileImageUpload = async () => {
     if (imageUrl === undefined || imageUrl.length === 0) {
       return profilePic;
@@ -154,6 +159,7 @@ const UserProfile = () => {
                         // placeholder={nickname}
                         // value={nickname}
                         defaultValue={nickname}
+                        
                       />
                     </div>
                     <div className="validity">
@@ -187,16 +193,20 @@ const StNickName = styled.div`
   .nickInput {
     display: flex;
     align-items: center;
+    justify-content: center;
+    align-content: center;
     p {
       margin-right: 10px;
     }
     input {
-      width: 300px;
+      width: 200px;
       background-color: var(--gray-4);
     }
   }
   .validity {
     margin-top: 10px;
+  }
+  @media screen and (max-width: 763px) {
   }
 `;
 
