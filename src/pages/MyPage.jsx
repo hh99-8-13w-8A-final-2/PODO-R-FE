@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import UserProfile from "../components/kakao/UserProfile";
 import MyTicketList from "../components/kakao/MyTicketList";
 import MyReviewList from "../components/kakao/MyReviewList";
@@ -34,6 +35,16 @@ const MyPage = () => {
   const [reviewsId, SetReviewsId] = useState("");
   const [musicalId, setMusicalId] = useState("");
   const [eachMusicalId, setEachMusicalId] = useState("");
+  const navigate = useNavigate();
+  
+
+  
+
+  useEffect(()=>{
+    if(localStorage.getItem('userId') === null){
+      navigate("/notfind")
+    }
+  })
 
   const {
     data,
@@ -83,7 +94,7 @@ const MyPage = () => {
       />
       <Portal>
         {modalOn && (
-          <Modal onClose={modalclose} modalOn={modalOn}>
+          <Modal onClose={modalclose}>
             <ReviewDetail
               reviewsId={reviewsId}
               musicalId={musicalId}

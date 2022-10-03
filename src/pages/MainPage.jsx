@@ -9,6 +9,7 @@ import Modal from '../assets/modal/Modal';
 import up from '../assets/img/up.svg'
 import ReviewDetail from '../components/review/ReviewDetail';
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 const MainPage = () => {
     const [modalOn, setModalOn] = useState(false);
@@ -28,6 +29,9 @@ const MainPage = () => {
             behavior: 'smooth'
         })
       }
+      useEffect(() => {
+        sessionStorage.clear()
+    }, [])
     return (
         <>
           <MainBanner/>
@@ -74,8 +78,10 @@ div{
     &:hover {
         background-color: var(--maincolor-1);
     }
-}
     img{
         width: 24px;
+        height: 100%;
     }
+}
+   
 `

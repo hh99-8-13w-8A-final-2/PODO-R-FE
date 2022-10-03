@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import apis from "../../apis/apis";
-import { login } from "../../redux/modules/userSlice";
+import loginState from "../../atoms/isLogin";
+import { useRecoilState } from "recoil";
 
 const Twitter = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const oauth_token = new URL(window.location.href).searchParams.get(
     "oauth_token"
   );
   const oauth_verifier = new URL(window.location.href).searchParams.get(
     "oauth_verifier"
   );
+  const [isLoginState, setIsLoginState] = useRecoilState(loginState)
 
   const TwitterLogin = async () => {
     try {
@@ -28,7 +27,7 @@ const Twitter = () => {
       localStorage.setItem("nickname", nickname);
       localStorage.setItem("profilePic", profilePic);
       localStorage.setItem("userId", userId);
-      dispatch(login(response.data));
+      if(response.data) { setIsLoginState(true) }
       navigate("/");
     } catch (error) {
       console.log(error);

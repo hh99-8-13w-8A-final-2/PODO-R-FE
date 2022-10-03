@@ -8,7 +8,6 @@ import styled from "styled-components";
 import CONVENIENCE from '../../assets/img/CONVENIENCE.svg'
 import DISABLED from '../../assets/img/DISABLED.svg'
 import PARK from '../../assets/img/PARK.svg'
-import axios from 'axios';
 import apis from '../../apis/apis';
 
 const TheaterInfo = ({onClose, theaterId}) => {
@@ -27,7 +26,6 @@ const TheaterInfo = ({onClose, theaterId}) => {
     const disabled = []
     const park = [] 
     const getTheater = async() => {
-        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}`)
         const res = await apis.getTheater(theaterId)
         setTheaterInfo(res.data)
 
@@ -64,7 +62,7 @@ const TheaterInfo = ({onClose, theaterId}) => {
             <div className='info'>
                 <p><span>전화번호</span> {theaterInfo.theaterTel} </p>
                 <p><span>주소</span>{theaterInfo.theaterAddr}</p>
-                <p><span>홈페이지</span>{theaterInfo.theaterUrl}</p>
+                <p><span>홈페이지</span> <span className='homepage' onClick={()=>{window.open(theaterInfo.theaterUrl)}}>{theaterInfo.theaterUrl}</span></p>
             </div>
             <div className='conveniences'>
                 <div className='convenience'>
@@ -112,6 +110,10 @@ padding: 40px;
             }
         }
         margin-bottom: 20px;
+        .homepage{
+            cursor: pointer;
+            text-decoration-line: underline;
+        }
     }
     .map{
         margin-top: 20px;

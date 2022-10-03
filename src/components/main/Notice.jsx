@@ -76,6 +76,7 @@ const StDate = styled.span`
     padding: 10px;
     @media (max-width: 763px){
         padding: 0;
+        font-size: 14px;
         
     }
     @media (max-width: 375px){

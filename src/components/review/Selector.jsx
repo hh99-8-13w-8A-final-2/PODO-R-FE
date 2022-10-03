@@ -14,7 +14,6 @@ import apis from '../../apis/apis';
 
 
 const Selector = ({ handleModal, theaterId }) => {
-    //const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
     let location = useLocation();
     const navigate = useNavigate();
     const [params] = useSearchParams();
@@ -36,7 +35,6 @@ const Selector = ({ handleModal, theaterId }) => {
 
     const getSeat = async () => {
         if (theaterId === undefined) { return }
-        /* const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`) */
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
 
@@ -166,6 +164,7 @@ const Selector = ({ handleModal, theaterId }) => {
 
     const onChangeSeat = (e) => {
         setSeatNumber(e.target.value)
+        sessionStorage.setItem("setSeatNumber", JSON.stringify(e.target.value))
     } // 좌석 시트 값
 
     const onClickReset = () => {
@@ -349,7 +348,6 @@ const Selector = ({ handleModal, theaterId }) => {
     }
 
     const fetchTags = () => {
-        //return axios.get(`${URI.BASE}/api/tags`)
         return apis.getFetchTags(musicalId)
     }
 
@@ -606,6 +604,50 @@ const Selector = ({ handleModal, theaterId }) => {
             }
         }
     }
+    const setSelectGradeHandler = (selectGrade) => {
+        setSelectGrade(selectGrade)
+        sessionStorage.setItem("selectGradeOption", JSON.stringify(selectGrade))
+    }
+    const setSelectFloorHandler = (selectFloor) => {
+        setSelectFloor(selectFloor)
+        sessionStorage.setItem("selectFloorOption", JSON.stringify(selectFloor))
+    }
+    const setSelectSectionHandler = (selectSection) => {
+        setSelectSection(selectSection)
+        sessionStorage.setItem("selectSectionOption", JSON.stringify(selectSection))
+    }
+    const setSelectRowHandler = (selectRow) => {
+        setSelectRow(selectRow)
+        sessionStorage.setItem("selectRowOption", JSON.stringify(selectRow))
+    }
+
+    useEffect(() => {
+        if(sessionStorage.getItem("selectGradeOption") !== null) {
+            let selectedGradeOpttion = JSON.parse(sessionStorage.getItem("selectGradeOption"))
+            setSelectGrade(selectedGradeOpttion)
+        }
+        if(sessionStorage.getItem("selectFloorOption") !== null) {
+            let selectedFloorOption = JSON.parse(sessionStorage.getItem("selectFloorOption"))
+            setSelectFloor(selectedFloorOption)
+        }
+        if(sessionStorage.getItem("selectSectionOption") !== null) {
+            let selectedSectionOption = JSON.parse(sessionStorage.getItem("selectSectionOption"))
+            setSelectSection(selectedSectionOption)
+        }
+        if(sessionStorage.getItem("selectRowOption") !== null) {
+            let selectedRowOption = JSON.parse(sessionStorage.getItem("selectRowOption"))
+            setSelectRow(selectedRowOption)
+        }
+        if(sessionStorage.getItem("setSeatNumber") !== null) {
+            let setSeatNumberOption = JSON.parse(sessionStorage.getItem("setSeatNumber"))
+            setSeatNumber(setSeatNumberOption)
+        }       
+    }, [])
+
+    window.onpopstate = function() {
+        navigate("/")
+    }
+
 
 
 
@@ -630,22 +672,21 @@ const Selector = ({ handleModal, theaterId }) => {
             </StFilterTopDiv>
             <StFilterDiv className='bottom'>
                 <div className='left'>
-                    <Select placeholder='좌석등급' theme={(theme) => ({
+                    <Select placeholder='좌석등급' id='grade' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
-                    })} options={gradeOptions} onChange={setSelectGrade} value={selectGrade} />
-                    <Select placeholder='층' theme={(theme) => ({
+                    })} options={gradeOptions} onChange={(selectGrade) => setSelectGradeHandler(selectGrade)} value={selectGrade} />
+                    <Select placeholder='층' id='floor' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
-                    })} options={floorOptions} onChange={setSelectFloor} value={selectFloor} />
-                    <Select placeholder='구역' theme={(theme) => ({
+                    })} options={floorOptions} onChange={(selectFloor) => setSelectFloorHandler(selectFloor)} value={selectFloor} />
+                    <Select placeholder='구역' id='section' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
-                    })} options={sectionOptions} onChange={setSelectSection} value={selectSection} />
-                    <Select placeholder='열' theme={(theme) => ({
+                    })} options={sectionOptions} onChange={(selectSection) => setSelectSectionHandler(selectSection)} value={selectSection} />
+                    <Select placeholder='열' id='row' theme={(theme) => ({
                         ...theme, borderRadius: 1, colors: { ...theme.colors, primary25: 'var(--maincolor-3)', primary: 'var(--maincolor-1)' },
-                    })} options={rowOptions} onChange={setSelectRow} value={selectRow} />
+                    })} options={rowOptions} onChange={(selectRow) => setSelectRowHandler(selectRow)} value={selectRow} />
                     <div className='inputSeat'>
                         <input type="number" id='seat' name='seat' min="0" placeholder='좌석번호' onChange={onChangeSeat} value={seatNumber || ''} onKeyUp={keyUpHandler} />
                         <span><FontAwesomeIcon icon={faRotateLeft} onClick={onClickReset} /> <Search className='icon' onClick={ClickSeatSerch} /></span>
-                       
                     </div>
                 </div>
                 <div className='right'>
@@ -766,6 +807,9 @@ const StFilterDiv = styled.div`
                 img{
                     width: 30px;
                     margin-right: 5px;
+                        @media (max-width: 375px){
+                            width: 50px;
+                        }
                 }
             }
         }
@@ -817,6 +861,7 @@ const StFilterDiv = styled.div`
                 label{
                     margin: 10px 5px;
                     font-size: .7em;
+
                 }
             }
         }
@@ -865,6 +910,7 @@ const StCheckbox = styled.div`
         color: var(--gray-2);
         border: 1px solid var(--gray-2);
         transition: all .3s;
+        line-height: 25px;
     }
     input[type="checkbox"]:checked + label{
         color: var(--white);

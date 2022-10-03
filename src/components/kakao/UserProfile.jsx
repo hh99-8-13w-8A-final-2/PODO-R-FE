@@ -12,11 +12,9 @@ import apis from "../../apis/apis";
 const UserProfile = () => {
   const profilePic = localStorage.getItem("profilePic");
   const nickname = localStorage.getItem("nickname");
-
   const [newNickName, setNewNickName] = useState(nickname);
   const [signupModalOn, setSignupModalOn] = useState(false);
   const [imagePreview, setImagePreview] = useState();
-
   const [nameMessage, setNameMessage] = useState("");
   const [isName, setIsName] = useState(false);
   const [user, setUser] = useState();
@@ -50,7 +48,7 @@ const UserProfile = () => {
       setIsName(true);
     }
   };
-
+  console.log(newNickName)
   const profileImageUpload = async () => {
     if (imageUrl === undefined || imageUrl.length === 0) {
       return profilePic;
@@ -144,6 +142,7 @@ const UserProfile = () => {
                         // placeholder={nickname}
                         // value={nickname}
                         defaultValue={nickname}
+                        
                       />
                     </div>
                     <div className="validity">

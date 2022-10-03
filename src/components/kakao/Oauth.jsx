@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import apis from "../../apis/apis";
 import kakao_login from "../../assets/img/kakao_login.svg";
 import twitter_login from "../../assets/img/twitter_login.svg";

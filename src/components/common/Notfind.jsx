@@ -57,4 +57,8 @@ const StDiv = styled.div`
             background-color:var(--maincolor-1)
         }
     }
+    @media (max-width: 763px){
+        width: auto;
+        background: none;
+    }
 `

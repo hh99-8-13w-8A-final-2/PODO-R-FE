@@ -454,6 +454,8 @@ const StP = styled.p`
     margin-bottom: 40px;
     text-align: start;
     line-height: 24px;
+    word-break: break-all;
+    white-space: pre-line;
 `
 const StTagDiv = styled.div`
     display: flex;

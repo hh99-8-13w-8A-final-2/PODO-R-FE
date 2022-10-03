@@ -42,6 +42,7 @@ const NoticeList = () => {
                             onClick={() => setPageNumber(page => page - 1)}
                             disabled={pageNumber === 1}
                             pageLeft={pageLeft}
+                            title={"이전 페이지"}
                         ><span>Prev Page</span>
                         </StButtonLeft>
                         <StNumDiv>{pageNumber}/{data?.data.totalPages}</StNumDiv>
@@ -49,6 +50,7 @@ const NoticeList = () => {
                             onClick={() => setPageNumber(page => page + 1)}
                             disabled={pageNumber === data?.data.totalPages}
                             pageRigth={pageRigth}
+                            title={"다음 페이지"}
                         ><span>Next Page</span>
                         </StButtonRight>
                     </div>
