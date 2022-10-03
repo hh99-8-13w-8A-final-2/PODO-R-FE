@@ -9,6 +9,7 @@ import ImageAdd from './ImageAdd';
 import RadioSelect from './RadioSelect';
 import CheckboxSelect from './CheckboxSelect';
 import 'react-toastify/dist/ReactToastify.css';
+import { useMutation, useQueryClient } from 'react-query';
 
 document.addEventListener('keydown', function(event) {
     if (event.keyCode === 13) {
@@ -16,7 +17,7 @@ document.addEventListener('keydown', function(event) {
     };
   }, true);
 
-const Create = ({ create, SetCreate, theaterId, musicalId }) => {
+const Create = ({ create, SetCreate, theaterId, musicalId}) => {
 
     const [tagList, setTagList] = useState([]); // 태그 리스트
     const [Data, setData] = useState([]); //좌석 정보
@@ -198,6 +199,34 @@ const Create = ({ create, SetCreate, theaterId, musicalId }) => {
         }
     }
 
+    const postCreatReviews = async(json) => {
+        await apis.postReview(musicalId, json)
+        .then(
+            (response)=>{
+                SetCreate(!create)
+            }
+        )
+        .catch(
+            (err) => {
+                if(err.response){
+                    console.log (err)
+                    let data = err.response.data;
+                    toast.error(data, {
+                        autoClose: 3000,
+                        position: toast.POSITION.TOP_CENTER,
+                        theme: "dark"
+                    })
+                }   
+            }
+        )
+    }
+    const queryClient = useQueryClient()
+    const creatMutation = useMutation(postCreatReviews, {
+        onSuccess: (newPost) => {
+            queryClient.setQueryData(["reviews", JSON.stringify(musicalId), ""], newPost)
+        }
+    })   
+
 
     const onSubmit = async () => {
         //이미지 업로드 
@@ -216,7 +245,9 @@ const Create = ({ create, SetCreate, theaterId, musicalId }) => {
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
+
         try {
+
             const obj = {};
             formdata.forEach(function (value, key) {
                 obj[key] = value;
@@ -225,19 +256,8 @@ const Create = ({ create, SetCreate, theaterId, musicalId }) => {
 
             const json = JSON.stringify(obj)
 
-
-            await apis.postReview(musicalId, json)
-            SetCreate(!create)
-        } catch (err) {
-            if(err.response){
-                let data = err.response.data;
-                toast.error(data, {
-                    autoClose: 3000,
-                    position: toast.POSITION.TOP_CENTER,
-                    theme: "dark"
-                })
-            }
-        }
+            creatMutation.mutate(json)
+            // await apis.postReview(musicalId, json)
     }
 
 
