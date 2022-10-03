@@ -1,19 +1,14 @@
-import React,{ useEffect, useState } from 'react';
+import React,{ useState } from 'react';
 import Notice from './Notice';
 import Event from './Event';
 import styled from 'styled-components';
-import axios from 'axios';
 import apis from '../../apis/apis';
 import { useQuery } from 'react-query'
 import pageRigth from '../../assets/img/pageRight.svg'
 import pageLeft from '../../assets/img/pageLeft.svg'
 
-const URI = {
-    BASE : process.env.REACT_APP_BASE_URI
-  }
 
 const fetchNotice = pageNumber => {
-    //return axios.get(`${URI.BASE}/api/notices?size=4&page=${pageNumber}`)
     return apis.getFetchNotice(pageNumber)
 }
 

@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from 'react-query'
@@ -12,7 +12,7 @@ import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
 
 const Modify = ({ data, setModify }) => {
-    
+
     const theaterId = data.data.musical.theaterId
     const musicalId = data.data.musical.musicalId
     const [tagList, setTagList] = useState([]); // 태그 리스트
@@ -20,7 +20,7 @@ const Modify = ({ data, setModify }) => {
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보
     const [Data2, setData2] = useState([]); //2층 섹션, row 정보
     const [Data3, setData3] = useState([]); //3층 섹션, row 정보
-    const [Data4,setData4] =useState([]); //발코니 섹션, row 정보
+    const [Data4, setData4] = useState([]); //발코니 섹션, row 정보
     const floorOptions = []; //층 select에 넣어주는 값
     const sectionOptions = []; //구역 select에 넣어주는 값
     const rowOptions = []; //열 select에 넣어주는 값
@@ -33,31 +33,29 @@ const Modify = ({ data, setModify }) => {
     const imgUrls = data?.data.imgurls
     const { register, formState: { errors }, control, watch, handleSubmit } = useForm({
         defaultValues: {
-        grade: {
-        label: data.data.grade,
-        value: data.data.grade,
+            grade: {
+                label: data.data.grade,
+                value: data.data.grade,
+            },
+            floor: {
+                label: data.data.floor,
+                value: data.data.floor,
+            },
+            section: {
+                label: data.data.section,
+                value: data.data.section,
+            },
+            row: {
+                label: data.data.row,
+                value: data.data.row,
+            },
         },
-        floor: {
-        label: data.data.floor,
-        value: data.data.floor,
-        },
-        section: {
-        label: data.data.section,
-        value: data.data.section,
-        },
-        row: {
-        label: data.data.row,
-        value: data.data.row,
-        },
-        },
-        });
-    
+    });
+
     const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
-    //console.log(data)
+        BASE: process.env.REACT_APP_BASE_URI
+    }
     const getSeat = async () => {
-        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
@@ -69,10 +67,10 @@ const Modify = ({ data, setModify }) => {
             } else if (i === '1') {
                 const data = res.data[i].sections
                 setData2(data)
-            } else if(i === '2'){
+            } else if (i === '2') {
                 const data = res.data[i].sections
                 setData3(data)
-            }else{
+            } else {
                 const data = res.data[i].sections
                 setData4(data)
             }
@@ -81,16 +79,16 @@ const Modify = ({ data, setModify }) => {
 
     useEffect(() => {
         getSeat();
-        if (block1 === true){
-            setBlock1 ('on')
+        if (block1 === true) {
+            setBlock1('on')
         }
-        if (operaGlass1 === true){
-            setOperaGlass1 ('on')
+        if (operaGlass1 === true) {
+            setOperaGlass1('on')
         }
     }, [operaGlass1]);
 
-    
-    
+
+
     const onChangeSelect = () => {
         setSelectFloor(watch("floor"))
     }
@@ -177,32 +175,32 @@ const Modify = ({ data, setModify }) => {
                 }
             }
         }
-    }else if (selectFloor.value === "발코니"){
-        for (var section in Data4){
+    } else if (selectFloor.value === "발코니") {
+        for (var section in Data4) {
             const data1 = Data4[section]
-            if(data1.section === "0"){
-                sectionOptions.push({"value" : "0" , "label":"구역 없음"})
-            }else{
-                sectionOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
+            if (data1.section === "0") {
+                sectionOptions.push({ "value": "0", "label": "구역 없음" })
+            } else {
+                sectionOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
             }
         }
-        const rowdata = Data4.findIndex( (e) => e.section === selectSection.value)
-        if(rowdata !== -1){
-            for(var rows in Data4[rowdata].rows){
+        const rowdata = Data4.findIndex((e) => e.section === selectSection.value)
+        if (rowdata !== -1) {
+            for (var rows in Data4[rowdata].rows) {
                 const data1 = Data4[rowdata].rows[rows]
-                if(data1 === "0"){
-                    rowOptions.push({"value" : "0" , "label":"열 없음"})
-                }else{
-                    if(Object.values(data1).length === 1){
-                        rowOptions.push({"value" : Object.values(data1)[0] , "label" : Object.values(data1)[0]})
-                    }else{
-                        rowOptions.push({"value" : Object.values(data1)[0]+Object.values(data1)[1] , "label" : Object.values(data1)[0]+Object.values(data1)[1]})
+                if (data1 === "0") {
+                    rowOptions.push({ "value": "0", "label": "열 없음" })
+                } else {
+                    if (Object.values(data1).length === 1) {
+                        rowOptions.push({ "value": Object.values(data1)[0], "label": Object.values(data1)[0] })
+                    } else {
+                        rowOptions.push({ "value": Object.values(data1)[0] + Object.values(data1)[1], "label": Object.values(data1)[0] + Object.values(data1)[1] })
                     }
-                } 
+                }
             }
         }
     }
-    else {}
+    else { }
 
     const gradeOptions = [
         { value: 'VIP', label: 'VIP' },
@@ -214,26 +212,26 @@ const Modify = ({ data, setModify }) => {
 
 
 
-    const postModifyedReviews = async(json) => {
+    const postModifyedReviews = async (json) => {
         await apis.putModify(musicalId, data, json)
-        .then(
-            (response)=>{
-                setModify(false)
-            }
-        )
-        .catch(
-            (err) => {
-                if(err.response){
-                    console.log (err)
-                    let data = err.response.data;
-                    toast.error(data, {
-                        autoClose: 3000,
-                        position: toast.POSITION.TOP_CENTER,
-                        theme: "dark"
-                    })
-                }   
-            }
-        )
+            .then(
+                (response) => {
+                    setModify(false)
+                }
+            )
+            .catch(
+                (err) => {
+                    if (err.response) {
+                        console.log(err)
+                        let data = err.response.data;
+                        toast.error(data, {
+                            autoClose: 3000,
+                            position: toast.POSITION.TOP_CENTER,
+                            theme: "dark"
+                        })
+                    }
+                }
+            )
     }
 
     const queryClient = useQueryClient()
@@ -242,10 +240,10 @@ const Modify = ({ data, setModify }) => {
             queryClient.invalidateQueries("/ReviewDetail")
             queryClient.invalidateQueries("reviews")
         }
-    })    
+    })
 
     const onSubmit = async () => {
-       
+
         if (imgUrls.length === 0) {
             toast.error("이미지 등록은 필수 입니다.", {
                 autoClose: 3000,
@@ -256,27 +254,26 @@ const Modify = ({ data, setModify }) => {
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
-        //formdata.append('imgUrls',imgUrls)
         formdata.delete('imgUrl')
         formdata.delete('operaGlass')
         formdata.delete('operaGlass1')
         formdata.delete('block')
         formdata.delete('block1')
-        if(block1 === true){            
+        if (block1 === true) {
             formdata.set('block', 'on')
-        }else if(block1 === false){
-            formdata.set('block',null)
+        } else if (block1 === false) {
+            formdata.set('block', null)
         }
-        else{
+        else {
             formdata.set('block', block1)
         }
-        if(operaGlass1 === true){
-            formdata.set('operaGlass','on')
-        }else if (operaGlass1 === false){
-            formdata.set('operaGlass',null)
-        }else{formdata.set('operaGlass', operaGlass1)}
+        if (operaGlass1 === true) {
+            formdata.set('operaGlass', 'on')
+        } else if (operaGlass1 === false) {
+            formdata.set('operaGlass', null)
+        } else { formdata.set('operaGlass', operaGlass1) }
 
-        
+
 
 
         const obj = {};
@@ -287,22 +284,16 @@ const Modify = ({ data, setModify }) => {
 
         const json = JSON.stringify(obj)
         modifyMutation.mutate(json)
-        
-        /* for (let key of imgFormdata.keys()) {
-            console.log(key);
-        }
-        for (let value of imgFormdata.values()) {
-            console.log(value);
-        }*/
-         for (let value of formdata.values()) {
+
+        for (let value of formdata.values()) {
             console.log(value);
         }
         for (let value of formdata.keys()) {
             console.log(value);
         }
-        
+
     }
-    
+
     return (
         <StForm id='myForm' onSubmit={handleSubmit(onSubmit, watch)}>
             <h4><span style={{ color: 'var(--error)' }}>*</span> 좌석정보</h4>
@@ -336,18 +327,18 @@ const Modify = ({ data, setModify }) => {
                     <p className='error'>{errors.row && errors.row?.message}</p>
                 </div>
                 <div>
-                    <input type="number" id='seat' min="0"  defaultValue={data?.data.seat || ''} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
+                    <input type="number" id='seat' min="0" defaultValue={data?.data.seat || ''} placeholder='좌석번호' {...register("seat", { min: 1, max: 300, required: true })} />
                     {errors.seat && errors.seat.type === "max" && <p className='error'> 300이하의 숫자로 입력해주세요. </p>}
                     {errors.seat && <p className='error'>필수로 입력하셔야합니다.</p>}
                 </div>
             </StTopSelectDiv>
-            <ModifyRadioSelect data={data}/>
-            <ModifyCheckboxSelect data={data} block1={block1} setBlock1={setBlock1} operaGlass1={operaGlass1} setOperaGlass1={setOperaGlass1}/>
+            <ModifyRadioSelect data={data} />
+            <ModifyCheckboxSelect data={data} block1={block1} setBlock1={setBlock1} operaGlass1={operaGlass1} setOperaGlass1={setOperaGlass1} />
             <div>
-                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' defaultValue={data?.data.reviewContent  || ''}></textarea>
+                <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' defaultValue={data?.data.reviewContent || ''}></textarea>
             </div>
             <ModifyTag setTagList={setTagList} tagList={tagList} data={data} />
-            <ModifyImageAdd setFiles={setFiles} files={files} data={data} URI={URI} imgUrls={imgUrls}/>
+            <ModifyImageAdd setFiles={setFiles} files={files} data={data} URI={URI} imgUrls={imgUrls} />
             <div className='button'>
                 <button type='submit'>등록</button>
                 <button type='button' onClick={() => setModify(false)} className='cancle' >취소</button>

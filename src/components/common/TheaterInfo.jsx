@@ -11,9 +11,7 @@ import PARK from '../../assets/img/PARK.svg'
 import apis from '../../apis/apis';
 
 const TheaterInfo = ({onClose, theaterId}) => {
-    const URI = {
-        BASE: process.env.REACT_APP_BASE_URI
-      };
+
     const [theaterInfo, setTheaterInfo] = useState({
         theaterName:'',
         theaterAddr:'',

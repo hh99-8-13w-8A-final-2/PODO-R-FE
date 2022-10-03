@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import MyReview from "./MyReview";
-import axios from "axios";
 import apis from "../../apis/apis";
 import { useInfiniteQuery } from "react-query";
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import apis from '../../../apis/apis';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +34,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
          for (let value of formData.values()) {
             console.log(value);
         }
-        /* const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType }) */
         apis.postModifyImg(formData)
         
         .then((res)=>{
@@ -48,14 +46,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         .catch((err)=>{
             console.log(err)
         })
-       /*  try{
-            const res = apis.postModifyImg(formData, multipartType)
-            console.log(res)
-        } catch(err) {
-            console.log(err)
-        } */
-       
-       
     };
     const handleDeleteImage = (id) => {
         imgUrls.splice(id,1)

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import MyTicket from "./MyTicket";
-import axios from "axios";
 import apis from "../../apis/apis";
 
 const MyTicketList = ({ setEachMusicalId }) => {
