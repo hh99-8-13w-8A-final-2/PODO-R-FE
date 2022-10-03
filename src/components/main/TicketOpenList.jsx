@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Ticket from './Ticket';
 import TicketList from './TicketList';
-import axios from 'axios';
 import { useQuery } from "react-query"
 import apis from '../../apis/apis';
 
@@ -11,13 +10,8 @@ const URI = {
   }
 
 const fetchOpenMusical = () => {
-    //return axios.get(`${URI.BASE}/api/musicals/open`)
     return apis.getOpenMusical()
   }
-
-const fetchAllMusical = () => {
-    return apis.getAllMusical()
-}
 
 const TicketOpenList = () => {
 

@@ -5,9 +5,6 @@ import loginState from "../../atoms/isLogin";
 import { useRecoilState } from "recoil";
 
 const Twitter = () => {
-  const URI = {
-    BASE: process.env.REACT_APP_BASE_URI,
-  };
   const navigate = useNavigate();
   const oauth_token = new URL(window.location.href).searchParams.get(
     "oauth_token"

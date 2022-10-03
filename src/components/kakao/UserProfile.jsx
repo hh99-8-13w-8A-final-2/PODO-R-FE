@@ -19,17 +19,11 @@ const UserProfile = () => {
   const [user, setUser] = useState();
 
  
-  function showKeyCode(e) {
-
-    if (e.keyCode == 32) {
-    return false;
-    }
-  }
   const URI = {
     BASE: process.env.REACT_APP_BASE_URI,
   };
 
-  const { register, handleSubmit, watch, setFocus, resetField } = useForm({
+  const { register, handleSubmit, watch, resetField } = useForm({
     mode: "onChange",
   });
   const imageUrl = watch("imgUrl");
