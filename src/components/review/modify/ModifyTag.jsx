@@ -14,7 +14,6 @@ const ModifyTag = ({ setTagList, tagList, data }) => {
             }
         }
     },[])
-    var input = document.getElementById('tag'); 
     const handelKeyDown = (e) => {
         if (e.keyCode !== 32) return
         

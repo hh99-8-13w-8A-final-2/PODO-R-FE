@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import apis from '../../../apis/apis';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +7,7 @@ import { faImages } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ModifyImageAdd = ({ data, URI, imgUrls }) => {
+const ModifyImageAdd = ({ data, imgUrls }) => {
     const files = []    
     const [showImages, setShowImages] = useState(data.data.imgurls); // 이미지 프리뷰
 
@@ -32,7 +31,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         for(let i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
-
         apis.postModifyImg(formData)
         
         .then((res)=>{

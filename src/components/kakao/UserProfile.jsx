@@ -19,11 +19,10 @@ const UserProfile = () => {
   const [isName, setIsName] = useState(false);
   const [user, setUser] = useState();
 
-  const { register, handleSubmit, watch, setFocus, resetField } = useForm({
+  const { register, handleSubmit, watch, resetField } = useForm({
     mode: "onChange",
   });
   const imageUrl = watch("imgUrl");
-
 
   const handleModal = (e) => {
     e.preventDefault();
@@ -141,7 +140,6 @@ const UserProfile = () => {
                         // placeholder={nickname}
                         // value={nickname}
                         defaultValue={nickname}
-                        
                       />
                     </div>
                     <div className="validity">

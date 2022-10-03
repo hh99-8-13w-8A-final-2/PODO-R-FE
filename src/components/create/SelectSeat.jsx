@@ -28,9 +28,6 @@ const SelectSeat = () => {
     const onChangeSelect = () =>{
         setSelectFloor(watch("floor"))
     }
-    const URI = {
-        BASE : process.env.REACT_APP_BASE_URI
-      }
     
     const getSeat = async() => {
         //const res = await axios.get(`${URI.BASE}/${musicalId}/seats`)

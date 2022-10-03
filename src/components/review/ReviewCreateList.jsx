@@ -12,7 +12,6 @@ import { useInView } from "react-intersection-observer";
 import moment from 'moment'
 
 const getComments = async (reviewId, pageParam) => {
-    /* const response = await axios.get(`${URI.BASE}/api/comments?reviewId=${reviewId}&page=${pageParam}`); */
     const response = await apis.getComment(reviewId, pageParam)
     const data = response.data.content;
     const pageData = response.data.totalPages;

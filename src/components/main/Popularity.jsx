@@ -4,14 +4,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from "react-query"
 
-const URI = {
-    BASE: process.env.REACT_APP_BASE_URI
-  };
 
-  const fetchPopularMusical = () => {
-    //return axios.get(`${URI.BASE}/api/musicals/popular`)
+const fetchPopularMusical = () => {
     return apis.getPopularMusical()
-  }
+}
 
 const Popularity = () => {
     const { status, data, error } = useQuery('/PopularMusical', fetchPopularMusical,

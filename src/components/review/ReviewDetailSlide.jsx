@@ -4,7 +4,7 @@ import 'swiper/css';
 import "swiper/css/free-mode";
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Autoplay, Navigation, Pagination } from 'swiper';
+import { Autoplay, Pagination } from 'swiper';
 import styled from 'styled-components';
 
 const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, nickname }) => {

@@ -6,11 +6,6 @@ import loginState from "../../atoms/isLogin";
 import { useRecoilState } from "recoil";
 
 const CreateBtn = ({ onClickHandler }) => {
-    /* let location = useLocation();
-    const navigate = useNavigate();
-    const onClickHandler =()=>{
-        navigate(`${location.pathname}/create`)
-    } */
     const [isLoginState, setIsLoginState] = useRecoilState(loginState);
     const goToTop =() =>{
         window.scrollTo({

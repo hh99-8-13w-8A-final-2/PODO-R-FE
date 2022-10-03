@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination } from "swiper";
+import { Navigation, Pagination } from 'swiper';
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
@@ -29,6 +29,7 @@ const MyTicket = ({ data, setEachMusicalId }) => {
               spaceBetween: 10,
             },
           }}
+          
           className="mySwiper"
         >
           {data?.content.map((ticket) => (

@@ -256,7 +256,6 @@ const Create = ({ create, SetCreate, theaterId, musicalId}) => {
             const json = JSON.stringify(obj)
 
             creatMutation.mutate(json)
-            // await apis.postReview(musicalId, json)
     }
 
 
