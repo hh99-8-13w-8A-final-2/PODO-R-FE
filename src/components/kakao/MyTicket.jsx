@@ -1,4 +1,4 @@
-import React , { useRef }from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from 'swiper';
@@ -7,7 +7,7 @@ import "swiper/css/free-mode";
 import "swiper/css/pagination";
 
 const MyTicket = ({ data, setEachMusicalId }) => {
-  const swiperRef = useRef(null)
+  const swiperRef = useRef(null);
   const setMusicalIdHandler = (musicalId) => {
     setEachMusicalId(musicalId);
   };
@@ -17,41 +17,44 @@ const MyTicket = ({ data, setEachMusicalId }) => {
       <div
         onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
         onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
-        >
-      <Swiper
+      >
+        <Swiper
           ref={swiperRef}
           slidesPerView={2}
           spaceBetween={10}
           modules={[Pagination, Navigation]}
           breakpoints={{
             763: {
-                slidesPerView: 5,
-                spaceBetween: 10
-            }
+              slidesPerView: 5,
+              spaceBetween: 10,
+            },
           }}
           
           className="mySwiper"
         >
-      {data?.content.map((ticket) => (
-        <SwiperSlide
-          key={ticket.musicalId}
-          onClick={() => setMusicalIdHandler(ticket.musicalId)}
-        >
-          <StDiv>
-            <input type="radio" name="musicalBox" id={ticket.musicalId} />
-            <div className="label">
-              <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
-                <StH3>{ticket.musicalName}</StH3>
-                <StDiv1>{ticket.musicalRegion}</StDiv1>
-                <StDiv2>
-                  {ticket.openDate} ~ {ticket.closeDate}
-                </StDiv2>
-              </StLabel>
-            </div>
-          </StDiv>
-        </SwiperSlide>
-      ))}
-      </Swiper>
+          {data?.content.map((ticket) => (
+            <SwiperSlide
+              key={ticket.musicalId}
+              onClick={() => setMusicalIdHandler(ticket.musicalId)}
+            >
+              <StDiv>
+                <input type="radio" name="musicalBox" id={ticket.musicalId} />
+                <div className="label">
+                  <StLabel
+                    imgUrl={ticket.musicalPoster}
+                    htmlFor={ticket.musicalId}
+                  >
+                    <StH3>{ticket.musicalName}</StH3>
+                    <StDiv1>{ticket.musicalRegion}</StDiv1>
+                    <StDiv2>
+                      {ticket.openDate} ~ {ticket.closeDate}
+                    </StDiv2>
+                  </StLabel>
+                </div>
+              </StDiv>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </StMyTicket>
   );
@@ -61,13 +64,14 @@ export default MyTicket;
 
 const StMyTicket = styled.div`
   width: 100%;
-  .swiper-pagination-bullet {background-color:var(--gray-2)}
-    margin-bottom: 70px;
-    @media (max-width: 763px){
-      margin-bottom: 30px;
-    }
+  .swiper-pagination-bullet {
+    background-color: var(--gray-2);
+  }
+  margin-bottom: 70px;
+  @media (max-width: 763px) {
+    margin-bottom: 30px;
+  }
 `;
-
 
 const StDiv = styled.div`
   box-sizing: border-box;

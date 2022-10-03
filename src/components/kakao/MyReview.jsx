@@ -171,10 +171,6 @@ const StDiv = styled.div`
   background-position: center;
   margin-left: 10px;
   border-radius: 8px;
-  /* @media screen and (max-width: 763px) {
-    width:50px;
-    height:50px;
-  } */
 `;
 
 const StIconDiv = styled.div`

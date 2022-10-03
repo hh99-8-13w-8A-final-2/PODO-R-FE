@@ -60,7 +60,6 @@ const MyPage = () => {
     },
     {
       refetchOnWindowFocus: false,
-      // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
       getNextPageParam: (_lastPage, pages) => {
         if (pages.length < pages[0].pageData) {
           return pages.length + 1;
