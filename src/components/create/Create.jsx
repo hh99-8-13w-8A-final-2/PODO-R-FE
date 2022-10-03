@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import apis from "../../apis/apis";
 import Select from 'react-select'
@@ -218,16 +216,6 @@ const Create = ({ create, SetCreate, theaterId, musicalId }) => {
         const form = document.getElementById('myForm');
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
-
-        /* for (let key of imgFormdata.keys()) {
-            console.log(key);
-        }
-        for (let value of imgFormdata.values()) {
-            console.log(value);
-        }
-        for (let value of formdata.values()) {
-            console.log(value);
-        } */
         try {
             const obj = {};
             formdata.forEach(function (value, key) {

@@ -55,9 +55,7 @@ const Modify = ({ data, setModify }) => {
     const URI = {
         BASE : process.env.REACT_APP_BASE_URI
       }
-    //console.log(data)
     const getSeat = async () => {
-        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}/seats`)
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
         setData(data)
@@ -287,19 +285,6 @@ const Modify = ({ data, setModify }) => {
 
         const json = JSON.stringify(obj)
         modifyMutation.mutate(json)
-        
-        /* for (let key of imgFormdata.keys()) {
-            console.log(key);
-        }
-        for (let value of imgFormdata.values()) {
-            console.log(value);
-        }*/
-         for (let value of formdata.values()) {
-            console.log(value);
-        }
-        for (let value of formdata.keys()) {
-            console.log(value);
-        }
         
     }
     
