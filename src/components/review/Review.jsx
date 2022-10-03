@@ -39,7 +39,7 @@ const Review = ({ handleModal, tagUrl }) => {
             },
             {
                 staleTime: 1000,
-                cacheTime: 3000,
+                cacheTime: 60000,
                 refetchOnWindowFocus: false,
                 // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
                 getNextPageParam: (_lastPage, pages) => {
