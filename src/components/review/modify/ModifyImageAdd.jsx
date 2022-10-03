@@ -7,7 +7,7 @@ import { faImages } from '@fortawesome/free-regular-svg-icons';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const ModifyImageAdd = ({ data, URI, imgUrls }) => {
+const ModifyImageAdd = ({ data, imgUrls }) => {
     const files = []    
     const [showImages, setShowImages] = useState(data.data.imgurls); // 이미지 프리뷰
 
@@ -31,9 +31,6 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         for(let i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
-         for (let value of formData.values()) {
-            console.log(value);
-        }
         apis.postModifyImg(formData)
         
         .then((res)=>{
@@ -46,6 +43,9 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         .catch((err)=>{
             console.log(err)
         })
+
+       
+       
     };
     const handleDeleteImage = (id) => {
         imgUrls.splice(id,1)

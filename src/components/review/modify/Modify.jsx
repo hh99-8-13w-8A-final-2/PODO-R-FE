@@ -52,9 +52,6 @@ const Modify = ({ data, setModify }) => {
         },
     });
 
-    const URI = {
-        BASE: process.env.REACT_APP_BASE_URI
-    }
     const getSeat = async () => {
         const res = await apis.getSeat(theaterId)
         const data = res.data // 전체 좌석정보
@@ -284,14 +281,7 @@ const Modify = ({ data, setModify }) => {
 
         const json = JSON.stringify(obj)
         modifyMutation.mutate(json)
-
-        for (let value of formdata.values()) {
-            console.log(value);
-        }
-        for (let value of formdata.keys()) {
-            console.log(value);
-        }
-
+        
     }
 
     return (
@@ -338,7 +328,7 @@ const Modify = ({ data, setModify }) => {
                 <textarea name="reviewContent" id="reviewContent" cols="30" rows="10" placeholder='내용을 입력하세요.' defaultValue={data?.data.reviewContent || ''}></textarea>
             </div>
             <ModifyTag setTagList={setTagList} tagList={tagList} data={data} />
-            <ModifyImageAdd setFiles={setFiles} files={files} data={data} URI={URI} imgUrls={imgUrls} />
+            <ModifyImageAdd setFiles={setFiles} files={files} data={data} imgUrls={imgUrls} />
             <div className='button'>
                 <button type='submit'>등록</button>
                 <button type='button' onClick={() => setModify(false)} className='cancle' >취소</button>

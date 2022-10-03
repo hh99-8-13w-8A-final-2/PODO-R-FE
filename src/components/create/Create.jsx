@@ -246,15 +246,7 @@ const Create = ({ create, SetCreate, theaterId, musicalId}) => {
         const formdata = new FormData(form);
         formdata.append('tags', tagList)
 
-        /* for (let key of imgFormdata.keys()) {
-            console.log(key);
-        }
-        for (let value of imgFormdata.values()) {
-            console.log(value);
-        }
-        for (let value of formdata.values()) {
-            console.log(value);
-        } */
+
             const obj = {};
             formdata.forEach(function (value, key) {
                 obj[key] = value;
@@ -264,7 +256,6 @@ const Create = ({ create, SetCreate, theaterId, musicalId}) => {
             const json = JSON.stringify(obj)
 
             creatMutation.mutate(json)
-            // await apis.postReview(musicalId, json)
     }
 
 

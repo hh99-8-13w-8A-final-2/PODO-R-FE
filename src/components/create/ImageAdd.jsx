@@ -14,7 +14,6 @@ const ImageAdd = ({ imgfiles, setImgFiles }) => {
     const handleAddImages = (event) => {
         const imageLists = event.target.files;
         let imageUrlLists = [...showImages];
-        console.log(imageUrlLists)
         if (imageLists.length > 4 -  showImages.length) {
             toast.error("4장까지 등록이 가능합니다.", {
                 autoClose: 3000,

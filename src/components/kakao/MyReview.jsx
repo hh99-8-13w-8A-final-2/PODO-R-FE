@@ -10,7 +10,6 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
 
   const { ref, inView } = useInView();
 
-
   useEffect(() => {
     if(inView) fetchNextPage();
   }, [inView]);
@@ -18,9 +17,6 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
   useEffect(() => {
     if(inView) fetchNextPage2();
   }, [inView]);
-
-  console.log(data)
-  console.log(singleData)
 
   return (
     <StMyReviews>
