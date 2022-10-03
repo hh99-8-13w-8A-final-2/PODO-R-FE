@@ -8,10 +8,23 @@ import "react-toastify/dist/ReactToastify.css"
 
 const postComment = async(new_comment) => {
     const { reviewId, content } = new_comment
-    /* const {data} = await axios.post(`${URI.BASE}/api/comments?reviewId=${reviewId}`, content, {headers: headers}) */
-    const { data } = await apis.postComment(reviewId, content)
-
-    return data
+    await apis.postComment(reviewId, content)
+    .then(() => {
+        toast.success("댓글이 등록되었습니다", {
+            icon: "✍️",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+            theme: "colored"
+        })
+    })
+    .catch(() => {
+        toast.error("댓글 등록에 실패했습니다. 글자 수를 확인해 보세요(255자 이하)", {
+            icon: "✍️",
+            autoClose: 500,
+            position: toast.POSITION.TOP_RIGHT,
+            theme: "colored"
+        })
+    })
   }
 
 const ReviewCreateForm = ({ reviewId }) => {
@@ -46,15 +59,7 @@ const ReviewCreateForm = ({ reviewId }) => {
             })
         }else {
             mutate(new_comment)
-
-            toast.success("댓글이 등록되었습니다", {
-                icon: "✍️",
-                autoClose: 500,
-                position: toast.POSITION.TOP_RIGHT,
-                theme: "colored"
-            })
         }
-   
         reset({ comment: " " })
     }
 
@@ -67,7 +72,7 @@ const ReviewCreateForm = ({ reviewId }) => {
                     <div>
                         <StInput
                             type="text" 
-                            placeholder='댓글을 입력하세요'
+                            placeholder='댓글을 입력하세요(255자 이하)'
                             {...register("comment", { required: true, validate: value => isBlank(value) })}
                         />
                         {errors.comment && errors.comment.type === "required" && <p>댓글 내용을 입력해 주세요~</p>}

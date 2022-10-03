@@ -1,9 +1,9 @@
 import React from 'react';
 import pencil from '../../assets/img/pencil.svg'
 import up from '../../assets/img/up.svg'
-import { useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components';
-import { useSelector } from "react-redux"
+import loginState from "../../atoms/isLogin";
+import { useRecoilState } from "recoil";
 
 const CreateBtn = ({ onClickHandler }) => {
     /* let location = useLocation();
@@ -11,7 +11,7 @@ const CreateBtn = ({ onClickHandler }) => {
     const onClickHandler =()=>{
         navigate(`${location.pathname}/create`)
     } */
-    const isLogin = useSelector((state)=> state.user.isLogin);
+    const [isLoginState, setIsLoginState] = useRecoilState(loginState);
     const goToTop =() =>{
         window.scrollTo({
             top: 0,
@@ -23,7 +23,7 @@ const CreateBtn = ({ onClickHandler }) => {
             <div onClick={goToTop}>
                 <img src={up} alt="위로 올라가기"  />
             </div>
-            {isLogin ?
+            {isLoginState ?
             <div onClick={onClickHandler}>
                 <img src={pencil} alt="리뷰쓰기"  />
             </div> :

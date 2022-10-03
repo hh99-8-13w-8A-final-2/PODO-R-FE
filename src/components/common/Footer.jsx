@@ -82,6 +82,9 @@ const StFooterUl = styled.ul`
         li {
             &.bold{
                 margin:0 5px 0 30px;
+                @media (max-width: 375px){
+                    margin: 0 10px 0 20px;
+                }
             }
             &.bold:first-of-type{
                 margin: 0;

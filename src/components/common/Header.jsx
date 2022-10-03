@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import Layout from "./Layout";
 import styled from "styled-components";
 import logo from "../../assets/img/logo.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import KakaoLogin from "../kakao/KakaoLogIn";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
-import { useSelector } from "react-redux";
-import UserProfile from "../kakao/UserProfile";
 import MyPageBtn from "../kakao/MyPageBtn";
 import goBack from "../../assets/img/goBack.svg"
+import { useRecoilState } from "recoil";
+import loginState from "../../atoms/isLogin";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const [isLoginState, setIsLoginState] = useRecoilState(loginState);
   const onClickHandler = () => {
     navigate("/");
   };
@@ -27,7 +27,7 @@ const Header = () => {
           {location.pathname !== '/' ? <div onClick={onGoBack} style={{cursor:"pointer"}}><img src={goBack} alt="" className="goBack" /> <p>메인으로</p></div> : <div></div>}
           <img className="logo" src={logo} alt="로고 이미지" onClick={onClickHandler} />
           <div>
-            {isLogin ? (
+            {isLoginState ? (
               <StDiv>
                 <MyPageBtn />
                 <KaKaoLogOut />

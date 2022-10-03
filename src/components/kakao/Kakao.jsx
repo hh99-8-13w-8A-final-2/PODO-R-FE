@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import apis from "../../apis/apis";
-import { login } from "../../redux/modules/userSlice";
+import loginState from "../../atoms/isLogin";
 
 const Kakao = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const code = new URL(window.location.href).searchParams.get("code");
+  const [isLoginState, setIsLoginState] = useRecoilState(loginState)
 
   const kakaoLogin = async () => {
     try {
@@ -22,7 +22,7 @@ const Kakao = () => {
       localStorage.setItem("nickname", nickname);
       localStorage.setItem("profilePic", profilePic);
       localStorage.setItem("userId", userId);
-      dispatch(login(response.data));
+      if(response.data) {setIsLoginState(true)}
       navigate("/");
     } catch (error) {
       console.log(error);

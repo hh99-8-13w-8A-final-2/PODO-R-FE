@@ -1,7 +1,5 @@
 import React,{ useState, useEffect } from 'react';
-import { useForm, Controller, set } from "react-hook-form";
-import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useForm, Controller } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import { useMutation, useQueryClient } from 'react-query'
 import apis from '../../../apis/apis';
@@ -12,10 +10,11 @@ import ModifyImageAdd from './ModifyImageAdd';
 import ModifyRadioSelect from './ModifyRadioSelect';
 import ModifyCheckboxSelect from './ModifyCheckboxSelect';
 
-const Modify = ({ data, setModify }) => {
 
-    const theaterId = useSelector((state) => state.musicalSlice.data.theaterId)
-    const musicalId = useSelector((state) => state.musicalSlice.data.musicalId)
+const Modify = ({ data, setModify }) => {
+    
+    const theaterId = data.data.musical.theaterId
+    const musicalId = data.data.musical.musicalId
     const [tagList, setTagList] = useState([]); // 태그 리스트
     const [Data, setData] = useState([]); //좌석 정보
     const [Data1, setData1] = useState([]); //1층 섹션, row 정보
@@ -243,11 +242,7 @@ const Modify = ({ data, setModify }) => {
             queryClient.invalidateQueries("/ReviewDetail")
             queryClient.invalidateQueries("reviews")
         }
-    })
-
-    console.log(queryClient)
-    
-
+    })    
 
     const onSubmit = async () => {
        
@@ -306,26 +301,6 @@ const Modify = ({ data, setModify }) => {
             console.log(value);
         }
         
-    }
-    window.onload = function() {
-        const number = document.getElementById('seat');
-        number.onkeydown = function(e) {
-            if(!((e.keyCode > 95 && e.keyCode < 106)
-              || (e.keyCode > 47 && e.keyCode < 58) 
-              || e.keyCode === 8)) {
-                return false;
-            }
-        }
-    }
-
-    
-    const number = document.getElementById('seat');
-    number.onkeydown = function(e) {
-        if(!((e.keyCode > 95 && e.keyCode < 106)
-          || (e.keyCode > 47 && e.keyCode < 58) 
-          || e.keyCode == 8)) {
-            return false;
-        }
     }
     
     return (

@@ -72,7 +72,7 @@ const StDiv = styled.div`
         margin-bottom: 30px;
     }
     @media (max-width: 375px){
-        width: 110px;
+        width: 130px;
         height: 160px;
         border-radius: 10px;
         margin-bottom: 30px;

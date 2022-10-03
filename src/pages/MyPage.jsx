@@ -95,7 +95,7 @@ const MyPage = () => {
       />
       <Portal>
         {modalOn && (
-          <Modal onClose={modalclose} modalOn={modalOn}>
+          <Modal onClose={modalclose}>
             <ReviewDetail
               reviewsId={reviewsId}
               musicalId={musicalId}
