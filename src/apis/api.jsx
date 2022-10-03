@@ -8,7 +8,7 @@ import axios from 'axios';
   }
 
   export const baseApi = axios.create({
-    baseURL : process.env.REACT_APP_BASE_URI 
+    baseURL : process.env.REACT_APP_BASE_URI,
   })
 
   const axiosApi = axios.create({
@@ -39,7 +39,6 @@ axiosApi.interceptors.response.use(
   },
    async (error) => {
     if(error.response?.status === 401){
-      console.log(error.config)
       const refreshToken = window.localStorage.getItem("refreshToken")
       const reissue = {"Refresh-Token" : refreshToken}
 
@@ -56,7 +55,6 @@ axiosApi.interceptors.response.use(
           return Promise.reject(error);
         });
     }
-    console.log(error.response.data)
     return Promise.reject(error)
   }
 );

@@ -79,7 +79,8 @@ const StDiv = styled.div`
   input {
     display: none;
   }
-  input[type="radio"]:checked + label {
+  input[type="radio"]:checked + div label{
+    box-sizing: border-box;
     border: 3px solid var(--maincolor-1);
   }
 `;

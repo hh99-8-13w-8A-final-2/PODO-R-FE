@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select'
 import { useForm, Controller  } from "react-hook-form";
 import styled from 'styled-components';
-import axios from 'axios';
 import {useLocation} from "react-router-dom";
 import apis from '../../apis/apis';
 const SelectSeat = () => {
@@ -58,7 +57,6 @@ const SelectSeat = () => {
     }; 
     useEffect(()=>{
         getSeat();
-        //console.log('http://3.39.240.159/api/musicals/1/reviews',query)
     },[]);
 
     for (var floor in Data){
