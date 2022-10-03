@@ -3,14 +3,15 @@ import styled from "styled-components";
 import Modal from "../../assets/modal/Modal";
 import ModalPortal from "../../assets/modal/Portal";
 import OAuth from "./Oauth";
-import { useSelector } from "react-redux";
 import loginIcon from "../../assets/img/login.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import loginState from "../../atoms/isLogin";
+import { useRecoilState } from "recoil";
 
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const [isLoginState, setIsLoginState] = useRecoilState(loginState)
 
   const handleModal = () => {
     setSignupModalOn(!signupModalOn);
@@ -18,7 +19,7 @@ const KakaoLogin = () => {
 
   return (
     <StContentbox>
-      {isLogin ? (
+      {isLoginState ? (
         <div></div>
       ) : (
         <StLoginIcon onClick={handleModal}>

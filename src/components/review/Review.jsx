@@ -24,7 +24,6 @@ const fetchReviews = async (pageParam, musicalId, tagUrl) => {
     }
 }
 
-
 const Review = ({ handleModal, tagUrl }) => {
     // 현재 페이지 url에서 musicalId값을 받아온다.
     let location = useLocation();

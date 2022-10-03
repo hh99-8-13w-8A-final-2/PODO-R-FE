@@ -8,7 +8,6 @@ import styled from "styled-components";
 import CONVENIENCE from '../../assets/img/CONVENIENCE.svg'
 import DISABLED from '../../assets/img/DISABLED.svg'
 import PARK from '../../assets/img/PARK.svg'
-import axios from 'axios';
 import apis from '../../apis/apis';
 
 const TheaterInfo = ({onClose, theaterId}) => {
@@ -27,7 +26,6 @@ const TheaterInfo = ({onClose, theaterId}) => {
     const disabled = []
     const park = [] 
     const getTheater = async() => {
-        //const res = await axios.get(`${URI.BASE}/api/theaters/${theaterId}`)
         const res = await apis.getTheater(theaterId)
         setTheaterInfo(res.data)
 
