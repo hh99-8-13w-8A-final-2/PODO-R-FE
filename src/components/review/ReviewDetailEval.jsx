@@ -6,7 +6,6 @@ import { ReactComponent as Sound } from '../../assets/img/sound.svg'
 import { ReactComponent as Light } from '../../assets/img/light.svg'
 
 const ReviewDetailEval = ({ data }) => {
-    //console.log(data.data.evaluation)
 
     return (
         <StEvalBox>

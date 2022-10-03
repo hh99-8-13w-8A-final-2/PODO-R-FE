@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,6 @@ const ImageAdd = ({ imgfiles, setImgFiles }) => {
     const handleAddImages = (event) => {
         const imageLists = event.target.files;
         let imageUrlLists = [...showImages];
-        console.log(imageUrlLists)
         if (imageLists.length > 4 -  showImages.length) {
             toast.error("4장까지 등록이 가능합니다.", {
                 autoClose: 3000,

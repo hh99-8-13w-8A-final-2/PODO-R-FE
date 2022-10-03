@@ -32,10 +32,7 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         for(let i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
-         for (let value of formData.values()) {
-            console.log(value);
-        }
-        /* const res = await axios.post(`${URI.BASE}/api/image/upload`, formData, { headers: multipartType }) */
+
         apis.postModifyImg(formData)
         
         .then((res)=>{
@@ -48,12 +45,7 @@ const ModifyImageAdd = ({ data, URI, imgUrls }) => {
         .catch((err)=>{
             console.log(err)
         })
-       /*  try{
-            const res = apis.postModifyImg(formData, multipartType)
-            console.log(res)
-        } catch(err) {
-            console.log(err)
-        } */
+
        
        
     };

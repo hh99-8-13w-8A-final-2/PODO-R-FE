@@ -33,7 +33,6 @@ const UserProfile = () => {
     mode: "onChange",
   });
   const imageUrl = watch("imgUrl");
-  console.log(imageUrl)
 
 
   const handleModal = (e) => {
@@ -55,7 +54,6 @@ const UserProfile = () => {
       setIsName(true);
     }
   };
-  console.log(newNickName)
   const profileImageUpload = async () => {
     if (imageUrl === undefined || imageUrl.length === 0) {
       return profilePic;
