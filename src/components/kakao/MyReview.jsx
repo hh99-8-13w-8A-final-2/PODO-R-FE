@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Gap from "../../assets/img/gap.svg"
 import View from "../../assets/img/view.svg";
 import Sound from "../../assets/img/sound.svg";
 import Light from "../../assets/img/light.svg";
-import { useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { selector } from "recoil";
 
 const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNextPage, fetchNextPage2, isFetchingNextPage2}) => {
 
@@ -21,6 +17,7 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
   useEffect(() => {
     if(inView) fetchNextPage2();
   }, [inView]);
+  
 
   return (
     <StMyReviews>

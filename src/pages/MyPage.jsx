@@ -5,7 +5,6 @@ import MyReviewList from "../components/kakao/MyReviewList";
 import Portal from "../assets/modal/Portal";
 import Modal from "../assets/modal/Modal";
 import ReviewDetail from "../components/review/ReviewDetail";
-import axios from "axios";
 import { useInfiniteQuery } from "react-query";
 import apis from "../apis/apis";
 
@@ -50,7 +49,6 @@ const MyPage = () => {
     },
     {
       refetchOnWindowFocus: false,
-      // fetchNextPage 를 호출하면 getNextPageParam 에서 다음 페이지의 번호를 가져오게 된다
       getNextPageParam: (_lastPage, pages) => {
         if (pages.length < pages[0].pageData) {
           return pages.length + 1;
