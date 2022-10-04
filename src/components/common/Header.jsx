@@ -7,13 +7,13 @@ import KakaoLogin from "../kakao/KakaoLogIn";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import MyPageBtn from "../kakao/MyPageBtn";
 import goBack from "../../assets/img/goBack.svg"
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import loginState from "../../atoms/isLogin";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoginState, setIsLoginState] = useRecoilState(loginState);
+  const isLoginState = useRecoilValue(loginState);
   const onClickHandler = () => {
     navigate("/");
   };
