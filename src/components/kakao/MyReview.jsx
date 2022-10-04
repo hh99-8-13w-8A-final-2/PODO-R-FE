@@ -5,8 +5,48 @@ import View from "../../assets/img/view.svg";
 import Sound from "../../assets/img/sound.svg";
 import Light from "../../assets/img/light.svg";
 import { useInView } from "react-intersection-observer";
+import apis from "../../apis/apis";
+import { useInfiniteQuery } from "react-query";
+import MyReviewSelected from "./MyReviewSelected";
+import { useRecoilValue } from 'recoil';
+import mypageMusicalId from '../../atoms/mypageMusicalId';
 
-const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNextPage, fetchNextPage2, isFetchingNextPage2}) => {
+const myFetchReviews = async (pageParam) => {
+  const response = await apis.getMyReviewFind(pageParam);
+  const data = response.data.content;
+  const pageData = response.data.totalPages;
+  return {
+    data,
+    pageData,
+  };
+};
+
+const MyReview = ({handleModal}) => {
+  const eachMusicalId = useRecoilValue(mypageMusicalId);
+
+  const {
+    data,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    status,
+    error,
+  } = useInfiniteQuery(
+    ["reviews"],
+    ({ pageParam = 1 }) => {
+      return myFetchReviews(pageParam);
+    },
+    {
+      refetchOnWindowFocus: false,
+      getNextPageParam: (_lastPage, pages) => {
+        if (pages.length < pages[0].pageData) {
+          return pages.length + 1;
+        } else {
+          return undefined;
+        }
+      },
+    }
+  );
 
   const { ref, inView } = useInView();
 
@@ -14,13 +54,12 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
     if(inView) fetchNextPage();
   }, [inView]);
 
-  useEffect(() => {
-    if(inView) fetchNextPage2();
-  }, [inView]);
+  if (status === 'loading') { return <h2>Loading...</h2> }
+  if (status === 'error') { return <h2>Error: {error.message}</h2> }
 
   return (
     <StMyReviews>
-      {singleData === undefined || singleData.pages[0].data === undefined ? (
+      {eachMusicalId === '' ? (
         <div>
           {data?.pages.map((group, i) => {
             return(
@@ -35,18 +74,18 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
                         {review.row}열 {review.seat}
                       </StH3>
                       <StIconDiv>
-                        {review.evaluation.gap === 3 && <div><img src={Gap} className="filter-purple"/><span>단차좋음</span></div>}
-                        {review.evaluation.gap === 2 && <div><img src={Gap} className="filter-black"/><span>단차보통</span></div>}
-                        {review.evaluation.gap === 1 && <div><img src={Gap} className="filter-black"/><span>단차나쁨</span></div>}
-                        {review.evaluation.sight === 3 && <div><img src={View} className="filter-purple"/><span>시야좋음</span></div>}
-                        {review.evaluation.sight === 2 && <div><img src={View} className="filter-black"/><span>시야보통</span></div>}
-                        {review.evaluation.sight === 1 && <div><img src={View} className="filter-black"/><span>시야나쁨</span></div>}
-                        {review.evaluation.sound === 3 && <div><img src={Sound} className="filter-purple"/><span>음향좋음</span></div>}
-                        {review.evaluation.sound === 2 && <div><img src={Sound} className="filter-black"/><span>음향보통</span></div>}
-                        {review.evaluation.sound === 1 && <div><img src={Sound} className="filter-black"/><span>음향나쁨</span></div>}
-                        {review.evaluation.light === 3 && <div><img src={Light} className="filter-purple"/><span>조명좋음</span></div>}
-                        {review.evaluation.light === 2 && <div><img src={Light} className="filter-black"/><span>조명보통</span></div>}
-                        {review.evaluation.light === 1 && <div><img src={Light} className="filter-black"/><span>조명나쁨</span></div>}
+                        {review.evaluation.gap === 3 && <div><img src={Gap} className="filter-purple" alt="Gap"/><span>단차좋음</span></div>}
+                        {review.evaluation.gap === 2 && <div><img src={Gap} className="filter-black" alt="Gap"/><span>단차보통</span></div>}
+                        {review.evaluation.gap === 1 && <div><img src={Gap} className="filter-black" alt="Gap"/><span>단차나쁨</span></div>}
+                        {review.evaluation.sight === 3 && <div><img src={View} className="filter-purple" alt="View"/><span>시야좋음</span></div>}
+                        {review.evaluation.sight === 2 && <div><img src={View} className="filter-black" alt="View"/><span>시야보통</span></div>}
+                        {review.evaluation.sight === 1 && <div><img src={View} className="filter-black" alt="View"/><span>시야나쁨</span></div>}
+                        {review.evaluation.sound === 3 && <div><img src={Sound} className="filter-purple" alt="Sound"/><span>음향좋음</span></div>}
+                        {review.evaluation.sound === 2 && <div><img src={Sound} className="filter-black" alt="Sound"/><span>음향보통</span></div>}
+                        {review.evaluation.sound === 1 && <div><img src={Sound} className="filter-black" alt="Sound"/><span>음향나쁨</span></div>}
+                        {review.evaluation.light === 3 && <div><img src={Light} className="filter-purple" alt="Light"/><span>조명좋음</span></div>}
+                        {review.evaluation.light === 2 && <div><img src={Light} className="filter-black" alt="Light"/><span>조명보통</span></div>}
+                        {review.evaluation.light === 1 && <div><img src={Light} className="filter-black" alt="Light"/><span>조명나쁨</span></div>}
                       </StIconDiv>
                     </StMyIconSet>
             
@@ -56,50 +95,15 @@ const MyReview = ({ data, handleModal, singleData, fetchNextPage, isFetchingNext
             )
           })}
           <StMoreDiv ref = {ref}>
-            {isFetchingNextPage}
-            Nothing more to load
+            {isFetchingNextPage
+              ? "Loading more..."
+              : hasNextPage
+                  ? "더보기"
+                  : "Nothing more to load"}
           </StMoreDiv> 
         </div>
-      ) : (
-        <div>
-          {singleData?.pages.map((group, i) => {
-            return(
-            <StMyReview key={i}>
-              {group.data.map((review) => {
-                return(
-                  <StReview key={review.reviewId} onClick={()=>handleModal(review.reviewId, review.musicalId)}>
-                    <StDiv imgUrl={review.imgUrl}></StDiv>
-                    <StMyIconSet>
-                      <StH3>
-                        {review.grade}석 {review.floor} {review.section}구역{" "}
-                        {review.row}열 {review.seat}
-                      </StH3>
-                      <StIconDiv>
-                        {review.evaluation.gap === 3 && <div><img src={Gap} className="filter-purple"/><span>단차좋음</span></div>}
-                        {review.evaluation.gap === 2 && <div><img src={Gap} className="filter-black"/><span>단차보통</span></div>}
-                        {review.evaluation.gap === 1 && <div><img src={Gap} className="filter-black"/><span>단차나쁨</span></div>}
-                        {review.evaluation.sight === 3 && <div><img src={View} className="filter-purple"/><span>시야좋음</span></div>}
-                        {review.evaluation.sight === 2 && <div><img src={View} className="filter-black"/><span>시야보통</span></div>}
-                        {review.evaluation.sight === 1 && <div><img src={View} className="filter-black"/><span>시야나쁨</span></div>}
-                        {review.evaluation.sound === 3 && <div><img src={Sound} className="filter-purple"/><span>음향좋음</span></div>}
-                        {review.evaluation.sound === 2 && <div><img src={Sound} className="filter-black"/><span>음향보통</span></div>}
-                        {review.evaluation.sound === 1 && <div><img src={Sound} className="filter-black"/><span>음향나쁨</span></div>}
-                        {review.evaluation.light === 3 && <div><img src={Light} className="filter-purple"/><span>조명좋음</span></div>}
-                        {review.evaluation.light === 2 && <div><img src={Light} className="filter-black"/><span>조명보통</span></div>}
-                        {review.evaluation.light === 1 && <div><img src={Light} className="filter-black"/><span>조명나쁨</span></div>}
-                      </StIconDiv>
-                    </StMyIconSet>
-                  </StReview> 
-                      )})}
-            </StMyReview>
-            )
-          })}
-          <StMoreDiv ref = {ref}>
-            {isFetchingNextPage2}
-            Nothing more to load
-          </StMoreDiv>
-        </div>
-      )}
+      ) : 
+      <MyReviewSelected handleModal={handleModal}/>}
     </StMyReviews>
   );
 };

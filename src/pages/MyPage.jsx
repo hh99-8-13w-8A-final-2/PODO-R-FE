@@ -8,6 +8,8 @@ import Modal from "../assets/modal/Modal";
 import ReviewDetail from "../components/review/ReviewDetail";
 import { useInfiniteQuery } from "react-query";
 import apis from "../apis/apis";
+import { useRecoilValue } from "recoil";
+import mypageMusicalId from "../atoms/mypageMusicalId";
 
 const MyDetailReviews = async (eachMusicalId, pageParam) => {
   if (eachMusicalId === "") {
@@ -34,7 +36,7 @@ const MyPage = () => {
   const [modalOn, setModalOn] = useState(false);
   const [reviewsId, SetReviewsId] = useState("");
   const [musicalId, setMusicalId] = useState("");
-  const [eachMusicalId, setEachMusicalId] = useState("");
+  const eachMusicalId = useRecoilValue(mypageMusicalId);
   const navigate = useNavigate();
   
 
@@ -86,7 +88,7 @@ const MyPage = () => {
   return (
     <>
       <UserProfile />
-      <MyTicketList setEachMusicalId={setEachMusicalId} />
+      <MyTicketList />
       <MyReviewList
         singleData={singleData}
         handleModal={handleModal}
