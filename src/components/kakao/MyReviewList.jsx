@@ -11,7 +11,7 @@ const MyReviewList = ({
 
   return (
     <div>
-      <StH3>선택된 공연 리뷰</StH3>
+      <StH3>공연 리뷰</StH3>
       <StMyReviewList>
         <MyReview
           handleModal={handleModal}

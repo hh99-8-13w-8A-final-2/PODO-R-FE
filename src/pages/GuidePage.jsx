@@ -1,255 +1,193 @@
-import React from 'react';
-import guide from '../assets/img/guide.webp'
-import guide1 from '../assets/img/guide1.webp'
-import guide2 from '../assets/img/guide2.webp'
-import guide3 from '../assets/img/guide3.webp'
-import guide4 from '../assets/img/guide4.webp'
-import profile_hun from '../assets/img/profile_hun.webp'
-import profile_kimlim from '../assets/img/profile_kimlim.webp'
-import profile_suweon from '../assets/img/profile_suweon.webp'
-import profile_yelim from '../assets/img/profile_yelim.webp'
-import profile_yongwon from '../assets/img/profile_yongwon.webp'
-import profile_yuri from '../assets/img/profile_yuri.webp'
-import logo_footer from '../assets/img/logo_footer.svg'
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import up from '../assets/img/up.svg'
-import { useNavigate } from 'react-router-dom'
+
+//conponent
+import GuideReview from '../components/guide/GuideReview'
+import GuideCreate from '../components/guide/GuideCreate'
+import GuideLiveReview from '../components/guide/GuideLiveReview'
+import GuideMyReview from '../components/guide/GuideMyReview'
+import GuideTheaterInfo from '../components/guide/GuideTheaterInfo'
+
+//image
+import off_guide_1 from '../assets/img/off_guide_1.svg'
+import off_guide_2 from '../assets/img/off_guide_2.svg'
+import off_guide_3 from '../assets/img/off_guide_3.svg'
+import off_guide_4 from '../assets/img/off_guide_4.svg'
+import off_guide_5 from '../assets/img/off_guide_5.svg'
+import on_guide_1 from '../assets/img/on_guide_1.svg'
+import on_guide_2 from '../assets/img/on_guide_2.svg'
+import on_guide_3 from '../assets/img/on_guide_3.svg'
+import on_guide_4 from '../assets/img/on_guide_4.svg'
+import on_guide_5 from '../assets/img/on_guide_5.svg'
+
 
 const GuidePage = () => {
-    const navigate = useNavigate();
-    const onClickHandler = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
-        navigate("/")
+    const [pageNumber, setpageNumber] = useState(0)
+
+    const onClickBtn = (e) => {
+        setpageNumber(Number(e.target.value))
     }
-    const goToTop =() =>{
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
+    
+    const inner = () =>{
+        if(pageNumber === 0){
+            return <GuideReview/>
+        }else if(pageNumber === 1){
+            return <GuideCreate/>
+        }else if(pageNumber === 2){
+            return <GuideLiveReview/>
+        }else if(pageNumber === 3){
+            return <GuideMyReview/>
+        }else{
+            return <GuideTheaterInfo/>
+        }
     }
+    
+    const PrevBtn = (pageNumber) =>{
+        setpageNumber(pageNumber - 1)
+    }
+    const nextBtn = (pageNumber) =>{
+        setpageNumber(pageNumber + 1)
+    }
+
     return (
         <>
-            <StDiv>
-                <div className='section'>
-                    <h1>명당을 고르는 가장 확실한 방법!</h1>
-                    <p>포도알에만 있는 진짜 사진후기로 만나는 공연장별 좌석정보</p>
-                    <p>항목별 평가를 통한 단차, 시야, 음향, 조명 정보까지 제공합니다.</p>
-                    <img src={guide} alt="" />
+            <StContentsDiv>
+                <div className='title'>
+                    <p>명당을 고르는 가장 확실한 방법!</p>
+                    <h2>포도알 서비스 이용안내</h2>
                 </div>
-                <div className='section'>
-                    <div><p>1</p></div>
-                    <h2>초연, 재연, 삼연.</h2>
-                    <h2>같은 공연도 시즌마다 새로우니까</h2>
-                    <p>공연의 내용과 시점에 따라 달라지는 연출을 반영한</p>
-                    <p>공연장 좌석 후기를 확인할 수 있습니다.</p>
-                    <img src={guide1} alt="" />
-                </div>
-                <div className='section'>
-                    <div><p>2</p></div>
-                    <h2>백 마디 말보다</h2>
-                    <h2>확실한 사진 한 장</h2>
-                    <p>직접 그 자리에 앉아본 리뷰어가 전해주는 사진으로</p>
-                    <p>더 사실적이고 확실한 후기를 제공합니다.</p>
-                    <img src={guide2} alt="" />
-                </div>
-                <div className='section'>
-                    <div><p>3</p></div>
-                    <h2>이용자 맞춤형</h2>
-                    <h2>리뷰 검색 및 필터링 서비스</h2>
-                    <p>좌석 등급별 구역별 필터링은 기본.</p>
-                    <p>평가항목별 우수한 좌석 정보만 모아볼 수 있습니다.</p>
-                    <img src={guide3} alt="" />
-                </div>
-                <div className='section'>
-                    <div><p>4</p></div>
-                    <h2>누구보다 빠르게 만나는 리뷰.</h2>
-                    <h2>PODO LIVE</h2>
-                    <p>실시간으로 등록되는 리뷰를 모아</p>
-                    <p>메인페이지에서 확인할 수 있습니다.</p>
-                    <img src={guide4} alt="" />
-                </div>
-                <div className='section'>
-                    <img src={logo_footer} alt="" className='logo' />
-                    <p>이선좌, 이결좌 속에서 구해낸</p>
-                    <p>당신의 포도알이 헛되지 않도록-</p>
-                </div>
-                <div className='team'>
-                    <p>TEAM PODO</p>
+                <div className='chapter'>
                     <ul>
                         <li>
-                            <div><img src={profile_yelim} alt="" /></div>
-                            <p className='position'>FE</p>
-                            <p>김예림</p>
-                            <p className='position'>(Deputy Leader)</p>
+                            <StLabel htmlFor='guide0' off={off_guide_1} on={on_guide_1} alt="">
+                                <input type="radio" id="guide0" name='guide' value={0}  onChange={onClickBtn} checked={pageNumber === 0}/>
+                                <div></div>
+                                <h3>공연별 좌석</h3>
+                                <h3>리뷰 확인</h3>
+                            </StLabel>
                         </li>
                         <li>
-                            <div><img src={profile_suweon} alt="" /></div>
-                            <p className='position'>FE</p>
-                            <p>박수원</p>
+                            <StLabel htmlFor='guide1' off={off_guide_2} on={on_guide_2} alt="">
+                                <input type="radio" id="guide1" name='guide' value={1} onChange={onClickBtn} checked={pageNumber === 1}/>
+                                <div></div>
+                                <h3>공연별 좌석</h3>
+                                <h3>리뷰 작성</h3>
+                            </StLabel>
                         </li>
                         <li>
-                            <div><img src={profile_yongwon} alt="" /></div>
-                            <p className='position'>FE</p>
-                            <p>박용원</p>
+                            <StLabel htmlFor='guide2' off={off_guide_3} on={on_guide_3} alt="">
+                                <input type="radio" id="guide2" name='guide' value={2} onChange={onClickBtn} checked={pageNumber === 2}/>
+                                <div></div>
+                                <h3>실시간 등록</h3>
+                                <h3>리뷰 확인</h3>
+                            </StLabel>
                         </li>
                         <li>
-                            <div><img src={profile_hun} alt="" /></div>
-                            <p className='position'>BE</p>
-                            <p>김 훈</p>
-                            <p className='position'>(Leader)</p>
+                            <StLabel htmlFor='guide3' off={off_guide_4} on={on_guide_4} alt="">
+                                <input type="radio" id="guide3" name='guide' value={3} onChange={onClickBtn} checked={pageNumber === 3}/>
+                                <div></div>
+                                <h3>내가 등록한</h3>
+                                <h3>리뷰 확인</h3>
+                            </StLabel>
                         </li>
                         <li>
-                            <div><img src={profile_kimlim} alt="" /></div>
-                            <p className='position'>BE</p>
-                            <p>김휘림</p>
-                        </li>
-                        <li>
-                            <div><img src={profile_yuri} alt="" /></div>
-                            <p className='position'>UI/UX</p>
-                            <p>김유리</p>
-                            <p className='position'>(Designer)</p>
+                            <StLabel htmlFor='guide4' off={off_guide_5} on={on_guide_5} alt="">
+                                <input type="radio" id="guide4" name='guide' value={4} onChange={onClickBtn} checked={pageNumber === 4}/>
+                                <div></div>
+                                <h3>공연장</h3>
+                                <h3>상세정보 확인</h3>
+                            </StLabel>
                         </li>
                     </ul>
-                    <button onClick={onClickHandler}>홈으로 돌아가기</button>
-                </div>
-                <StCreateDiv>
-                    <div>
-                        <img src={up} alt="위로 올라가기" onClick={goToTop} />
-                    </div>
-                </StCreateDiv>
+                </div>   
+            </StContentsDiv>
+            <StDiv>
+            {inner()}
             </StDiv>
+            <StPrevNextBtn className='pageBtn'>
+                <ul>
+                    {pageNumber === 0 ? null : <li onClick={() => PrevBtn(pageNumber)}>이전으로 가기</li>}
+
+                    {pageNumber === 4 ? null : <li onClick={() => nextBtn(pageNumber)}>다음으로 가기</li>}
+                    
+                </ul>
+            </StPrevNextBtn>
         </>
     );
 };
 
 export default GuidePage;
 
-
-
-
-const StDiv = styled.div`
-    .section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        color: var(--white);
-        div{
-            width: 50px;
-            height: 50px;
-            border-radius: 40px;
-            border: 3px solid var(--maincolor-1);
-            text-align: center;
-            margin-bottom: 30px;
-            p{
-                font-size: 1.7em;
-                margin: 0;
-                line-height: 50px;
-                color:var(--maincolor-1);
-                font-weight: 700;
-            }
+const StContentsDiv = styled.div`
+    margin-top: 50px;
+    color: var(--gray-2);
+    .title {
+        text-align: center;
+        h2{
+            color: var(--white);
+            font-size: 2em;
+            padding: 20px 0 80px ;
         }
-        h1{ font-size: 2.6em; font-weight:700; margin-bottom:40px}
-        h2 { font-size: 2em; font-weight:700; font-family: 'SUIT', sans-serif; font-weight:600; margin-bottom:5px;}
-        h2:last-of-type{margin-bottom:20px;}
-        p{font-size:1.3em; font-family: 'SUIT', sans-serif; font-weight:200; margin: 3px 0}
-        p:last-of-type{margin-bottom:80px}
-        margin: 200px 0;
     }
-        img{
-            object-fit: fill;
-            width: 50%;
-            &.logo{
-                width: 200px;
-                margin-bottom: 40px;
-            }
-        }
-        button{
-            margin-top: 40px;
-            padding: 15px 20px;
-            border-radius: 40px;
-            border: none;
-            background-color: var(--maincolor-2);
-            color:var(--white);
-            transition: all .3s;
-            cursor: pointer;
-            &:hover{
-                background-color:var(--maincolor-1)
-            }
-        }
-    .team{
-        >p{
-            font-size: 1.8em;
-            margin-bottom: 40px;
-            font-weight: 600;
-            color: var(--gray-2);
-        }
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 100px;
-        color: var(--gray-2);
-        ul {display: flex;}
-        li{
-            font-family: 'SUIT';
+    .chapter{
+        input{display:none}
+        ul {
             display: flex;
-            font-size: 1.2em;
+            justify-content: space-between;
             text-align: center;
-            flex-direction: column;
-            align-items: center;
-            font-size: 1.2em;
-            text-align: center;
-            margin: 0 20px;
-            div{
-                width: 70px;
-                height: 70px;
-                border-radius: 100px;
-                background-color: var(--gray-2);
-                margin-bottom: 10px;
-                overflow: hidden;
-                >img{
-                    width: 100%;
-                }
-            }
-            p:nth-of-type(2){
-                font-weight: 600;
-                margin-bottom: 10px;
-            }
-            .position{
-                font-size: .6em ;
-                margin-bottom: 10px;
-                font-weight: 500;
-                color: var(--gray-);
+            line-height: 1.3em;
+            li{
+                max-width: 100px;
+                display: block;
+                flex-basis: 100%;
             }
         }
     }
 `
-
-
-const StCreateDiv = styled.div`
-position: fixed;
-bottom: 30px;
-right: 30px;
-div{
-    z-index: 10;
-    width: 3em;
-    height: 3em;
-    border-radius: 50px;
-    background-color: var(--maincolor-2);
-    transition: all .3s;
-    margin-top: 10px;
+const StLabel = styled.label`
+    display: block;
+    width:100%;
+    height:100%;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:hover {
-        background-color: var(--maincolor-1);
+    div{
+        width: 100%;
+        height: 100%;
+        margin-bottom: 20px;
+        background:url(${props => props.off});
+        transition: all .3s;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
     }
-}
+    & input[type='radio']:checked + div{
+        background:url(${props => props.on});
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
 
-    img{
-        width: 24px;
+`
+const StDiv = styled.div`
+    margin-top: 100px;
+    @media screen and (max-width: 768px){
+        *{font-size:.85em; text-align:center}
+    }
+`
+const StPrevNextBtn = styled.div`
+    ul{
+        display: flex;
+        justify-content: center;
+        li {
+            padding: 10px 20px;
+            border-radius: 30px;
+            background-color: var(--maincolor-2);
+            margin: 0 10px;
+            color: var(--white);
+            transition: all .3s;
+            cursor: pointer;
+            &:hover{
+                background-color: var(--maincolor-1);
+            }
+        }
     }
 `

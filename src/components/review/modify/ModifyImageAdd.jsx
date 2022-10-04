@@ -31,6 +31,7 @@ const ModifyImageAdd = ({ data, imgUrls }) => {
         for(let i = 0; i < files.length ; i++ ){
             formData.append('image', files[i])
         }
+
         apis.postModifyImg(formData)
         
         .then((res)=>{

@@ -39,7 +39,7 @@ div{
     width: 3em;
     height: 3em;
     border-radius: 50px;
-    background-color: var(--maincolor-2);
+    background-color: var(--maincolor-1);
     transition: all .3s;
     margin-top: 10px;
     cursor: pointer;

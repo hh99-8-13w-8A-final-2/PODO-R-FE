@@ -12,7 +12,7 @@ import mypageMusicalId from "../../atoms/mypageMusicalId";
 const MyTicket = ({ data }) => {
   const swiperRef = useRef(null)
   const [eachMusicalId, setEachMusicalId] = useRecoilState(mypageMusicalId);
-
+  console.log(data)
 
   return (
     <StMyTicket>
@@ -34,6 +34,16 @@ const MyTicket = ({ data }) => {
           
           className="mySwiper"
         >
+          <SwiperSlide onClick={() => setEachMusicalId('')}>
+            <StDiv className="all">
+              <input type="radio" name="musicalBox" id='all' />
+              <div className="label">
+                <StLabel htmlFor='all'>
+                  <StH3>뮤지컬 전체 보기</StH3>
+                </StLabel>
+              </div>
+            </StDiv>
+          </SwiperSlide>
       {data?.content.map((ticket) => (
         <SwiperSlide
           key={ticket.musicalId}
@@ -66,6 +76,13 @@ const StMyTicket = styled.div`
   .swiper-pagination-bullet {
     background-color: var(--gray-2);
   }
+  .all .label>label{
+      justify-content: center;
+      h3{
+        text-align: center;
+        line-height: 1.8em;
+      }
+    }
   margin-bottom: 70px;
   @media (max-width: 763px) {
     margin-bottom: 30px;
@@ -83,6 +100,7 @@ const StDiv = styled.div`
     box-sizing: border-box;
     border: 3px solid var(--maincolor-1);
   }
+
 `;
 
 const StLabel = styled.label`
@@ -96,6 +114,7 @@ const StLabel = styled.label`
     ),
     ${(props) => `url(${props.imgUrl})`};
   background-size: cover;
+  background-color: var(--gray-3);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
