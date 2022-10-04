@@ -7,17 +7,21 @@ import KakaoLogin from "../kakao/KakaoLogIn";
 import KaKaoLogOut from "../kakao/KaKaoLogOut";
 import MyPageBtn from "../kakao/MyPageBtn";
 import goBack from "../../assets/img/goBack.svg"
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import loginState from "../../atoms/isLogin";
+import mypageMusicalId from "../../atoms/mypageMusicalId";
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLoginState, setIsLoginState] = useRecoilState(loginState);
+  const isLoginState = useRecoilValue(loginState);
+  const [eachMusicalId, setEachMusicalId] = useRecoilState(mypageMusicalId);
   const onClickHandler = () => {
+    setEachMusicalId('')
     navigate("/");
   };
   const onGoBack = () =>{
+    setEachMusicalId('')
     navigate("/");
   }
   return (

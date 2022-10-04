@@ -7,11 +7,11 @@ import loginIcon from "../../assets/img/login.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import loginState from "../../atoms/isLogin";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 const KakaoLogin = () => {
   const [signupModalOn, setSignupModalOn] = useState(false);
-  const [isLoginState, setIsLoginState] = useRecoilState(loginState)
+  const isLoginState = useRecoilValue(loginState)
 
   const handleModal = () => {
     setSignupModalOn(!signupModalOn);

@@ -3,10 +3,10 @@ import pencil from '../../assets/img/pencil.svg'
 import up from '../../assets/img/up.svg'
 import styled from 'styled-components';
 import loginState from "../../atoms/isLogin";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 const CreateBtn = ({ onClickHandler }) => {
-    const [isLoginState, setIsLoginState] = useRecoilState(loginState);
+    const isLoginState = useRecoilValue(loginState);
     const goToTop =() =>{
         window.scrollTo({
             top: 0,

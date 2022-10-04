@@ -5,12 +5,14 @@ import { Navigation, Pagination } from 'swiper';
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
+import { useRecoilState } from "recoil";
+import mypageMusicalId from "../../atoms/mypageMusicalId";
 
-const MyTicket = ({ data, setEachMusicalId }) => {
-  const swiperRef = useRef(null);
-  const setMusicalIdHandler = (musicalId) => {
-    setEachMusicalId(musicalId);
-  };
+
+const MyTicket = ({ data }) => {
+  const swiperRef = useRef(null)
+  const [eachMusicalId, setEachMusicalId] = useRecoilState(mypageMusicalId);
+
 
   return (
     <StMyTicket>
@@ -32,29 +34,26 @@ const MyTicket = ({ data, setEachMusicalId }) => {
           
           className="mySwiper"
         >
-          {data?.content.map((ticket) => (
-            <SwiperSlide
-              key={ticket.musicalId}
-              onClick={() => setMusicalIdHandler(ticket.musicalId)}
-            >
-              <StDiv>
-                <input type="radio" name="musicalBox" id={ticket.musicalId} />
-                <div className="label">
-                  <StLabel
-                    imgUrl={ticket.musicalPoster}
-                    htmlFor={ticket.musicalId}
-                  >
-                    <StH3>{ticket.musicalName}</StH3>
-                    <StDiv1>{ticket.musicalRegion}</StDiv1>
-                    <StDiv2>
-                      {ticket.openDate} ~ {ticket.closeDate}
-                    </StDiv2>
-                  </StLabel>
-                </div>
-              </StDiv>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      {data?.content.map((ticket) => (
+        <SwiperSlide
+          key={ticket.musicalId}
+          onClick={() => setEachMusicalId(ticket.musicalId)}
+        >
+          <StDiv>
+            <input type="radio" name="musicalBox" id={ticket.musicalId} />
+            <div className="label">
+              <StLabel imgUrl={ticket.musicalPoster} htmlFor={ticket.musicalId}>
+                <StH3>{ticket.musicalName}</StH3>
+                <StDiv1>{ticket.musicalRegion}</StDiv1>
+                <StDiv2>
+                  {ticket.openDate} ~ {ticket.closeDate}
+                </StDiv2>
+              </StLabel>
+            </div>
+          </StDiv>
+        </SwiperSlide>
+      ))}
+      </Swiper>
       </div>
     </StMyTicket>
   );
