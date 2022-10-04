@@ -30,7 +30,7 @@ const MyDetailReviews = async (eachMusicalId, pageParam) => {
 
 const MyReviewSelected = ({handleModal}) => {
     const eachMusicalId = useRecoilValue(mypageMusicalId);
-    
+
     const {
         data,
         hasNextPage,
@@ -160,6 +160,7 @@ const StReview = styled.div`
   flex-direction: row;
   align-items: center;
   color: white;
+  cursor: pointer;
 `;
 
 const StDiv = styled.div`

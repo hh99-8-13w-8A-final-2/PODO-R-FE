@@ -112,6 +112,7 @@ export default MyReview;
 
 const StMyReviews = styled.div`
   width: 100%;
+  cursor: pointer;
   @media screen and (max-width: 763px) {
   }
 `

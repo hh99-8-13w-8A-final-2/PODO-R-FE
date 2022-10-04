@@ -16,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.minimal.css';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Link } from 'react-router-dom';
+import moment from 'moment'
 
 const fetchReviewDetail = (musicalId, reviewsId) => {
     return apis.getReviewDetail(musicalId, reviewsId)
@@ -35,13 +36,6 @@ const unLikeReviews = async (reviewsId) => {
 }
 
 const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
-  
-    let today = new Date();
-    let currentYear = today.getFullYear(); // 년도
-    let currentMonth = today.getMonth() + 1;  // 월
-    let currentDate = today.getDate();  // 날짜
-    let currentHours = today.getHours(); // 시
-    let currentMinutes = today.getMinutes();  // 분
 
     const userId = parseInt(localStorage.getItem('userId'))
     const [toggle, setToggle] = useState(false);
@@ -127,20 +121,46 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
         }
     }
 
-
-
-    const convertToDate = new Date(data?.data.createdAt);
-    const createYear = convertToDate.getFullYear();
-    const createMonth = convertToDate.getMonth() + 1;
-    const createDate = convertToDate.getDate();
-    const createHours = convertToDate.getHours();
-    const createMinute = convertToDate.getMinutes();
-
-    const year = currentYear - createYear;
-    const month = currentMonth - createMonth;
-    const date = currentDate - createDate;
-    const hours = currentHours - createHours;
-    const minutes = currentMinutes - createMinute;
+    const changeToDate = (datetime) => {
+        // 오늘 날짜
+        let now = moment(new Date())
+        // 오늘과의 시간 차이
+        let duration = moment.duration(now.diff(datetime))
+        // 변환
+        // asSeconds 를 하면 오늘과의 시간차이를 
+        // 초단위로 float datatype 으로 보여준다 (3.82 이런식)
+        let seconds = duration.asSeconds()
+        let minute = duration.asMinutes()
+        let hours = duration.asHours()
+        let days = duration.asDays()
+        let weeks = duration.asWeeks()
+        let month = duration.asMonths()
+        let year = duration.asYears()
+        
+        // 그래서 사용할 때는 parseInt 를 사용해 int 로 바꿔야 한다. 
+        if (minute < 1) {
+            // 1분 미만이면 초 단위로 보여주고,  
+        return parseInt(seconds) + '초 전'
+        } else if (hours < 1) {
+        // 1시간 미만이면 분 단위로 보여주고
+        return parseInt(minute) + '분 전'
+        } else if (hours < 24) {
+        // 하루 미만이면 시간으로 보여주고
+        return parseInt(hours) + '시간 전'
+        } else if (weeks < 1) {
+        // 일주일 미만이면 일 단위로 보여주고
+        return parseInt(days) + '일 전'
+        } else if (month < 1) {
+        // 한 달 미만이면 주 단위로 보여주고
+        return parseInt(weeks) + '주 전'
+        } else if (year < 1) {
+        // 1년 미만이면 달 단위로 보여주고
+        return parseInt(month) + '달 전'
+        } else {
+        // 1년 이상이면 넌 단위로 보여주고
+        return parseInt(year) + '년 전'
+        }
+    }
 
     if (status === 'loading') { return <h2>Loading...</h2> }
     if (status === 'error') { return <h2>Error: {error.message}</h2> }
@@ -152,7 +172,7 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
                 {modify ? <ReviewModify data={data} onClose={onClose} setModify={setModify} /> :
                     <>
                         <StSideImgBox>
-                            <ReviewDetailSlide data={data} isClick={isClick} year={year} month={month} date={date} hours={hours} minutes={minutes} nickname={data?.data.member.nickname} />
+                            <ReviewDetailSlide data={data} isClick={isClick} nickname={data?.data.member.nickname} changeToDate={changeToDate} datetime={data?.data.createdAt}/>
                         </StSideImgBox>
                         <StInfoDiv>
                             <StDetailHeader>
@@ -184,42 +204,7 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
                                             <StProfileInfo>
                                                 <StNickName>{data?.data.member.nickname}</StNickName>
                                                 <StDate>
-                                                    {
-                                                        year > 0 &&
-                                                        <span>{currentYear - createYear}년 전 작성</span>
-                                                    }
-                                                    {
-                                                        year === 0 &&
-                                                        month > 0 &&
-                                                        <span>{currentMonth - createMonth}달 전 작성</span>
-                                                    }
-                                                    {
-                                                        year === 0 &&
-                                                        month === 0 &&
-                                                        date > 6 &&
-                                                        <span>{parseInt((currentDate - createDate) / 7)}주일 전 작성</span>
-                                                    }
-                                                    {
-                                                        year === 0 &&
-                                                        month === 0 &&
-                                                        date > 0 && date < 7 &&
-                                                        <span>{currentDate - createDate}일 전 작성</span>
-                                                    }
-                                                    {
-                                                        year === 0 &&
-                                                        month === 0 &&
-                                                        date === 0 &&
-                                                        hours > 0 &&
-                                                        <span>{currentHours - createHours}시간 전 작성</span>
-                                                    }
-                                                    {
-                                                        year === 0 &&
-                                                        month === 0 &&
-                                                        date === 0 &&
-                                                        hours === 0 &&
-                                                        minutes >= 0 &&
-                                                        <span>방금 전 작성</span>
-                                                    }
+                                                    {changeToDate(data?.data.createdAt)}
                                                 </StDate>
                                             </StProfileInfo>
                                         </StProfileDiv>

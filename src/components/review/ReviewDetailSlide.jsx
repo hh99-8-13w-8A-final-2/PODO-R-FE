@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper';
 import styled from 'styled-components';
 
-const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, nickname }) => {
+const ReviewDetailSlide = ({ data, isClick, nickname, changeToDate, datetime }) => {
     const swiperRef = useRef(null)
 
     return (
@@ -47,42 +47,7 @@ const ReviewDetailSlide = ({ data, isClick, year, month, date, hours, minutes, n
                         <StHeader>
                             <StUserNameDiv>{nickname}</StUserNameDiv>
                             <StDate>
-                            {
-                                    year > 0 &&
-                                    <span>{year}년 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month > 0 &&
-                                    <span>{month}달 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date > 6 &&
-                                    <span>{parseInt((date) / 7)}주일 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date > 0 && date < 7 &&
-                                    <span>{date}일 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date === 0 &&
-                                    hours > 0 &&
-                                    <span>{hours}시간 전 작성</span>
-                                }
-                                {
-                                    year === 0 &&
-                                    month === 0 &&
-                                    date === 0 &&
-                                    hours === 0 &&
-                                    minutes >= 0 &&
-                                    <span>방금 전 작성</span>
-                                }
+                                {changeToDate(datetime)}
                             </StDate>
                         </StHeader>
                     </div>

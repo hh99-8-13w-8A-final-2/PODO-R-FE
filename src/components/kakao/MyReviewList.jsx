@@ -2,13 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import MyReview from "./MyReview";
 
-const MyReviewList = ({
-  singleData,
-  handleModal,
-  fetchNextPage2,
-  isFetchingNextPage2,
-}) => {
-
+const MyReviewList = ({handleModal}) => {
   return (
     <div>
       <StH3>공연 리뷰</StH3>
