@@ -276,6 +276,7 @@ const InputBox = styled.div`
   z-index: 3;
   button {
     color: var(--gray-2);
+    border: none;
     background: transparent;
     font-size: 20px;
     cursor: pointer;

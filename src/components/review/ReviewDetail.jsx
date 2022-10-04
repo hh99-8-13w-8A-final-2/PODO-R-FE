@@ -140,7 +140,7 @@ const ReviewDetail = ({ reviewsId, musicalId ,onClose }) => {
         // 그래서 사용할 때는 parseInt 를 사용해 int 로 바꿔야 한다. 
         if (minute < 1) {
             // 1분 미만이면 초 단위로 보여주고,  
-        return parseInt(seconds) + '초 전'
+        return '방금 전'
         } else if (hours < 1) {
         // 1시간 미만이면 분 단위로 보여주고
         return parseInt(minute) + '분 전'
