@@ -15,9 +15,6 @@ const MyReviewList = ({
       <StMyReviewList>
         <MyReview
           handleModal={handleModal}
-          singleData={singleData}
-          fetchNextPage2={fetchNextPage2}
-          isFetchingNextPage2={isFetchingNextPage2}
         />
       </StMyReviewList>
     </div>

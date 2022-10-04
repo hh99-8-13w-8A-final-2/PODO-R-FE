@@ -19,9 +19,9 @@ const MyDetailReviews = async (eachMusicalId, pageParam) => {
         total: 1,
       };
     }
-    const response2 = await apis.getMyEachReviewFind(eachMusicalId, pageParam);
-    const data = response2.data.content;
-    const pageData = response2.data.totalPages;
+    const response = await apis.getMyEachReviewFind(eachMusicalId, pageParam);
+    const data = response.data.content;
+    const pageData = response.data.totalPages;
     return {
       data,
       pageData,
@@ -30,7 +30,7 @@ const MyDetailReviews = async (eachMusicalId, pageParam) => {
 
 const MyReviewSelected = ({handleModal}) => {
     const eachMusicalId = useRecoilValue(mypageMusicalId);
-
+    
     const {
         data,
         hasNextPage,
