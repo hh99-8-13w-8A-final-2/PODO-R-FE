@@ -1,4 +1,4 @@
-import React , { useRef }from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from 'swiper';
@@ -8,26 +8,28 @@ import "swiper/css/pagination";
 import { useRecoilState } from "recoil";
 import mypageMusicalId from "../../atoms/mypageMusicalId";
 
+
 const MyTicket = ({ data }) => {
   const swiperRef = useRef(null)
   const [eachMusicalId, setEachMusicalId] = useRecoilState(mypageMusicalId);
+
 
   return (
     <StMyTicket>
       <div
         onMouseEnter={() => swiperRef.current.swiper.autoplay.stop()}
         onMouseLeave={() => swiperRef.current.swiper.autoplay.start()}
-        >
-      <Swiper
+      >
+        <Swiper
           ref={swiperRef}
           slidesPerView={2}
           spaceBetween={10}
           modules={[Pagination, Navigation]}
           breakpoints={{
             763: {
-                slidesPerView: 5,
-                spaceBetween: 10
-            }
+              slidesPerView: 5,
+              spaceBetween: 10,
+            },
           }}
           
           className="mySwiper"
@@ -61,13 +63,14 @@ export default MyTicket;
 
 const StMyTicket = styled.div`
   width: 100%;
-  .swiper-pagination-bullet {background-color:var(--gray-2)}
-    margin-bottom: 70px;
-    @media (max-width: 763px){
-      margin-bottom: 30px;
-    }
+  .swiper-pagination-bullet {
+    background-color: var(--gray-2);
+  }
+  margin-bottom: 70px;
+  @media (max-width: 763px) {
+    margin-bottom: 30px;
+  }
 `;
-
 
 const StDiv = styled.div`
   box-sizing: border-box;

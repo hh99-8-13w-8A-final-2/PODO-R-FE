@@ -20,7 +20,6 @@ const OAuth = () => {
     window.location.replace(response.data);
   }
 
-
   return (
     <StLoginLink>
       <img src={logo_fill} />
