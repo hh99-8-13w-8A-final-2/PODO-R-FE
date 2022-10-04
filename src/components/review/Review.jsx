@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import apis from '../../apis/apis';
@@ -25,6 +25,7 @@ const fetchReviews = async (pageParam, musicalId, tagUrl) => {
 }
 
 const Review = ({ handleModal, tagUrl }) => {
+    
     // 현재 페이지 url에서 musicalId값을 받아온다.
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
@@ -35,7 +36,7 @@ const Review = ({ handleModal, tagUrl }) => {
         useInfiniteQuery(
             ["reviews", musicalId, tagUrl],
             ({ pageParam = 1 }) => {
-                return fetchReviews(pageParam, musicalId, tagUrl);
+                return fetchReviews(pageParam, musicalId, tagUrl)
             },
             {
                 staleTime: 1000,

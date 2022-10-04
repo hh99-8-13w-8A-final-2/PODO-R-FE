@@ -73,8 +73,6 @@ const ReviewCreateList = ({ setIsClick, reviewId }) => {
                 }
             }
         )
-    
-    console.log(data)
         
 
     useEffect(() => {
