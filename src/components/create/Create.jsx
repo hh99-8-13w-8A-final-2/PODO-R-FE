@@ -224,6 +224,7 @@ const Create = ({ create, SetCreate, theaterId, musicalId}) => {
     const creatMutation = useMutation(postCreatReviews, {
         onSuccess: (newPost) => {
             queryClient.setQueryData(["reviews", JSON.stringify(musicalId), ""], newPost)
+            queryClient.invalidateQueries(["reviews", JSON.stringify(musicalId), ""])
         }
     })   
 

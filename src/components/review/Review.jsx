@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from 'react-query'
 import apis from '../../apis/apis';
@@ -12,25 +12,40 @@ import { ReactComponent as Like } from '../../assets/img/like.svg'
 import { ReactComponent as Comment } from '../../assets/img/comment.svg'
 import { useInView } from "react-intersection-observer";
 import moment from 'moment'
+import { WindowScroller, CellMeasurer, CellMeasurerCache, AutoSizer, List } from "react-virtualized";
+import { useState } from 'react';
 
-const fetchReviews = async (pageParam, musicalId, tagUrl) => {
-    const res = await apis.getReview(musicalId, pageParam, tagUrl)
-    const data = res.data.content;
-    // 서버에서 가져올 데이터 페이지의 전체 길이
-    const pageData = res.data.totalPages;
-    return {
-        data,
-        pageData,
-    }
-}
+const cache = new CellMeasurerCache({
+    defaultWidth: 100,
+    fixedWidth: true
+});
+
 
 const Review = ({ handleModal, tagUrl }) => {
-    
     // 현재 페이지 url에서 musicalId값을 받아온다.
     let location = useLocation();
     let musicalId = location.pathname.split('/').splice(2, 1).toString()
+    const [render, setRender] = useState(false);
+    useEffect(()=> {setTimeout(() => {setRender(true)},[1000])},[])
 
-    const { ref, inView } = useInView();
+    const fetchReviews = async (pageParam, musicalId, tagUrl) => {
+        const res = await apis.getReview(musicalId, pageParam, tagUrl)
+        
+        const data = res.data.content;
+        // 서버에서 가져올 데이터 페이지의 전체 길이
+        const pageData = res.data.totalPages;
+        return {
+            data,
+            pageData,
+        }
+    }
+
+
+
+
+    const { ref, inView } = useInView('');
+    const listRef = useRef(null);
+    const [rowCount, setRowCount] = useState(0);
 
     const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status, error } =
         useInfiniteQuery(
@@ -53,20 +68,13 @@ const Review = ({ handleModal, tagUrl }) => {
             }
         )
 
-    useEffect(() => {
-        if (inView) fetchNextPage();
-    }, [inView]);
-
-    if (status === 'loading') { return <h2>Loading...</h2> }
-    if (status === 'error') { return <h2>Error: {error.message}</h2> }
-
-    return (
-        <div>
-            {data?.pages.map((group, i) => {
-                return (
-                    <StWrap key={i}>
+    const rowRenderer = ({ index, key, parent, style }) => {
+        return (
+            <CellMeasurer cache={cache} parent={parent} key={key} columnIndex={0} rowIndex={index}>
+                <div style={style}>
+                    <StWrap key={key}>
                         <Fragment>
-                            {group.data.map((data) => {
+                            {data?.pages[index].data.map((data) => {
                                 const changeToDate = (datetime) => {
                                     // 오늘 날짜
                                     let now = moment(new Date())
@@ -82,29 +90,29 @@ const Review = ({ handleModal, tagUrl }) => {
                                     let weeks = duration.asWeeks()
                                     let month = duration.asMonths()
                                     let year = duration.asYears()
-                                    
+
                                     // 그래서 사용할 때는 parseInt 를 사용해 int 로 바꿔야 한다. 
                                     if (minute < 1) {
                                         // 1분 미만이면 초 단위로 보여주고,  
-                                    return '방금 전'
+                                        return '방금 전'
                                     } else if (hours < 1) {
-                                    // 1시간 미만이면 분 단위로 보여주고
-                                    return parseInt(minute) + '분 전'
+                                        // 1시간 미만이면 분 단위로 보여주고
+                                        return parseInt(minute) + '분 전'
                                     } else if (hours < 24) {
-                                    // 하루 미만이면 시간으로 보여주고
-                                    return parseInt(hours) + '시간 전'
+                                        // 하루 미만이면 시간으로 보여주고
+                                        return parseInt(hours) + '시간 전'
                                     } else if (weeks < 1) {
-                                    // 일주일 미만이면 일 단위로 보여주고
-                                    return parseInt(days) + '일 전'
+                                        // 일주일 미만이면 일 단위로 보여주고
+                                        return parseInt(days) + '일 전'
                                     } else if (month < 1) {
-                                    // 한 달 미만이면 주 단위로 보여주고
-                                    return parseInt(weeks) + '주 전'
+                                        // 한 달 미만이면 주 단위로 보여주고
+                                        return parseInt(weeks) + '주 전'
                                     } else if (year < 1) {
-                                    // 1년 미만이면 달 단위로 보여주고
-                                    return parseInt(month) + '달 전'
+                                        // 1년 미만이면 달 단위로 보여주고
+                                        return parseInt(month) + '달 전'
                                     } else {
-                                    // 1년 이상이면 넌 단위로 보여주고
-                                    return parseInt(year) + '년 전'
+                                        // 1년 이상이면 넌 단위로 보여주고
+                                        return parseInt(year) + '년 전'
                                     }
                                 }
                                 return (
@@ -140,8 +148,56 @@ const Review = ({ handleModal, tagUrl }) => {
                             })}
                         </Fragment>
                     </StWrap>
-                )
-            })}
+                </div>
+            </CellMeasurer>
+        );
+    };
+
+    useEffect(() => {
+        if(data?.pages.length === undefined) {
+            setRowCount(1)
+        }else {
+            setRowCount(data?.pages.length)
+        }
+    })
+
+    useEffect(() => {
+        if(inView) {
+            fetchNextPage();
+        }
+    }, [inView]);
+
+
+    if (status === 'loading') { return <h2>Loading...</h2> }
+    if (status === 'error') { return <h2>Error: {error.message}</h2> }
+
+    return (
+        <div>
+            <WindowScroller>
+                {({ height, scrollTop, isScrolling, onChildScroll }) => (
+                    <AutoSizer disableHeight>
+                        {({ width }) => {
+                            return(
+                            <List
+                                ref={listRef}
+                                autoHeight
+                                height={height}
+                                width={width}
+                                isScrolling={isScrolling}
+                                overscanRowCount={0}
+                                onScroll={onChildScroll}
+                                scrollTop={scrollTop}
+                                rowCount={rowCount}
+                                rowHeight={cache.rowHeight}
+                                rowRenderer={rowRenderer}
+                                deferredMeasurementCache={cache}
+                            />
+                            )
+                        }}
+                    </AutoSizer>
+                )}
+            </WindowScroller>
+            {render ? 
             <StMoreDiv
                 ref={ref}
             >
@@ -150,9 +206,11 @@ const Review = ({ handleModal, tagUrl }) => {
                     : hasNextPage
                         ? "더보기"
                         : "Nothing more to load"}
-            </StMoreDiv>
+            </StMoreDiv> 
+            :
+            null   
+        }
         </div>
-
     );
 };
 
