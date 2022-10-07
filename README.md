@@ -165,17 +165,31 @@ lighthouse를 이용한 성능 측정 결과 성능 및 접근성, 권장사항�
 <details>
 <summary>(FE) 이미지 렌더링 속도 개선</summary>
 <div markdown="2">
+
 <span style="color:Red">트러블 이슈</span> 
 <br> 
-사용자가 뮤지컬 좌석 리뷰를 확인하기 위해 여러 서로다른 여러가지 뮤지컬을 조회하고 다시 같은 뮤지컬을 조회할 때마다 렌더링이 계속 일어난다면 사용자 피로도가 올라가 이탈률이 높아질 것으로 예상 
+사용자가 리뷰페이지 스크롤을 계속한다면 렌더링해야 될 
+데이터들이 많아져 렌더링 속도가 느려지게 된다. 이는 곳 사용자 
+피로도가 올라가게 되므로 사이트 이탈률이 올라가게 될것이다
 
-![Untitled (2)](https://user-images.githubusercontent.com/108280991/193578901-b6078872-a15c-4586-9fbd-b66cc1833b1c.png)
+![image](https://user-images.githubusercontent.com/76687666/194465992-4136dbad-d021-4e27-8443-e471e337504e.png)
 
 
-<span style="color:Red">트러블 슈팅</span>  
-리액트 쿼리의 캐싱 기능을 사용해 바로 사용자에게 렌더링 된 화면을 출력
+<span>해결</span>
 
-![Untitled (3)](https://user-images.githubusercontent.com/108280991/193579112-108b09f8-cc5c-4315-a885-5c299b70ba85.png)
+react-virtualized 를 통해 화면에 보이는 부분만 렌더링 하도록 변경
+
+![image](https://user-images.githubusercontent.com/76687666/194467140-9b253168-b1b9-429c-a44e-6b6e061ee0cf.png)
+![image](https://user-images.githubusercontent.com/76687666/194467197-e279236c-1b37-4b61-ba2e-92a282e2fcb5.png)
+
+기존에는 리뷰페이지 전체를 렌더링했다면 화면에서 보이는 
+부분만 렌더링해 주는 방식으로 변경
+
+<span style="color:Red">결과</span>
+
+![image](https://user-images.githubusercontent.com/76687666/194467349-1c231af3-443e-44d0-99ee-72841b644137.png)
+
+렌더링 속도가 531.2ms → 18ms 로 기존보다 감소하였다.
 
 
 </div>
