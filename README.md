@@ -3,6 +3,8 @@
 
 
 ## 🎉 포도알 소개 | About Us
+![KakaoTalk_20221014_194653280](https://user-images.githubusercontent.com/109055420/195833038-63548f2a-73dd-4383-9e7b-9adf691681c1.png)
+
 
 ### 극장 좌석?! 좋은 자리는 없는 상태에 최선의 선택은?
 ![KakaoTalk_20221003_034649228](https://user-images.githubusercontent.com/109055420/193470896-90e12165-8d97-4437-becd-624c4b39415a.png)
